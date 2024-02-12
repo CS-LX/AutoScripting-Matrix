@@ -1,5 +1,7 @@
-namespace Game {
-    public enum ASMElectricConnectorType {
+namespace Game
+{
+    public enum ASMElectricConnectorType
+    {
         Input,
         Output,
         InputOutput

@@ -1,7 +1,9 @@
 using Engine;
 
-namespace Game {
-    public class ASMElectricElement {
+namespace Game
+{
+    public class ASMElectricElement
+    {
         public SubsystemASMElectricity SubsystemElectricity
         {
             get;

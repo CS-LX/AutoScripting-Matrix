@@ -6,8 +6,10 @@ using System.Globalization;
 using System.Text;
 using TemplatesDatabase;
 
-namespace Game {
-    public class SubsystemASMElectricity : Subsystem, IUpdateable {
+namespace Game
+{
+    public class SubsystemASMElectricity : Subsystem, IUpdateable
+    {
 		public static ASMElectricConnectionPath[] m_connectionPathsTable = new ASMElectricConnectionPath[120]
 		{
 			new ASMElectricConnectionPath(0, 1, -1, 4, 4, 0),

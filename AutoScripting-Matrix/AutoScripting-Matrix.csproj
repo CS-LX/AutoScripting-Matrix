@@ -6,9 +6,6 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
-	  <Folder Include="Assets\" />
-	</ItemGroup>
-	<ItemGroup>
 	  <None Update="modinfo.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
@@ -16,12 +13,15 @@
 	<ItemGroup>
 	  <Reference Include="Engine">
 	    <HintPath>references\Engine.dll</HintPath>
+	    <Private>False</Private>
 	  </Reference>
 	  <Reference Include="EntitySystem">
 	    <HintPath>references\EntitySystem.dll</HintPath>
+	    <Private>False</Private>
 	  </Reference>
 	  <Reference Include="Survivalcraft">
 	    <HintPath>references\Survivalcraft.dll</HintPath>
+	    <Private>False</Private>
 	  </Reference>
 	</ItemGroup>
 </Project>

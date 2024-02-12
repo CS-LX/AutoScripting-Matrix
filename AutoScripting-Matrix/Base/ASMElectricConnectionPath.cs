@@ -1,5 +1,6 @@
 namespace Game {
-    public class ASMElectricConnectionPath {
+    public class ASMElectricConnectionPath
+    {
         public readonly int NeighborOffsetX;
 
         public readonly int NeighborOffsetY;

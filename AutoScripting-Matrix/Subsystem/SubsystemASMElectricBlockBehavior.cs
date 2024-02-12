@@ -1,7 +1,9 @@
 using TemplatesDatabase;
 
-namespace Game {
-    public class SubsystemASMElectricBlockBehavior : SubsystemBlockBehavior {
+namespace Game
+{
+    public class SubsystemASMElectricBlockBehavior : SubsystemBlockBehavior
+    {
 		public SubsystemASMElectricity m_subsystemElectricity;
 
 		public override int[] HandledBlocks => new int[]

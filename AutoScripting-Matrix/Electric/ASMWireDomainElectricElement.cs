@@ -1,7 +1,9 @@
 using Engine;
 
-namespace Game {
-    public class ASMWireDomainElectricElement : ASMElectricElement {
+namespace Game
+{
+    public class ASMWireDomainElectricElement : ASMElectricElement
+    {
 		public float m_voltage;
 
 		public ASMWireDomainElectricElement(SubsystemASMElectricity subsystemElectricity, IEnumerable<CellFace> cellFaces)

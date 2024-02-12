@@ -1,5 +1,7 @@
-namespace Game {
-    public enum ASMElectricConnectorDirection {
+namespace Game
+{
+    public enum ASMElectricConnectorDirection
+    {
         Top,
         Left,
         Bottom,
