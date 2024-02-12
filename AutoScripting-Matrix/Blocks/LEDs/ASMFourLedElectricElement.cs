@@ -10,7 +10,7 @@ namespace Game
 
 		public Color m_color;
 
-		public GlowPoint[] m_glowPoints = new GlowPoint[4];
+		public GlowPoint[] m_glowPoints = new GlowPoint[16];
 
 		public ASMFourLedElectricElement(SubsystemASMElectricity subsystemElectricity, CellFace cellFace)
 			: base(subsystemElectricity, cellFace)
@@ -26,28 +26,29 @@ namespace Game
 			m_color = LedBlock.LedColors[ASMFourLedBlock.GetColor(data)];
 			for (int i = 0; i < 4; i++)
 			{
-				int num = (i % 2 == 0) ? 1 : (-1);
-				int num2 = (i / 2 == 0) ? 1 : (-1);
-				var v = new Vector3(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f);
-				Vector3 vector = CellFace.FaceToVector3(mountingFace);
-				Vector3 vector2 = (mountingFace < 4) ? Vector3.UnitY : Vector3.UnitX;
-				var vector3 = Vector3.Cross(vector, vector2);
-				m_glowPoints[i] = m_subsystemGlow.AddGlowPoint();
-				m_glowPoints[i].Position = v - (0.4375f * CellFace.FaceToVector3(mountingFace)) + (0.25f * vector3 * num) + (0.25f * vector2 * num2);
-				m_glowPoints[i].Forward = vector;
-				m_glowPoints[i].Up = vector2;
-				m_glowPoints[i].Right = vector3;
-				m_glowPoints[i].Color = Color.Transparent;
-				m_glowPoints[i].Size = 0.26f;
-				m_glowPoints[i].FarSize = 0.26f;
-				m_glowPoints[i].FarDistance = 1f;
-				m_glowPoints[i].Type = GlowPointType.Square;
+				for (int j = 0; j < 4; j++) {
+					int index = i * 4 + j;
+					var v = new Vector3(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f);
+					Vector3 vector = CellFace.FaceToVector3(mountingFace);
+					Vector3 unitX = (mountingFace < 4) ? Vector3.UnitY : Vector3.UnitX;
+					var unitY = Vector3.Cross(vector, unitX);
+					m_glowPoints[index] = m_subsystemGlow.AddGlowPoint();
+					m_glowPoints[index].Position = v - (0.4375f * CellFace.FaceToVector3(mountingFace)) - unitX * 0.375f - unitY * 0.375f + unitX * 0.25f * i + unitY * 0.25f * j;
+					m_glowPoints[index].Forward = vector;
+					m_glowPoints[index].Up = unitX;
+					m_glowPoints[index].Right = unitY;
+					m_glowPoints[index].Color = Color.Transparent;
+					m_glowPoints[index].Size = 0.13f;
+					m_glowPoints[index].FarSize = 0.13f;
+					m_glowPoints[index].FarDistance = 1f;
+					m_glowPoints[index].Type = GlowPointType.Square;
+				}
 			}
 		}
 
 		public override void OnRemoved()
 		{
-			for (int i = 0; i < 4; i++)
+			for (int i = 0; i < 16; i++)
 			{
 				m_subsystemGlow.RemoveGlowPoint(m_glowPoints[i]);
 			}
@@ -64,12 +65,11 @@ namespace Game
 					m_voltage = MathUtils.Max(m_voltage, connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace));
 				}
 			}
-			if (m_voltage != voltage)
-			{
-				int num = (int)MathUtils.Round(m_voltage * 15f);
-				for (int i = 0; i < 4; i++)
+			if (m_voltage != voltage) {
+				Matrix matrix = Matrix.Identity;
+				for (int i = 0; i < 16; i++)
 				{
-					m_glowPoints[i].Color = (num & (1 << i)) != 0 ? m_color : Color.Transparent;
+					m_glowPoints[i].Color = matrix.GetElement(i) > 0 ? m_color : Color.Transparent;
 				}
 			}
 			return false;
