@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary1AutoScripting-Matrix", "ClassLibrary1AutoScripting-Matrix\ClassLibrary1AutoScripting-Matrix.csproj", "{E22ADF96-63A7-4D83-B60C-EA2FF2BB56FB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoScripting-Matrix", "AutoScripting-Matrix\AutoScripting-Matrix.csproj", "{E22ADF96-63A7-4D83-B60C-EA2FF2BB56FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
