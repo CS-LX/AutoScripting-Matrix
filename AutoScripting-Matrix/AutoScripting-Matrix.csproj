@@ -13,4 +13,15 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>
+	<ItemGroup>
+	  <Reference Include="Engine">
+	    <HintPath>references\Engine.dll</HintPath>
+	  </Reference>
+	  <Reference Include="EntitySystem">
+	    <HintPath>references\EntitySystem.dll</HintPath>
+	  </Reference>
+	  <Reference Include="Survivalcraft">
+	    <HintPath>references\Survivalcraft.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
 </Project>
