@@ -35,13 +35,13 @@ namespace Game
 		{
 			int cellValue = SubsystemElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
 			int num = Terrain.ExtractContents(cellValue);
-			if (!(BlocksManager.Blocks[num] is WireBlock))
+			if (!(BlocksManager.Blocks[num] is ASMWireBlock))
 			{
 				return;
 			}
-			int wireFacesBitmask = WireBlock.GetWireFacesBitmask(cellValue);
+			int wireFacesBitmask = ASMWireBlock.GetWireFacesBitmask(cellValue);
 			int num2 = wireFacesBitmask;
-			if (WireBlock.WireExistsOnFace(cellValue, cellFace.Face))
+			if (ASMWireBlock.WireExistsOnFace(cellValue, cellFace.Face))
 			{
 				Point3 point = CellFace.FaceToPoint3(cellFace.Face);
 				int cellValue2 = SubsystemElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X - point.X, cellFace.Y - point.Y, cellFace.Z - point.Z);
@@ -57,7 +57,7 @@ namespace Game
 			}
 			else if (num2 != wireFacesBitmask)
 			{
-				int newValue = WireBlock.SetWireFacesBitmask(cellValue, num2);
+				int newValue = ASMWireBlock.SetWireFacesBitmask(cellValue, num2);
 				SubsystemElectricity.SubsystemTerrain.DestroyCell(0, cellFace.X, cellFace.Y, cellFace.Z, newValue, noDrop: false, noParticleSystem: false);
 			}
 		}
