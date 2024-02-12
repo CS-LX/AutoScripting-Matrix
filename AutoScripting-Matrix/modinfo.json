@@ -1,0 +1,11 @@
+{
+  "Name": "AutoScripting [智械]矩阵",
+  "Version": "1.0",
+  "ApiVersion": "1.60",
+  "Description": "一个新的电路系统，但是传输的是矩阵",
+  "ScVersion": "2.3.0.0",
+  "Link": "https://github.com/CS-LX/AutoScripting-Matrix",
+  "Author": "LX..(HIM-LX)",
+  "PackageName": "lx.AutoScriptingMatrix",
+  "Dependencies": []
+}
