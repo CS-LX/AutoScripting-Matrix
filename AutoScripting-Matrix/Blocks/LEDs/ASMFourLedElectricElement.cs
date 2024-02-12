@@ -22,8 +22,8 @@ namespace Game
 		{
 			CellFace cellFace = CellFaces[0];
 			int data = Terrain.ExtractData(SubsystemElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z));
-			int mountingFace = FourLedBlock.GetMountingFace(data);
-			m_color = LedBlock.LedColors[FourLedBlock.GetColor(data)];
+			int mountingFace = ASMFourLedBlock.GetMountingFace(data);
+			m_color = LedBlock.LedColors[ASMFourLedBlock.GetColor(data)];
 			for (int i = 0; i < 4; i++)
 			{
 				int num = (i % 2 == 0) ? 1 : (-1);
