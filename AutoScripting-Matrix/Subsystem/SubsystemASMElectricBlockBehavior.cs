@@ -8,7 +8,8 @@ namespace Game
 
 		public override int[] HandledBlocks => new int[]
 		{
-			ASMWireBlock.Index
+			ASMWireBlock.Index,
+			ASMBatteryBlock.Index
 		};
 
 		public override void OnBlockGenerated(int value, int x, int y, int z, bool isLoaded)
