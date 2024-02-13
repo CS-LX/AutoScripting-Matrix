@@ -208,7 +208,7 @@ namespace Game
 
 		public float m_remainingSimulationTime;
 
-		public Dictionary<Point3, float> m_persistentElementsVoltages = new Dictionary<Point3, float>();
+		public Dictionary<Point3, Matrix> m_persistentElementsVoltages = new Dictionary<Point3, Matrix>();
 
 		public Dictionary<ASMElectricElement, bool> m_electricElements = new Dictionary<ASMElectricElement, bool>();
 
@@ -406,16 +406,16 @@ namespace Game
 			}
 		}
 
-		public float? ReadPersistentVoltage(Point3 point)
+		public Matrix? ReadPersistentVoltage(Point3 point)
 		{
-			if (m_persistentElementsVoltages.TryGetValue(point, out float value))
+			if (m_persistentElementsVoltages.TryGetValue(point, out Matrix value))
 			{
 				return value;
 			}
 			return null;
 		}
 
-		public void WritePersistentVoltage(Point3 point, float voltage)
+		public void WritePersistentVoltage(Point3 point, Matrix voltage)
 		{
 			m_persistentElementsVoltages[point] = voltage;
 		}
@@ -469,7 +469,7 @@ namespace Game
 			{
 				if (num < array.Length)
 				{
-					string[] array2 = array[num].Split(new string[] { "," }, StringSplitOptions.None);
+					string[] array2 = array[num].Split(new string[] { "|" }, StringSplitOptions.None);
 					if (array2.Length != 4)
 					{
 						break;
@@ -477,7 +477,7 @@ namespace Game
 					int x = int.Parse(array2[0], CultureInfo.InvariantCulture);
 					int y = int.Parse(array2[1], CultureInfo.InvariantCulture);
 					int z = int.Parse(array2[2], CultureInfo.InvariantCulture);
-					float value = float.Parse(array2[3], CultureInfo.InvariantCulture);
+					Matrix value = array2[3].ToMatrix();
 					m_persistentElementsVoltages[new Point3(x, y, z)] = value;
 					num++;
 					continue;
@@ -493,19 +493,19 @@ namespace Game
 		{
 			int num = 0;
 			var stringBuilder = new StringBuilder();
-			foreach (KeyValuePair<Point3, float> persistentElementsVoltage in m_persistentElementsVoltages)
+			foreach (KeyValuePair<Point3, Matrix> persistentElementsVoltage in m_persistentElementsVoltages)
 			{
 				if (num > 500)
 				{
 					break;
 				}
 				stringBuilder.Append(persistentElementsVoltage.Key.X.ToString(CultureInfo.InvariantCulture));
-				stringBuilder.Append(',');
+				stringBuilder.Append('|');
 				stringBuilder.Append(persistentElementsVoltage.Key.Y.ToString(CultureInfo.InvariantCulture));
-				stringBuilder.Append(',');
+				stringBuilder.Append('|');
 				stringBuilder.Append(persistentElementsVoltage.Key.Z.ToString(CultureInfo.InvariantCulture));
-				stringBuilder.Append(',');
-				stringBuilder.Append(persistentElementsVoltage.Value.ToString(CultureInfo.InvariantCulture));
+				stringBuilder.Append('|');
+				stringBuilder.Append(persistentElementsVoltage.Value.ToString());
 				stringBuilder.Append(';');
 				num++;
 			}

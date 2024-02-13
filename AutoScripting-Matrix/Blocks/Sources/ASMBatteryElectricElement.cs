@@ -7,9 +7,9 @@ namespace Game {
         {
         }
 
-        public override float GetOutputVoltage(int face)
+        public override Matrix GetOutputVoltage(int face)
         {
-            return 1;
+            return new Matrix(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
         }
 
         public override void OnNeighborBlockChanged(CellFace cellFace, int neighborX, int neighborY, int neighborZ)

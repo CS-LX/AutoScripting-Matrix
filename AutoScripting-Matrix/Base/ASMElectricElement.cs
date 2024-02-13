@@ -37,9 +37,9 @@ namespace Game
         {
         }
 
-        public virtual float GetOutputVoltage(int face)
+        public virtual Matrix GetOutputVoltage(int face)
         {
-            return 0f;
+            return Matrix.Identity;
         }
 
         public virtual bool Simulate()
@@ -74,24 +74,6 @@ namespace Game
 
         public virtual void OnConnectionsChanged()
         {
-        }
-
-        public static bool IsSignalHigh(float voltage)
-        {
-            return voltage >= 0.5f;
-        }
-
-        public int CalculateHighInputsCount()
-        {
-            int num = 0;
-            foreach (ASMElectricConnection connection in Connections)
-            {
-                if (connection.ConnectorType != ASMElectricConnectorType.Output && connection.NeighborConnectorType != 0 && IsSignalHigh(connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace)))
-                {
-                    num++;
-                }
-            }
-            return num;
         }
     }
 }

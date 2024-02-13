@@ -6,7 +6,7 @@ namespace Game
 	{
 		public SubsystemGlow m_subsystemGlow;
 
-		public float m_voltage;
+		public Matrix m_voltage = Matrix.Zero;
 
 		public Color m_color;
 
@@ -56,20 +56,19 @@ namespace Game
 
 		public override bool Simulate()
 		{
-			float voltage = m_voltage;
-			m_voltage = 0f;
+			Matrix voltage = m_voltage;
+			m_voltage = Matrix.Identity;
 			foreach (ASMElectricConnection connection in Connections)
 			{
 				if (connection.ConnectorType != ASMElectricConnectorType.Output && connection.NeighborConnectorType != 0)
 				{
-					m_voltage = MathUtils.Max(m_voltage, connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace));
+					m_voltage = m_voltage * connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
 				}
 			}
 			if (m_voltage != voltage) {
-				Matrix matrix = Matrix.Identity * m_voltage;
 				for (int i = 0; i < 16; i++)
 				{
-					m_glowPoints[i].Color = matrix.GetElement(i) > 0 ? m_color : Color.Transparent;
+					m_glowPoints[i].Color = m_voltage.GetElement(i) > 0 ? m_color : Color.Transparent;
 				}
 			}
 			return false;

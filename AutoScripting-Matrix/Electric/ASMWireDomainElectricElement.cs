@@ -4,30 +4,28 @@ namespace Game
 {
     public class ASMWireDomainElectricElement : ASMElectricElement
     {
-		public float m_voltage;
+		public Matrix m_voltage = Matrix.Identity;
 
 		public ASMWireDomainElectricElement(SubsystemASMElectricity subsystemElectricity, IEnumerable<CellFace> cellFaces)
 			: base(subsystemElectricity, cellFaces)
 		{
 		}
 
-		public override float GetOutputVoltage(int face)
+		public override Matrix GetOutputVoltage(int face)
 		{
 			return m_voltage;
 		}
 
-		public override bool Simulate()
-		{
-			float voltage = m_voltage;
-			int num = 0;
+		public override bool Simulate() {
+			Matrix voltage = m_voltage;
+			m_voltage = Matrix.Identity;
 			foreach (ASMElectricConnection connection in Connections)
 			{
 				if (connection.ConnectorType != ASMElectricConnectorType.Output && connection.NeighborConnectorType != 0)
 				{
-					num |= (int)MathUtils.Round(connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace) * 15f);
+					m_voltage *= connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
 				}
 			}
-			m_voltage = num / 15f;
 			return m_voltage != voltage;
 		}
 
