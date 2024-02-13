@@ -177,6 +177,13 @@ namespace Game
 		public override IEnumerable<int> GetCreativeValues()
 		{
 			yield return Terrain.MakeBlockValue(Index);
+			yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 0));
+			yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 8));
+			yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 15));
+			yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 11));
+			yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 12));
+			yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 13));
+			yield return Terrain.MakeBlockValue(Index, 0, SetColor(0, 14));
 		}
 
 		public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value)

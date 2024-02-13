@@ -15,10 +15,13 @@ namespace Game {
 
 		public BoundingBox[][] m_collisionBoxesByFace = new BoundingBox[6][];
 
+		public Texture2D texture;
+
 		public override void Initialize()
 		{
-			ModelMesh modelMesh = ContentManager.Get<Model>("Models/Leds").FindMesh("FourLed");
+			ModelMesh modelMesh = ContentManager.Get<Model>("Models/ASMLed").FindMesh("ASMLed");
 			Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(modelMesh.ParentBone);
+			texture = ContentManager.Get<Texture2D>("Textures/ASMLed");
 			for (int i = 0; i < 6; i++)
 			{
 				Matrix m = (i >= 4) ? ((i != 4) ? (Matrix.CreateRotationX((float)Math.PI) * Matrix.CreateTranslation(0.5f, 1f, 0.5f)) : Matrix.CreateTranslation(0.5f, 0f, 0.5f)) : (Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0f, -0.5f) * Matrix.CreateRotationY(i * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f));
@@ -49,7 +52,7 @@ namespace Game {
 		{
 			int data = Terrain.ExtractData(value);
 			int color = GetColor(data);
-			return "矩阵LED" + LanguageControl.GetBlock(string.Format("{0}:{1}", GetType().Name, data.ToString()), "DisplayName");
+			return "矩阵LED";
 		}
 
 		public override IEnumerable<int> GetCreativeValues()
@@ -93,14 +96,14 @@ namespace Game {
 			int mountingFace = GetMountingFace(Terrain.ExtractData(value));
 			if (mountingFace < m_blockMeshesByFace.Length)
 			{
-				generator.GenerateMeshVertices(this, x, y, z, m_blockMeshesByFace[mountingFace], Color.White, null, geometry.SubsetOpaque);
+				generator.GenerateMeshVertices(this, x, y, z, m_blockMeshesByFace[mountingFace], Color.White, null, geometry.GetGeometry(texture).SubsetOpaque);
 				GenerateASMWireVertices(generator, value, x, y, z, mountingFace, 1f, Vector2.Zero, geometry.SubsetOpaque);
 			}
 		}
 
 		public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData)
 		{
-			BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneBlockMesh, color, 2f * size, ref matrix, environmentData);
+			BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneBlockMesh, texture, color, 2f * size, ref matrix, environmentData);
 		}
 
 		public override ASMElectricElement CreateElectricElement(SubsystemASMElectricity subsystemElectricity, int value, int x, int y, int z)

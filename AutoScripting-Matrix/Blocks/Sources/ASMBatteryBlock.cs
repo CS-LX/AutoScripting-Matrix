@@ -6,35 +6,20 @@ namespace Game {
     public class ASMBatteryBlock : GenerateASMWireVerticesBlock, IASMElectricElementBlock {
 		public const int Index = 601;
 
-		public BlockMesh m_standaloneBlockMesh = new BlockMesh();
+		public Texture2D texture;
 
-		public BlockMesh m_blockMesh = new BlockMesh();
-
-		public BoundingBox[] m_collisionBoxes = new BoundingBox[1];
-
-		public override void Initialize()
-		{
-			Model model = ContentManager.Get<Model>("Models/Battery");
-			Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Battery").ParentBone);
-			m_standaloneBlockMesh.AppendModelMeshPart(model.FindMesh("Battery").MeshParts[0], boneAbsoluteTransform * Matrix.CreateTranslation(0f, -0.5f, 0f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
-			m_blockMesh.AppendModelMeshPart(model.FindMesh("Battery").MeshParts[0], boneAbsoluteTransform * Matrix.CreateTranslation(0.5f, 0f, 0.5f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
-			m_collisionBoxes[0] = m_blockMesh.CalculateBoundingBox();
-		}
-
-		public override BoundingBox[] GetCustomCollisionBoxes(SubsystemTerrain terrain, int value)
-		{
-			return m_collisionBoxes;
+		public override void Initialize() {
+			texture = ContentManager.Get<Texture2D>("Textures/ASMMatrixSource");
 		}
 
 		public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z)
 		{
-			generator.GenerateMeshVertices(this, x, y, z, m_blockMesh, Color.White, null, geometry.SubsetOpaque);
-			GenerateASMWireVertices(generator, value, x, y, z, 4, 0.72f, Vector2.Zero, geometry.SubsetOpaque);
+			generator.GenerateCubeVertices(this, value, x, y, z, Color.White, geometry.GetGeometry(texture).OpaqueSubsetsByFace);
 		}
 
 		public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData)
 		{
-			BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneBlockMesh, color, 1f * size, ref matrix, environmentData);
+			BlocksManager.DrawCubeBlock(primitivesRenderer, value, new Vector3(size), ref matrix, Color.White, Color.White, environmentData, texture);
 		}
 
 		public ASMElectricElement CreateElectricElement(SubsystemASMElectricity subsystemElectricity, int value, int x, int y, int z)
@@ -42,13 +27,12 @@ namespace Game {
 			return new ASMBatteryElectricElement(subsystemElectricity, new CellFace(x, y, z, 4));
 		}
 
+		public override int GetTextureSlotCount(int value) => 1;
+
 		public ASMElectricConnectorType? GetConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z)
 		{
-			if (face == 4 && SubsystemElectricity.GetConnectorDirection(4, 0, connectorFace).HasValue)
-			{
-				return ASMElectricConnectorType.Output;
-			}
-			return null;
+			return ASMElectricConnectorType.Output;
+
 		}
 
 		public int GetConnectionMask(int value)

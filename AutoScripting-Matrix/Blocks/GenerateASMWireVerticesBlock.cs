@@ -162,5 +162,6 @@ namespace Game {
 			}
 		}
 
+		public override string GetCategory(int value) => "[智械]矩阵";
     }
 }
