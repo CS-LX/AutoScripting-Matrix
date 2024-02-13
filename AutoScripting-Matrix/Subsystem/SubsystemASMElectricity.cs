@@ -456,6 +456,10 @@ namespace Game
 			SubsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
 			SubsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
 			SubsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+
+			//Matrix m = valuesDictionary.GetValue<string>("ASMVoltagesByCell").ToMatrix();
+#if true
+
 			string[] array = valuesDictionary.GetValue<string>("ASMVoltagesByCell").Split(new char[1]
 			{
 				';'
@@ -481,6 +485,8 @@ namespace Game
 				return;
 			}
 			throw new InvalidOperationException("Invalid number of tokens.");
+#endif
+
 		}
 
 		public override void Save(ValuesDictionary valuesDictionary)
@@ -503,6 +509,7 @@ namespace Game
 				stringBuilder.Append(';');
 				num++;
 			}
+			//stringBuilder.AppendLine(Matrix.Identity.ToString());
 			valuesDictionary.SetValue("ASMVoltagesByCell", stringBuilder.ToString());
 		}
 
