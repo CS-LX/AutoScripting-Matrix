@@ -30,4 +30,7 @@
 	    <Private>False</Private>
 	  </Reference>
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Debug\" />
+	</ItemGroup>
 </Project>
