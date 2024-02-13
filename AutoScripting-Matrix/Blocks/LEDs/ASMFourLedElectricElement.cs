@@ -66,7 +66,7 @@ namespace Game
 				}
 			}
 			if (m_voltage != voltage) {
-				Matrix matrix = Matrix.Identity;
+				Matrix matrix = Matrix.Identity * m_voltage;
 				for (int i = 0; i < 16; i++)
 				{
 					m_glowPoints[i].Color = matrix.GetElement(i) > 0 ? m_color : Color.Transparent;

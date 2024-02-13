@@ -1,7 +1,5 @@
 using Engine;
 using GameEntitySystem;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using TemplatesDatabase;
@@ -458,7 +456,7 @@ namespace Game
 			SubsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
 			SubsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
 			SubsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
-			string[] array = valuesDictionary.GetValue<string>("VoltagesByCell").Split(new char[1]
+			string[] array = valuesDictionary.GetValue<string>("ASMVoltagesByCell").Split(new char[1]
 			{
 				';'
 			}, StringSplitOptions.RemoveEmptyEntries);
@@ -505,7 +503,7 @@ namespace Game
 				stringBuilder.Append(';');
 				num++;
 			}
-			valuesDictionary.SetValue("VoltagesByCell", stringBuilder.ToString());
+			valuesDictionary.SetValue("ASMVoltagesByCell", stringBuilder.ToString());
 		}
 
 		public static ASMElectricConnectionPath GetConnectionPath(int mountingFace, ASMElectricConnectorDirection localConnector, int neighborIndex)
@@ -685,7 +683,7 @@ namespace Game
 						{
 							for (int l = 0; l < 6; l++)
 							{
-								if (m_electricElementsByCellFace.TryGetValue(new CellFace(i, j, k, l), out ASMElectricElement value) && value is WireDomainElectricElement)
+								if (m_electricElementsByCellFace.TryGetValue(new CellFace(i, j, k, l), out ASMElectricElement value) && value is ASMWireDomainElectricElement)
 								{
 									RemoveElectricElement(value);
 								}

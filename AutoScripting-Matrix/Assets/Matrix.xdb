@@ -4,7 +4,7 @@
 			<Parameter Name="Class" Guid="12345678-c814-47de-99f0-abed8ef8395b" Value="Game.SubsystemASMElectricBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
 		<MemberSubsystemTemplate Name="ASMElectricity" Guid="12345678-c733-4160-a198-bebd4a7f9cb2" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
-			<Parameter Name="VoltagesByCell" Description="A list of int voltage electric elements voltages, by cell. Semicolon separated." Guid="12345678-ca00-97b3-0ae7-e3ccf1117af1" Value="" Type="string"/>
+			<Parameter Name="ASMVoltagesByCell" Description="A list of int voltage electric elements voltages, by cell. Semicolon separated." Guid="12345678-ca00-97b3-0ae7-e3ccf1117af1" Value="" Type="string"/>
 			<Parameter Name="Class" Guid="12345678-f38d-4c80-bb75-280852883cac" Value="Game.SubsystemASMElectricity" Type="string"/>
 		</MemberSubsystemTemplate>
 	</ProjectTemplate>
