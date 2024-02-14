@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Game {
-    public class ASMBatteryData : IEditableItemData {
+    public class ASMatrixData : IEditableItemData {
 
         public Matrix Data = Matrix.Identity;
 
-        public IEditableItemData Copy() => new ASMBatteryData { Data = this.Data };
+        public IEditableItemData Copy() => new ASMatrixData { Data = this.Data };
 
         public void LoadString(string data) => Data = data.ToMatrix();
 

@@ -1,7 +1,7 @@
 using Engine;
 
 namespace Game {
-    public class SubsystemASMBatteryBlockBehavior : SubsystemEditableItemBehavior<ASMBatteryData> {
+    public class SubsystemASMBatteryBlockBehavior : SubsystemEditableItemBehavior<ASMatrixData> {
 
         public SubsystemASMBatteryBlockBehavior() : base(ASMBatteryBlock.Index) { }
 
@@ -13,12 +13,12 @@ namespace Game {
             int value = inventory.GetSlotValue(slotIndex);
             int count = inventory.GetSlotCount(slotIndex);
             int id = Terrain.ExtractData(value);
-            ASMBatteryData asmBatteryData = GetItemData(id);
-            asmBatteryData = asmBatteryData != null ? (ASMBatteryData)asmBatteryData.Copy() : new ASMBatteryData();
-            DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditASMatrixDialog(asmBatteryData.Data,
+            ASMatrixData asMatrixData = GetItemData(id);
+            asMatrixData = asMatrixData != null ? (ASMatrixData)asMatrixData.Copy() : new ASMatrixData();
+            DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditASMatrixDialog(asMatrixData.Data,
                  m => {
-                    asmBatteryData.Data = m;
-                    int data = StoreItemDataAtUniqueId(asmBatteryData);
+                    asMatrixData.Data = m;
+                    int data = StoreItemDataAtUniqueId(asMatrixData);
                     int newBlockValue = Terrain.ReplaceData(value, data);
                     inventory.RemoveSlotItems(slotIndex, count);
                     inventory.AddSlotItems(slotIndex, newBlockValue, count);
@@ -28,11 +28,11 @@ namespace Game {
 
         public override bool OnEditBlock(int x, int y, int z, int value, ComponentPlayer componentPlayer)
         {
-            ASMBatteryData asmBatteryData = GetBlockData(new Point3(x, y, z)) ?? new ASMBatteryData();
-            DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditASMatrixDialog(asmBatteryData.Data,
+            ASMatrixData asMatrixData = GetBlockData(new Point3(x, y, z)) ?? new ASMatrixData();
+            DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditASMatrixDialog(asMatrixData.Data,
                 m => {
-                    asmBatteryData.Data = m;
-                    SetBlockData(new Point3(x, y, z), asmBatteryData);
+                    asMatrixData.Data = m;
+                    SetBlockData(new Point3(x, y, z), asMatrixData);
                     SubsystemASMElectricity subsystemElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemASMElectricity>(throwOnError: true);
                     ASMElectricElement electricElement = subsystemElectricity.GetElectricElement(x, y, z, 4);
                     if (electricElement != null)

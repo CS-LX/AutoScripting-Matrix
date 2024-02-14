@@ -23,7 +23,7 @@ namespace Game
 			{
 				if (connection.ConnectorType != ASMElectricConnectorType.Output && connection.NeighborConnectorType != 0)
 				{
-					m_voltage *= connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+					m_voltage += connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
 				}
 			}
 			return m_voltage != voltage;

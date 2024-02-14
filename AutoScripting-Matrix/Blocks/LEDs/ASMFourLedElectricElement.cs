@@ -62,13 +62,15 @@ namespace Game
 			{
 				if (connection.ConnectorType != ASMElectricConnectorType.Output && connection.NeighborConnectorType != 0)
 				{
-					m_voltage = m_voltage * connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+					m_voltage += connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
 				}
 			}
 			if (m_voltage != voltage) {
 				for (int i = 0; i < 16; i++) {
 					float element = m_voltage.GetElement(i);
-					m_glowPoints[i].Color = new Color(255, 255, 255, (int)(255 * MathUtils.Clamp(element, 0, 1)));
+					m_glowPoints[i].FarSize = 0.13f * MathUtils.Clamp(element, 0, 1);
+					m_glowPoints[i].Size = 0.13f * MathUtils.Clamp(element, 0, 1);
+					m_glowPoints[i].Color = element > 0 ? Color.White : Color.Transparent;
 				}
 			}
 			return false;

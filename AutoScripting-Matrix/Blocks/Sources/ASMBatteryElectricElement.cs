@@ -15,7 +15,7 @@ namespace Game {
 
         public override bool Simulate() {
             Matrix voltage = m_voltage;
-            ASMBatteryData data = asmBatteryBlockBehavior.GetBlockData(CellFaces[0].Point);
+            ASMatrixData data = asmBatteryBlockBehavior.GetBlockData(CellFaces[0].Point);
             m_voltage = data == null ? Matrix.Identity : data.Data;
             return m_voltage != voltage;
         }
