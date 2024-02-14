@@ -10,7 +10,8 @@ namespace Game
 		{
 			ASMWireBlock.Index,
 			ASMBatteryBlock.Index,
-			ASMFourLedBlock.Index
+			ASMFourLedBlock.Index,
+			ASMSwitchBlock.Index
 		};
 
 		public override void OnBlockGenerated(int value, int x, int y, int z, bool isLoaded)
