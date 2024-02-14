@@ -11,6 +11,6 @@ namespace Game {
 
         public void LoadString(string data) => Data = data.ToMatrix();
 
-        public string SaveString() => Data.ToString();
+        public string SaveString() => Data.ToHexString();
     }
 }

@@ -1,3 +1,5 @@
+using System.Globalization;
+using System.Text;
 using Engine;
 
 namespace Game {
@@ -26,26 +28,26 @@ namespace Game {
             };
         }
 
-        public static Matrix ToMatrix(this string serializedMatrix) {
+        public static Matrix ToMatrix(this string hexString) {
             try {
-                var values = serializedMatrix.Trim().Split(',');
+                var values = hexString.Trim().Split(',');
                 Matrix matrix = new Matrix();
-                matrix.M11 = float.Parse(values[0]);
-                matrix.M12 = float.Parse(values[1]);
-                matrix.M13 = float.Parse(values[2]);
-                matrix.M14 = float.Parse(values[3]);
-                matrix.M21 = float.Parse(values[4]);
-                matrix.M22 = float.Parse(values[5]);
-                matrix.M23 = float.Parse(values[6]);
-                matrix.M24 = float.Parse(values[7]);
-                matrix.M31 = float.Parse(values[8]);
-                matrix.M32 = float.Parse(values[9]);
-                matrix.M33 = float.Parse(values[10]);
-                matrix.M34 = float.Parse(values[11]);
-                matrix.M41 = float.Parse(values[12]);
-                matrix.M42 = float.Parse(values[13]);
-                matrix.M43 = float.Parse(values[14]);
-                matrix.M44 = float.Parse(values[15]);
+                matrix.M11 = values[0].HexStringToFloat();
+                matrix.M12 = values[1].HexStringToFloat();
+                matrix.M13 = values[2].HexStringToFloat();
+                matrix.M14 = values[3].HexStringToFloat();
+                matrix.M21 = values[4].HexStringToFloat();
+                matrix.M22 = values[5].HexStringToFloat();
+                matrix.M23 = values[6].HexStringToFloat();
+                matrix.M24 = values[7].HexStringToFloat();
+                matrix.M31 = values[8].HexStringToFloat();
+                matrix.M32 = values[9].HexStringToFloat();
+                matrix.M33 = values[10].HexStringToFloat();
+                matrix.M34 = values[11].HexStringToFloat();
+                matrix.M41 = values[12].HexStringToFloat();
+                matrix.M42 = values[13].HexStringToFloat();
+                matrix.M43 = values[14].HexStringToFloat();
+                matrix.M44 = values[15].HexStringToFloat();
                 return matrix;
             }
             catch (Exception e) {
@@ -112,6 +114,28 @@ namespace Game {
                 default:
                     throw new ArgumentOutOfRangeException(nameof(index), index, null);
             }
+        }
+
+        public static string ToHexString(this Matrix m) {
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < 16; i++) {
+                string hex = m.GetElement(i).ToHexString();
+                builder.Append(hex + ",");
+            }
+            builder.Remove(builder.Length - 1, 1);//删除末尾分号
+            return builder.ToString();
+        }
+
+        public static string ToHexString(this float f) {
+            return BitConverter.ToString(BitConverter.GetBytes(f)).Replace("-", "");
+        }
+
+        public static float HexStringToFloat(this string hex) {
+            byte[] array = new byte[4];
+            for (int i = 0; i < 4; i++) {
+                array[i] = byte.Parse(hex.Substring(i * 2, 2), NumberStyles.HexNumber);
+            }
+            return BitConverter.ToSingle(array, 0);
         }
     }
 }

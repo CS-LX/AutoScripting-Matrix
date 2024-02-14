@@ -505,7 +505,7 @@ namespace Game
 				stringBuilder.Append('|');
 				stringBuilder.Append(persistentElementsVoltage.Key.Z.ToString(CultureInfo.InvariantCulture));
 				stringBuilder.Append('|');
-				stringBuilder.Append(persistentElementsVoltage.Value.ToString());
+				stringBuilder.Append(persistentElementsVoltage.Value.ToHexString());
 				stringBuilder.Append(';');
 				num++;
 			}
