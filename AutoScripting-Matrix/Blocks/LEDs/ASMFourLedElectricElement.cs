@@ -66,9 +66,9 @@ namespace Game
 				}
 			}
 			if (m_voltage != voltage) {
-				for (int i = 0; i < 16; i++)
-				{
-					m_glowPoints[i].Color = m_voltage.GetElement(i) > 0 ? m_color : Color.Transparent;
+				for (int i = 0; i < 16; i++) {
+					float element = m_voltage.GetElement(i);
+					m_glowPoints[i].Color = new Color(255, 255, 255, (int)(255 * MathUtils.Clamp(element, 0, 1)));
 				}
 			}
 			return false;
