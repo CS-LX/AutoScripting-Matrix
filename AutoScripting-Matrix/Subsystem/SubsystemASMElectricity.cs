@@ -509,7 +509,6 @@ namespace Game
 				stringBuilder.Append(';');
 				num++;
 			}
-			//stringBuilder.AppendLine(Matrix.Identity.ToString());
 			valuesDictionary.SetValue("ASMVoltagesByCell", stringBuilder.ToString());
 		}
 

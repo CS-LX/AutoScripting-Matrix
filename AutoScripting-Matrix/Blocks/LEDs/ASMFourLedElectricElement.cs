@@ -57,7 +57,7 @@ namespace Game
 		public override bool Simulate()
 		{
 			Matrix voltage = m_voltage;
-			m_voltage = Matrix.Identity;
+			m_voltage = Matrix.Zero;
 			foreach (ASMElectricConnection connection in Connections)
 			{
 				if (connection.ConnectorType != ASMElectricConnectorType.Output && connection.NeighborConnectorType != 0)

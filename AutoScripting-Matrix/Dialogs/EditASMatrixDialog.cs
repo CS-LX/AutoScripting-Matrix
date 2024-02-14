@@ -54,13 +54,13 @@ namespace Game {
 
 		public bool InputToMatrix(out Matrix m) {
 			bool success = true;
-			Matrix result = Matrix.Identity;
+			Matrix result = Matrix.Zero;
 			for (int i = 0; i < 16; i++) {
 				if (float.TryParse(inputValues[i].Text, out float elementValue)) {
 					ASMStaticMethods.SetElement(ref result, i, elementValue);
 				}
 				else {
-					m = Matrix.Identity;
+					m = Matrix.Zero;
 					return false;
 				}
 			}

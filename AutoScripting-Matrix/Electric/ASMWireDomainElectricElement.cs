@@ -4,7 +4,7 @@ namespace Game
 {
     public class ASMWireDomainElectricElement : ASMElectricElement
     {
-		public Matrix m_voltage = Matrix.Identity;
+		public Matrix m_voltage = Matrix.Zero;
 
 		public ASMWireDomainElectricElement(SubsystemASMElectricity subsystemElectricity, IEnumerable<CellFace> cellFaces)
 			: base(subsystemElectricity, cellFaces)
@@ -18,7 +18,7 @@ namespace Game
 
 		public override bool Simulate() {
 			Matrix voltage = m_voltage;
-			m_voltage = Matrix.Identity;
+			m_voltage = Matrix.Zero;
 			foreach (ASMElectricConnection connection in Connections)
 			{
 				if (connection.ConnectorType != ASMElectricConnectorType.Output && connection.NeighborConnectorType != 0)

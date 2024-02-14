@@ -39,7 +39,7 @@ namespace Game
 
         public virtual Matrix GetOutputVoltage(int face)
         {
-            return Matrix.Identity;
+            return Matrix.Zero;
         }
 
         public virtual bool Simulate()

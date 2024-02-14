@@ -50,7 +50,7 @@ namespace Game {
             }
             catch (Exception e) {
                 Log.Warning($"矩阵反序列化存在潜在问题:{e}");
-                return Matrix.Identity;
+                return Matrix.Zero;
             }
         }
 
