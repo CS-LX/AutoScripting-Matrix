@@ -24,6 +24,9 @@
 	  <None Update="Assets\Models\ASMLed.dae">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Assets\Dialogs\EditASMatrixDialog.xml">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 	<ItemGroup>
 	  <Reference Include="Engine">
@@ -38,8 +41,5 @@
 	    <HintPath>references\Survivalcraft.dll</HintPath>
 	    <Private>False</Private>
 	  </Reference>
-	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Debug\" />
 	</ItemGroup>
 </Project>

@@ -24,7 +24,9 @@ namespace Game {
                 cellFace.Face = 4;
                 if (BlocksManager.Blocks[Terrain.ExtractContents(id)] is IASMElectricElementBlock) {
                     try {
-                        displayText = $"P: ({result.CellFace})\r\n" + $"E: {asmElectricity.m_electricElementsByCellFace[cellFace]}\r\n";
+                        displayText = $"P: ({result.CellFace})\r\n"
+                            + $"D: {Convert.ToString(Terrain.ExtractData(id), 2)} ({Terrain.ExtractData(id)})\r\n"
+                            + $"E: {asmElectricity.m_electricElementsByCellFace[cellFace]}\r\n";
                         displayText += "V: \r\n";
                         for (int i = 0; i < 6; i++) {
                             displayText += $"    {asmElectricity.m_electricElementsByCellFace[cellFace].GetOutputVoltage(i)}\r\n";

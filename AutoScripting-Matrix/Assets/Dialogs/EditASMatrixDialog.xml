@@ -1,0 +1,13 @@
+<CanvasWidget xmlns="runtime-namespace:Game" Size="500, 314" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+	<RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2" />
+	<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="10, 10">
+		<LabelWidget Text="编辑矩阵"  Color="255, 255, 255" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="0, 5"/>
+		<GridPanelWidget Name="InputMatrix" RowsCount="4" ColumnsCount="4" HorizontalAlignment="Center" VerticalAlignment="Near"/>
+		<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Far" Margin="0, 5">
+			<BevelledButtonWidget Name="CancelButton" Text="取消" Style="{Styles/ButtonStyle_160x60}" Margin="40, 0"/>
+			<BevelledButtonWidget Name="OKButton" Text="确定" Style="{Styles/ButtonStyle_160x60}" Margin="40, 0"/>
+		</StackPanelWidget>
+	</StackPanelWidget>
+
+</CanvasWidget>
