@@ -33,6 +33,9 @@
 	  <None Update="Assets\Models\ASMSwitch.dae">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Assets\Models\ASMButton.dae">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 	<ItemGroup>
 	  <Reference Include="Engine">
