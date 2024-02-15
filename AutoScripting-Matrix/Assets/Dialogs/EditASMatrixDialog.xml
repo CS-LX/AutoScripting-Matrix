@@ -5,8 +5,8 @@
 		<LabelWidget Text="编辑矩阵"  Color="255, 255, 255" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="0, 5"/>
 		<GridPanelWidget Name="InputMatrix" RowsCount="4" ColumnsCount="4" HorizontalAlignment="Center" VerticalAlignment="Near"/>
 		<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Far" Margin="0, 5">
-			<BevelledButtonWidget Name="CancelButton" Text="取消" Style="{Styles/ButtonStyle_160x60}" Margin="40, 0"/>
 			<BevelledButtonWidget Name="OKButton" Text="确定" Style="{Styles/ButtonStyle_160x60}" Margin="40, 0"/>
+			<BevelledButtonWidget Name="CancelButton" Text="取消" Style="{Styles/ButtonStyle_160x60}" Margin="40, 0"/>
 		</StackPanelWidget>
 	</StackPanelWidget>
 
