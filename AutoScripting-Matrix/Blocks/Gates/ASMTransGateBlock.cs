@@ -4,20 +4,18 @@ using System;
 
 namespace Game
 {
-    public class ASMCalcGateBlock : ASMRotateableMountedElectricElementBlock
+    public class ASMTransGateBlock : ASMRotateableMountedElectricElementBlock
     {
-        public const int Index = 605;
+        public const int Index = 606;
 
         public readonly CalcGateInfo[] Infos = [
-            new CalcGateInfo("矩阵加法器", "", "ASMAdder"),
-            new CalcGateInfo("矩阵减法器", "", "ASMSubtracter"),
-            new CalcGateInfo("矩阵乘法器", "", "ASMMultiplier"),
-            new CalcGateInfo("矩阵除法器", "", "ASMDivider")
+            new CalcGateInfo("矩阵求逆", "", "ASMInverter"),
+            new CalcGateInfo("矩阵转置", "", "ASMTransposer"),
         ];
 
         public Texture2D[] textures;
 
-        public ASMCalcGateBlock()
+        public ASMTransGateBlock()
             : base("Models/ASMCalcGate", "CalcGate", 0.5f)
         {
         }
@@ -53,14 +51,14 @@ namespace Game
             }
         }
 
-        public override ASMElectricElement CreateElectricElement(SubsystemASMElectricity subsystemElectricity, int value, int x, int y, int z) => new ASMCalcGateElectricElement(subsystemElectricity, new CellFace(x, y, z, GetFace(value)), value);
+        public override ASMElectricElement CreateElectricElement(SubsystemASMElectricity subsystemElectricity, int value, int x, int y, int z) => new ASMTransGateElectricElement(subsystemElectricity, new CellFace(x, y, z, GetFace(value)), value);
         public override ASMElectricConnectorType? GetConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z)
         {
             int data = Terrain.ExtractData(value);
             if (GetFace(value) == face)
             {
                 ElectricConnectorDirection? connectorDirection = SubsystemElectricity.GetConnectorDirection(GetFace(value), GetRotation(data), connectorFace);
-                if (connectorDirection == ElectricConnectorDirection.Right || connectorDirection == ElectricConnectorDirection.Left)
+                if (connectorDirection == ElectricConnectorDirection.Bottom)
                 {
                     return ASMElectricConnectorType.Input;
                 }

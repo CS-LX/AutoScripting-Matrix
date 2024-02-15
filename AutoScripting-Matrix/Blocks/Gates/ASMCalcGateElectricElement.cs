@@ -42,6 +42,8 @@ namespace Game {
                     break;
                 case 2: m_voltage = leftInput * rightInput;//乘法器
                     break;
+                case 3: m_voltage = leftInput / rightInput;//除法器
+                    break;
             }
 
             return m_voltage != voltage;
