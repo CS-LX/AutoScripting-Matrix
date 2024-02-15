@@ -12,7 +12,8 @@ namespace Game
 			ASMBatteryBlock.Index,
 			ASMFourLedBlock.Index,
 			ASMSwitchBlock.Index,
-			ASMButtonBlock.Index
+			ASMButtonBlock.Index,
+			ASMCalcGateBlock.Index
 		};
 
 		public override void OnBlockGenerated(int value, int x, int y, int z, bool isLoaded)
