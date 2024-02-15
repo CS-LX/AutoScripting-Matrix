@@ -137,5 +137,17 @@ namespace Game {
             }
             return BitConverter.ToSingle(array, 0);
         }
+
+        public static float ToFloat(this Matrix m) => m.M11;
+
+        public static float ToAverageFloat(this Matrix m) {
+            float result = 0;
+            for (int i = 0; i < 16; i++) {
+                result += m.GetElement(i);
+            }
+            return result / 16;
+        }
+
+        public static Vector3 ToVector3(this Matrix m) => m.Right;
     }
 }
