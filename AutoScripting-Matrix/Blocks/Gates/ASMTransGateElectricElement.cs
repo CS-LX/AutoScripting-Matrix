@@ -36,6 +36,10 @@ namespace Game {
                     break;
                 case 1: m_voltage = Matrix.Transpose(input);//转置
                     break;
+                case 2: m_voltage = input * input;
+                    break;
+                case 3: m_voltage = input * input * input;
+                    break;
             }
 
             return m_voltage != voltage;

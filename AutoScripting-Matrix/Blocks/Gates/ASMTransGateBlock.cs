@@ -11,6 +11,8 @@ namespace Game
         public readonly CalcGateInfo[] Infos = [
             new CalcGateInfo("矩阵求逆", "", "ASMInverter"),
             new CalcGateInfo("矩阵转置", "", "ASMTransposer"),
+            new CalcGateInfo("矩阵二次方", "", "ASMSquarer"),
+            new CalcGateInfo("矩阵三次方", "", "ASMCuber"),
         ];
 
         public Texture2D[] textures;
