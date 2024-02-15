@@ -33,7 +33,7 @@ namespace Game
 					Vector3 unitX = (mountingFace < 4) ? Vector3.UnitY : Vector3.UnitX;
 					var unitY = Vector3.Cross(vector, unitX);
 					m_glowPoints[index] = m_subsystemGlow.AddGlowPoint();
-					m_glowPoints[index].Position = v - (0.4375f * CellFace.FaceToVector3(mountingFace)) - unitX * 0.375f - unitY * 0.375f + unitX * 0.25f * i + unitY * 0.25f * j;
+					m_glowPoints[index].Position = v - (0.4375f * CellFace.FaceToVector3(mountingFace)) + unitX * 0.375f + unitY * 0.375f - unitX * 0.25f * i - unitY * 0.25f * j;
 					m_glowPoints[index].Forward = vector;
 					m_glowPoints[index].Up = unitX;
 					m_glowPoints[index].Right = unitY;
