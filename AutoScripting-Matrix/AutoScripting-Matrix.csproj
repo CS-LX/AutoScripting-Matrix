@@ -75,6 +75,15 @@
 	  <None Update="Assets\Textures\CalcGates\ASMMatrix2Vector3Converter.png">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Assets\Textures\CalcGates\ASMLogarithmer.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Assets\Textures\CalcGates\ASMPower.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Assets\Textures\CalcGates\ASMRemainder.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 	<ItemGroup>
 	  <Reference Include="Engine">

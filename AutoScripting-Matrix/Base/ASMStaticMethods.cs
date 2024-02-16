@@ -173,7 +173,7 @@ namespace Game {
         }
 
         /// <summary>
-        /// 提取矩阵第一个元素作为浮点数
+        /// 提取矩阵第一个元素作为浮点数: m.M11
         /// </summary>
         /// <param name="m"></param>
         /// <returns></returns>
@@ -202,7 +202,7 @@ namespace Game {
         public static Vector3 ToVector3(this Matrix m) => m.Right;
 
         /// <summary>
-        /// 输出一个内部元素全为输入浮点数的矩阵
+        /// 输出一个内部元素全为输入浮点数的矩阵: m[0...15] = f
         /// </summary>
         /// <param name="f"></param>
         /// <returns></returns>
@@ -210,6 +210,61 @@ namespace Game {
             Matrix m = Matrix.Zero;
             for (int i = 0; i < 16; i++) {
                 SetElement(ref m, i, f);
+            }
+            return m;
+        }
+
+        /// <summary>
+        /// 返回一个矩阵，内部每个元素都为传入矩阵x对应元素的传入矩阵y的对应元素次方：m[i] = pow(x[i], y[i])
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public static Matrix Power(Matrix x, Matrix y) {
+            Matrix m = Matrix.Zero;
+            for (int i = 0; i < 16; i++) {
+                SetElement(ref m, i, MathUtils.Pow(x.GetElement(i), y.GetElement(i)));
+            }
+            return m;
+        }
+
+        /// <summary>
+        /// 返回一个矩阵，内部每个元素都为传入矩阵x对应元素除传入矩阵y的对应元素：m[i] = x[i] % y[i]
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public static Matrix Remain(Matrix x, Matrix y) {
+            Matrix m = Matrix.Zero;
+            for (int i = 0; i < 16; i++) {
+                SetElement(ref m, i, MathUtils.Remainder(x.GetElement(i), y.GetElement(i)));
+            }
+            return m;
+        }
+
+        /// <summary>
+        /// 返回一个矩阵，内部每个元素都为以传入矩阵y对应元素为底，传入矩阵x的对应元素的对数 m[i] = log(x[i], y[i])
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public static Matrix Logarithm(Matrix x, Matrix y) {
+            Matrix m = Matrix.Zero;
+            for (int i = 0; i < 16; i++) {
+                SetElement(ref m, i, MathUtils.Log(x.GetElement(i)) / MathUtils.Log(y.GetElement(i)));
+            }
+            return m;
+        }
+
+        /// <summary>
+        /// 返回一个矩阵，内部每个元素都为以e为底，传入矩阵x的对应元素的对数 m[i] = log(x[i], e)
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
+        public static Matrix Logarithm(Matrix x) {
+            Matrix m = Matrix.Zero;
+            for (int i = 0; i < 16; i++) {
+                SetElement(ref m, i, MathUtils.Log(x.GetElement(i)));
             }
             return m;
         }

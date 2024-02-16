@@ -12,7 +12,10 @@ namespace Game
             new CalcGateInfo("矩阵加法器", "", "ASMAdder"),
             new CalcGateInfo("矩阵减法器", "", "ASMSubtracter"),
             new CalcGateInfo("矩阵乘法器", "", "ASMMultiplier"),
-            new CalcGateInfo("矩阵除法器", "", "ASMDivider")
+            new CalcGateInfo("矩阵除法器", "", "ASMDivider"),
+            new CalcGateInfo("矩阵乘方器", "", "ASMPower"),
+            new CalcGateInfo("矩阵除余器", "", "ASMRemainder"),
+            new CalcGateInfo("矩阵对数器", "", "ASMLogarithmer"),
         ];
 
         public Texture2D[] textures;

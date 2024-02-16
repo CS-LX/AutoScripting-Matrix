@@ -44,6 +44,12 @@ namespace Game {
                     break;
                 case 3: m_voltage = leftInput / rightInput;//除法器
                     break;
+                case 4: m_voltage = ASMStaticMethods.Power(leftInput, rightInput);
+                    break;
+                case 5: m_voltage = ASMStaticMethods.Remain(leftInput, rightInput);
+                    break;
+                case 6: m_voltage = ASMStaticMethods.Logarithm(leftInput, rightInput);
+                    break;
             }
 
             return m_voltage != voltage;
