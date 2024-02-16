@@ -4,18 +4,16 @@ namespace Game
 {
 	public class ASMFourLedElectricElement : ASMMountedElectricElement
 	{
-		public SubsystemGlow m_subsystemGlow;
+		public SubsystemASMGlow m_subsystemGlow;
 
 		public Matrix m_voltage = Matrix.Zero;
 
-		public Color m_color;
-
-		public GlowPoint[] m_glowPoints = new GlowPoint[16];
+		public ASMGlowPoint[] m_glowPoints = new ASMGlowPoint[16];
 
 		public ASMFourLedElectricElement(SubsystemASMElectricity subsystemElectricity, CellFace cellFace)
 			: base(subsystemElectricity, cellFace)
 		{
-			m_subsystemGlow = subsystemElectricity.Project.FindSubsystem<SubsystemGlow>(throwOnError: true);
+			m_subsystemGlow = subsystemElectricity.Project.FindSubsystem<SubsystemASMGlow>(throwOnError: true);
 		}
 
 		public override void OnAdded()
@@ -23,7 +21,6 @@ namespace Game
 			CellFace cellFace = CellFaces[0];
 			int data = Terrain.ExtractData(SubsystemElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z));
 			int mountingFace = ASMFourLedBlock.GetMountingFace(data);
-			m_color = LedBlock.LedColors[ASMFourLedBlock.GetColor(data)];
 			for (int i = 0; i < 4; i++)
 			{
 				for (int j = 0; j < 4; j++) {
