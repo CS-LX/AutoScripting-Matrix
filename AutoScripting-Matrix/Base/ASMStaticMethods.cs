@@ -4,6 +4,13 @@ using Engine;
 
 namespace Game {
     public static class ASMStaticMethods {
+        /// <summary>
+        /// 获取矩阵指定索引对应值
+        /// </summary>
+        /// <param name="m"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static float GetElement(this Matrix m, int index) {
             if (index is < 0 or > 15)
                 throw new ArgumentOutOfRangeException(nameof(index));
@@ -28,6 +35,11 @@ namespace Game {
             };
         }
 
+        /// <summary>
+        /// 将序列化得到的十六进制字符串反序列化为矩阵
+        /// </summary>
+        /// <param name="hexString"></param>
+        /// <returns></returns>
         public static Matrix ToMatrix(this string hexString) {
             try {
                 var values = hexString.Trim().Split(',');
@@ -56,6 +68,13 @@ namespace Game {
             }
         }
 
+        /// <summary>
+        /// 设置指定矩阵指定索引的值
+        /// </summary>
+        /// <param name="m"></param>
+        /// <param name="index"></param>
+        /// <param name="value"></param>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static void SetElement(ref Matrix m, int index, float value)
         {
             if (index is < 0 or > 15)
@@ -116,6 +135,11 @@ namespace Game {
             }
         }
 
+        /// <summary>
+        /// 将矩阵序列化为十六进制字符串
+        /// </summary>
+        /// <param name="m"></param>
+        /// <returns></returns>
         public static string ToHexString(this Matrix m) {
             StringBuilder builder = new StringBuilder();
             for (int i = 0; i < 16; i++) {
@@ -126,10 +150,20 @@ namespace Game {
             return builder.ToString();
         }
 
+        /// <summary>
+        /// 将浮点数转为十六进制字符串
+        /// </summary>
+        /// <param name="f"></param>
+        /// <returns></returns>
         public static string ToHexString(this float f) {
             return BitConverter.ToString(BitConverter.GetBytes(f)).Replace("-", "");
         }
 
+        /// <summary>
+        /// 将十六进制字符串转为浮点数
+        /// </summary>
+        /// <param name="hex"></param>
+        /// <returns></returns>
         public static float HexStringToFloat(this string hex) {
             byte[] array = new byte[4];
             for (int i = 0; i < 4; i++) {
@@ -138,16 +172,46 @@ namespace Game {
             return BitConverter.ToSingle(array, 0);
         }
 
+        /// <summary>
+        /// 提取矩阵第一个元素作为浮点数
+        /// </summary>
+        /// <param name="m"></param>
+        /// <returns></returns>
         public static float ToFloat(this Matrix m) => m.M11;
 
+        /// <summary>
+        /// 将矩阵内每一个非0元素相加再除以非0元素的个数，将所得浮点数结果输出
+        /// </summary>
+        /// <param name="m"></param>
+        /// <returns></returns>
         public static float ToAverageFloat(this Matrix m) {
             float result = 0;
+            int num = 0;
             for (int i = 0; i < 16; i++) {
                 result += m.GetElement(i);
+                num += m.GetElement(i) != 0 ? 1 : 0;
             }
-            return result / 16;
+            return result / num;
         }
 
+        /// <summary>
+        /// 输出一个三维向量，内容是输入矩阵第一行第一列，第一行第二列，第一行第三列的值
+        /// </summary>
+        /// <param name="m"></param>
+        /// <returns></returns>
         public static Vector3 ToVector3(this Matrix m) => m.Right;
+
+        /// <summary>
+        /// 输出一个内部元素全为输入浮点数的矩阵
+        /// </summary>
+        /// <param name="f"></param>
+        /// <returns></returns>
+        public static Matrix ToCMatrix(this float f) {
+            Matrix m = Matrix.Zero;
+            for (int i = 0; i < 16; i++) {
+                SetElement(ref m, i, f);
+            }
+            return m;
+        }
     }
 }

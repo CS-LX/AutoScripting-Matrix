@@ -40,6 +40,12 @@ namespace Game {
                     break;
                 case 3: m_voltage = input * input * input;
                     break;
+                case 4: m_voltage = new Matrix { M11 = input.ToAverageFloat() };
+                    break;
+                case 5: m_voltage = input.ToFloat().ToCMatrix();
+                    break;
+                case 6: m_voltage = new Matrix { Right = input.ToVector3() };
+                    break;
             }
 
             return m_voltage != voltage;

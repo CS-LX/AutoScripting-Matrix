@@ -9,16 +9,19 @@ namespace Game
         public const int Index = 606;
 
         public readonly CalcGateInfo[] Infos = [
-            new CalcGateInfo("矩阵求逆", "", "ASMInverter"),
-            new CalcGateInfo("矩阵转置", "", "ASMTransposer"),
-            new CalcGateInfo("矩阵二次方", "", "ASMSquarer"),
-            new CalcGateInfo("矩阵三次方", "", "ASMCuber"),
+            new CalcGateInfo("矩阵求逆", "求输入矩阵的逆矩阵并输出", "ASMInverter"),
+            new CalcGateInfo("矩阵转置", "转置输入矩阵并输出", "ASMTransposer"),
+            new CalcGateInfo("矩阵二次方", "将输入矩阵平方再输出", "ASMSquarer"),
+            new CalcGateInfo("矩阵三次方", "将输入矩阵立方再输出", "ASMCuber"),
+            new CalcGateInfo("矩阵转平均浮点数", "将矩阵内每一个非0元素相加再除以非0元素的个数，将所得浮点数结果输出", "ASMAverager"),
+            new CalcGateInfo("浮点数转常数矩阵", "输出一个内部元素全为输入浮点数的矩阵", "ASMFloat2CMatrixConverter"),
+            new CalcGateInfo("矩阵转三维横向量", "输出一个三维向量，内容是输入矩阵第一行第一列，第一行第二列，第一行第三列的值", "ASMMatrix2Vector3Converter"),
         ];
 
         public Texture2D[] textures;
 
         public ASMTransGateBlock()
-            : base("Models/ASMCalcGate", "CalcGate", 0.5f)
+            : base("Models/ASMTransGate", "TransGate", 0.3f)
         {
         }
 
