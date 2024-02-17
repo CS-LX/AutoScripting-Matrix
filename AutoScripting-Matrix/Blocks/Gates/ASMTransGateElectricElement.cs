@@ -50,6 +50,10 @@ namespace Game {
                     break;
                 case 8: m_voltage = input.TranslationMatrix;
                     break;
+                case 9: m_voltage = ASMStaticMethods.Rad2Deg(input);
+                    break;
+                case 10: m_voltage = ASMStaticMethods.Deg2Rad(input);
+                    break;
             }
 
             return m_voltage != voltage;

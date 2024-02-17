@@ -268,5 +268,31 @@ namespace Game {
             }
             return m;
         }
+
+        /// <summary>
+        /// 返回一个矩阵，内部每个元素都将角度制转为弧度制 m[i] = deg2rad(x[i])
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
+        public static Matrix Deg2Rad(Matrix x) {
+            Matrix m = Matrix.Zero;
+            for (int i = 0; i < 16; i++) {
+                SetElement(ref m, i, MathUtils.DegToRad(x.GetElement(i)));
+            }
+            return m;
+        }
+
+        /// <summary>
+        /// 返回一个矩阵，内部每个元素都将弧度制转为角度制 m[i] = rad2deg(x[i])
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
+        public static Matrix Rad2Deg(Matrix x) {
+            Matrix m = Matrix.Zero;
+            for (int i = 0; i < 16; i++) {
+                SetElement(ref m, i, MathUtils.RadToDeg(x.GetElement(i)));
+            }
+            return m;
+        }
     }
 }
