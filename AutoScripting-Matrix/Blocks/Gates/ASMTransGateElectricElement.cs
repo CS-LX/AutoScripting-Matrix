@@ -46,6 +46,8 @@ namespace Game {
                     break;
                 case 6: m_voltage = new Matrix { Right = input.ToVector3() };
                     break;
+                case 7: m_voltage = input.OrientationMatrix;
+                    break;
             }
 
             return m_voltage != voltage;
