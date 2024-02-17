@@ -9,13 +9,13 @@ namespace Game
         public const int Index = 605;
 
         public readonly CalcGateInfo[] Infos = [
-            new CalcGateInfo("矩阵加法器", "", "ASMAdder"),
-            new CalcGateInfo("矩阵减法器", "", "ASMSubtracter"),
+            new CalcGateInfo("矩阵加法器(点对点)", "", "ASMAdder"),
+            new CalcGateInfo("矩阵减法器(点对点)", "", "ASMSubtracter"),
             new CalcGateInfo("矩阵乘法器", "", "ASMMultiplier"),
-            new CalcGateInfo("矩阵除法器", "", "ASMDivider"),
-            new CalcGateInfo("矩阵乘方器", "", "ASMPower"),
-            new CalcGateInfo("矩阵除余器", "", "ASMRemainder"),
-            new CalcGateInfo("矩阵对数器", "", "ASMLogarithmer"),
+            new CalcGateInfo("矩阵除法器(点对点)", "", "ASMDivider"),
+            new CalcGateInfo("矩阵乘方器(点对点)", "", "ASMPower"),
+            new CalcGateInfo("矩阵除余器(点对点)", "", "ASMRemainder"),
+            new CalcGateInfo("矩阵对数器(点对点)", "", "ASMLogarithmer"),
         ];
 
         public Texture2D[] textures;
