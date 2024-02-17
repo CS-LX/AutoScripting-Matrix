@@ -96,7 +96,16 @@
 	  <None Update="Assets\Textures\MatrixSources\ASMatrixSourcePlayerTransform.png">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Assets\Textures\CalcGates\ASMatrixOrienter.png">
+	  <None Update="Assets\Textures\MatrixSources\ASMatrixSourcePlayerCamera.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Assets\Textures\CalcGates\ASMExtractOrientation.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Assets\Textures\MatrixSources\ASMatrixSourcePlayerCameraProjection.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Assets\Textures\CalcGates\ASMExtractTranslation.png">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>

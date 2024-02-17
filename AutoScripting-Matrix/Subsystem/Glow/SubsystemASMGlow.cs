@@ -87,9 +87,12 @@ namespace Game {
                 environmentData.InWorldMatrix = Matrix.Identity;
                 environmentData.DrawBlockMode = DrawBlockMode.FirstPerson;//第一人称下绘制的方块，可具有厚度
                 if (glowBlock.environmentallySusceptible) {
-                    environmentData.Humidity = m_subsystemTerrain.Terrain.GetSeasonalHumidity(pos.X, pos.Z);
-                    environmentData.Temperature = m_subsystemTerrain.Terrain.GetSeasonalTemperature(pos.X, pos.Z) + SubsystemWeather.GetTemperatureAdjustmentAtHeight(pos.Y);
-                    environmentData.Light = m_subsystemTerrain.Terrain.GetCellLightFast(pos.X, pos.Y, pos.Z);
+                    try {
+                        environmentData.Humidity = m_subsystemTerrain.Terrain.GetSeasonalHumidity(pos.X, pos.Z);
+                        environmentData.Temperature = m_subsystemTerrain.Terrain.GetSeasonalTemperature(pos.X, pos.Z) + SubsystemWeather.GetTemperatureAdjustmentAtHeight(pos.Y);
+                        environmentData.Light = m_subsystemTerrain.Terrain.GetCellLightFast(pos.X, pos.Y, pos.Z);
+                    }
+                    catch { }
                 }
 
                 //处理ID

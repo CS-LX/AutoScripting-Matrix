@@ -11,6 +11,8 @@ namespace Game
         public readonly MatrixSourceInfo[] Infos = [
             new MatrixSourceInfo("矩阵源: 世界方块坐标", "", "ASMatrixSourceWorldPosition", [], [ElectricConnectorDirection.Top]),
             new MatrixSourceInfo("矩阵源: 玩家变换", "", "ASMatrixSourcePlayerTransform", [ElectricConnectorDirection.Bottom], [ElectricConnectorDirection.Top]),
+            new MatrixSourceInfo("矩阵源: 玩家摄像机视图", "输出最近玩家的摄像机视图矩阵，包含观测的位置，方向，垂直Y方向 \n(注意: 若要直接使用此矩阵作为绘制的变换，须对其求逆)", "ASMatrixSourcePlayerCamera", [ElectricConnectorDirection.Bottom], [ElectricConnectorDirection.Top]),
+            new MatrixSourceInfo("矩阵源: 玩家摄像机投影", "输出最近玩家的摄像机投影矩阵(左)、屏幕投影矩阵(右)", "ASMatrixSourcePlayerCameraProjection", [], [ElectricConnectorDirection.Left, ElectricConnectorDirection.Right]),
         ];
 
         public Texture2D[] textures;

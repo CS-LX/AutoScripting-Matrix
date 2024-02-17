@@ -48,6 +48,8 @@ namespace Game {
                     break;
                 case 7: m_voltage = input.OrientationMatrix;
                     break;
+                case 8: m_voltage = input.TranslationMatrix;
+                    break;
             }
 
             return m_voltage != voltage;
