@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace Game
 {
-	public class ASMTransportPlateBlock : ASMMountedElectricElementBlock
+	public class ASMTranslatePlateBlock : ASMMountedElectricElementBlock
 	{
-		public const int Index = 609;
+		public const int Index = 610;
 
 		public BlockMesh m_standaloneBlockMesh;
 
@@ -19,7 +19,7 @@ namespace Game
 
 		public override void Initialize() {
 			Model model = ContentManager.Get<Model>("Models/ASMTransportPlate");
-			texture = ContentManager.Get<Texture2D>("Textures/ASMTransportPlate");
+			texture = ContentManager.Get<Texture2D>("Textures/ASMTranslatePlate");
 			Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("TransportPlate").ParentBone);
 			for (int j = 0; j < 6; j++) {
 				int num2 = SetMountingFace(0, j);
@@ -58,7 +58,7 @@ namespace Game
 			);
 		}
 
-		public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => "实体转移板";
+		public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => "实体变换板";
 
 		public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult)
 		{
@@ -100,16 +100,14 @@ namespace Game
 			BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneBlockMesh, texture, color, 2f * size, ref matrix, environmentData);
 		}
 
-		public override ASMElectricElement CreateElectricElement(SubsystemASMElectricity subsystemElectricity, int value, int x, int y, int z) => new ASMTransportPlateElectricElement(subsystemElectricity, new CellFace(x, y, z, GetFace(value)));
+		public override ASMElectricElement CreateElectricElement(SubsystemASMElectricity subsystemElectricity, int value, int x, int y, int z) => new ASMTranslatePlateElectricElement(subsystemElectricity, new CellFace(x, y, z, GetFace(value)));
 
 		public override ASMElectricConnectorType? GetConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z)
 		{
 			int face2 = GetFace(value);
-			if (face == face2 && SubsystemASMElectricity.GetConnectorDirection(face2, 0, connectorFace).HasValue) {
-				ASMElectricConnectorDirection connection = SubsystemASMElectricity.GetConnectorDirection(face2, 0, connectorFace)!.Value;
-				if (connection == ASMElectricConnectorDirection.Left
-					|| connection == ASMElectricConnectorDirection.Right)
-					return ASMElectricConnectorType.Input;
+			if (face == face2 && SubsystemASMElectricity.GetConnectorDirection(face2, 0, connectorFace).HasValue)
+			{
+				return ASMElectricConnectorType.Input;
 			}
 			return null;
 		}
