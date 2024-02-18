@@ -41,7 +41,7 @@ namespace Game {
             else {
                 Transport(transformMatrix);
             }
-
+            m_collideBody = null;
             return false;
         }
 
@@ -56,7 +56,6 @@ namespace Game {
                 m_collideBody.Position = position;
                 m_collideBody.Rotation = rotation;
                 SubsystemElectricity.SubsystemAudio.PlaySound("Audio/Throw", 1f, 0f, m_collideBody.Position, 2.5f, autoDelay: true);
-                m_collideBody = null;
             }
         }
     }
