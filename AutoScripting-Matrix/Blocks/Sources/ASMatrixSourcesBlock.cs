@@ -13,6 +13,11 @@ namespace Game
             new MatrixSourceInfo("矩阵源: 玩家变换", "", "ASMatrixSourcePlayerTransform", [ElectricConnectorDirection.Bottom], [ElectricConnectorDirection.Top]),
             new MatrixSourceInfo("矩阵源: 玩家摄像机视图", "输出最近玩家的摄像机视图矩阵，包含观测的位置，方向，垂直Y方向 \n(注意: 若要直接使用此矩阵作为绘制的变换，须对其求逆)", "ASMatrixSourcePlayerCamera", [ElectricConnectorDirection.Bottom], [ElectricConnectorDirection.Top]),
             new MatrixSourceInfo("矩阵源: 玩家摄像机投影", "输出最近玩家的摄像机投影矩阵(左)、屏幕投影矩阵(右)", "ASMatrixSourcePlayerCameraProjection", [], [ElectricConnectorDirection.Left, ElectricConnectorDirection.Right]),
+            new MatrixSourceInfo("矩阵源: 从位移创建", "", "ASMatrixSourceFromTranslation", [ElectricConnectorDirection.Left, ElectricConnectorDirection.Bottom, ElectricConnectorDirection.Right], [ElectricConnectorDirection.Top]),
+            new MatrixSourceInfo("矩阵源: 从欧拉角(三轴旋转)创建", "", "ASMatrixSourceFromYPR", [ElectricConnectorDirection.Left, ElectricConnectorDirection.Bottom, ElectricConnectorDirection.Right], [ElectricConnectorDirection.Top]),
+            new MatrixSourceInfo("矩阵源: 从缩放创建", "", "ASMatrixSourceFromScale", [ElectricConnectorDirection.Bottom], [ElectricConnectorDirection.Top]),
+            new MatrixSourceInfo("矩阵源: 从三轴缩放创建", "", "ASMatrixSourceFromScaleXYZ", [ElectricConnectorDirection.Left, ElectricConnectorDirection.Bottom, ElectricConnectorDirection.Right], [ElectricConnectorDirection.Top]),
+            new MatrixSourceInfo("矩阵源: 从观察创建", "", "ASMatrixSourceFromLookAt", [ElectricConnectorDirection.Left, ElectricConnectorDirection.Bottom, ElectricConnectorDirection.Right], [ElectricConnectorDirection.Top]),
         ];
 
         public Texture2D[] textures;

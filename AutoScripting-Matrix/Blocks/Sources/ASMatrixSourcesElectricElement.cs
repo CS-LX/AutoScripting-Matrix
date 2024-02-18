@@ -113,6 +113,26 @@ namespace Game {
                     GetPlayerViewMatrix(out _, out m_voltage_left, out m_voltage_right, out _);
                     SubsystemElectricity.QueueElectricElementForSimulation(this, SubsystemElectricity.CircuitStep + 1);
                     break;
+                case 4://创建位移
+                    GetInputs(Rotation, out Matrix leftInput, out Matrix rightInput, out Matrix bottomInput);
+                    m_voltage_top = Matrix.CreateTranslation(leftInput.ToFloat(), bottomInput.ToFloat(), rightInput.ToFloat());
+                    break;
+                case 5://创建旋转
+                    GetInputs(Rotation, out Matrix leftInput2, out Matrix rightInput2, out Matrix bottomInput2);
+                    m_voltage_top = Matrix.CreateFromYawPitchRoll(leftInput2.ToFloat(), bottomInput2.ToFloat(), rightInput2.ToFloat());
+                    break;
+                case 6://创建缩放
+                    GetInputs(Rotation, out Matrix _, out Matrix _, out Matrix scale);
+                    m_voltage_top = Matrix.CreateScale(scale.ToFloat());
+                    break;
+                case 7://创建三轴缩放
+                    GetInputs(Rotation, out Matrix scaleX, out Matrix scaleZ, out Matrix scaleY);
+                    m_voltage_top = Matrix.CreateScale(scaleX.ToFloat(), scaleY.ToFloat(), scaleZ.ToFloat());
+                    break;
+                case 8://创建观察矩阵
+                    GetInputs(Rotation, out Matrix position, out Matrix up, out Matrix target);
+                    m_voltage_top = Matrix.CreateLookAt(position.ToVector3(), target.ToVector3(), up.ToVector3());
+                    break;
             }
             return m_voltage_top != voltage_top || m_voltage_left != voltage_left || m_voltage_right != voltage_right;
         }
@@ -139,6 +159,27 @@ namespace Game {
                     screenProjectionMatrix = viewPCamera.ScreenProjectionMatrix;
                     projectionMatrix = viewPCamera.ProjectionMatrix;
                     viewportMatrix = viewPCamera.ViewportMatrix;
+                }
+            }
+        }
+
+        private void GetInputs(int rotation, out Matrix leftInput, out Matrix rightInput, out Matrix bottomInput) {
+            leftInput = rightInput = bottomInput = Matrix.Zero;
+            foreach (ASMElectricConnection connection in Connections) {
+                if (connection.ConnectorType != ASMElectricConnectorType.Output
+                    && connection.NeighborConnectorType != 0) {
+                    ASMElectricConnectorDirection? connectorDirection = SubsystemASMElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
+                    if (connectorDirection.HasValue) {
+                        if (connectorDirection == ASMElectricConnectorDirection.Right) {
+                            rightInput = connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+                        }
+                        else if (connectorDirection == ASMElectricConnectorDirection.Left) {
+                            leftInput = connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+                        }
+                        else if (connectorDirection == ASMElectricConnectorDirection.Bottom) {
+                            bottomInput = connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+                        }
+                    }
                 }
             }
         }
