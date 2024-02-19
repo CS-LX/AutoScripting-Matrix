@@ -41,8 +41,8 @@ namespace Game
 		public override ASMElectricConnectorType? GetConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z)
 		{
 			int face2 = GetFace(value);
-			if (face == face2 && SubsystemASMElectricity.GetConnectorDirection(face2, 0, connectorFace).HasValue) {
-				ASMElectricConnectorDirection connection = SubsystemASMElectricity.GetConnectorDirection(face2, 0, connectorFace)!.Value;
+			if (face == face2 && SubsystemASMElectricity.GetConnectorDirection(face2, GetRotation(Terrain.ExtractData(value)), connectorFace).HasValue) {
+				ASMElectricConnectorDirection connection = SubsystemASMElectricity.GetConnectorDirection(face2, GetRotation(Terrain.ExtractData(value)), connectorFace)!.Value;
 				if (connection == ASMElectricConnectorDirection.Left
 					|| connection == ASMElectricConnectorDirection.Right)
 					return ASMElectricConnectorType.Input;
