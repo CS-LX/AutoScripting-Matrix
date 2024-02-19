@@ -19,6 +19,7 @@ namespace Game
 			ASMatrixSourcesBlock.Index,
 			ASMTransportPlateBlock.Index,
 			ASMTranslatePlateBlock.Index,
+			ASMRelayBlock.Index,
 		};
 
 		public override void OnBlockGenerated(int value, int x, int y, int z, bool isLoaded)
