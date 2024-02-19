@@ -1,7 +1,7 @@
 using Engine;
 
 namespace Game {
-    public class ASMTransportPlateElectricElement : ASMMountedElectricElement {
+    public class ASMTransportPlateElectricElement : ASMRotateableElectricElement {
 
         public ComponentBody m_collideBody;
         public bool m_clockAllowed;
@@ -16,7 +16,7 @@ namespace Game {
             foreach (ASMElectricConnection connection in Connections) {
                 if (connection.ConnectorType != ASMElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {
-                    ASMElectricConnectorDirection? connectorDirection = SubsystemASMElectricity.GetConnectorDirection(CellFaces[0].Face, 0, connection.ConnectorFace);
+                    ASMElectricConnectorDirection? connectorDirection = SubsystemASMElectricity.GetConnectorDirection(CellFaces[0].Face, Rotation, connection.ConnectorFace);
                     if (connectorDirection.HasValue) {
                         if (connectorDirection == ASMElectricConnectorDirection.Bottom) {//时钟端
                             if (connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace).ToFloat() > 0) {

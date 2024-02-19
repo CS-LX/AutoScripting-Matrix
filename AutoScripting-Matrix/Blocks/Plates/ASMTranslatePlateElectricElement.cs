@@ -1,7 +1,7 @@
 using Engine;
 
 namespace Game {
-    public class ASMTranslatePlateElectricElement : ASMMountedElectricElement {
+    public class ASMTranslatePlateElectricElement : ASMRotateableElectricElement {
 
         public ComponentBody m_collideBody;
 
@@ -29,7 +29,7 @@ namespace Game {
             foreach (ASMElectricConnection connection in Connections) {
                 if (connection.ConnectorType != ASMElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {
-                    ASMElectricConnectorDirection? connectorDirection = SubsystemASMElectricity.GetConnectorDirection(CellFaces[0].Face, 0, connection.ConnectorFace);
+                    ASMElectricConnectorDirection? connectorDirection = SubsystemASMElectricity.GetConnectorDirection(CellFaces[0].Face, Rotation, connection.ConnectorFace);
                     if (connectorDirection.HasValue) {
                         if (connectorDirection == ASMElectricConnectorDirection.Left) normalTransform = connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
                         else if (connectorDirection == ASMElectricConnectorDirection.Right) velocityTransform = connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
@@ -86,6 +86,7 @@ namespace Game {
             m_lastPressFrame = Time.FrameIndex;
             SubsystemElectricity.QueueElectricElementForSimulation(this, SubsystemElectricity.CircuitStep + 1);
             componentBody.ApplyImpulse(new Vector3(0f, -2E-05f, 0f));
+            ComponentCreature componentCreature = componentBody.Entity.FindComponent<ComponentCreature>(true);
         }
 
         public override void OnHitByProjectile(CellFace cellFace, WorldItem worldItem) {

@@ -16,6 +16,8 @@ namespace Game {
 
 		public BlockMesh m_standaloneBlockMesh = new BlockMesh();
 
+		public BlockMesh m_standaloneBlockMesh_noRotation = new BlockMesh();
+
 		public BoundingBox[][] m_collisionBoxes = new BoundingBox[24][];
 
 		public ASMRotateableMountedElectricElementBlock(string modelName, string meshName, float centerBoxSize)
@@ -63,6 +65,8 @@ namespace Game {
 			}
 			Matrix m2 = Matrix.CreateRotationY(-(float)Math.PI / 2f) * Matrix.CreateRotationZ((float)Math.PI / 2f);
 			m_standaloneBlockMesh.AppendModelMeshPart(model.FindMesh(m_meshName).MeshParts[0], boneAbsoluteTransform * m2, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
+
+			m_standaloneBlockMesh_noRotation.AppendModelMeshPart(model.FindMesh(m_meshName).MeshParts[0], boneAbsoluteTransform, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
 		}
 
 		public override int GetFace(int value)
