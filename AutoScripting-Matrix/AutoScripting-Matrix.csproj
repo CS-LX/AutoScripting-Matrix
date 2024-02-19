@@ -153,4 +153,7 @@
 	    <Private>False</Private>
 	  </Reference>
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Electric\" />
+	</ItemGroup>
 </Project>
