@@ -44,7 +44,7 @@ namespace Game {
                     break;
                 case 5: m_voltage = input.ToFloat().ToCMatrix();
                     break;
-                case 6: m_voltage = new Matrix { Right = input.ToVector3() };
+                case 6: m_voltage = new Matrix { Right = input.ToVector3T() };
                     break;
                 case 7: m_voltage = input.OrientationMatrix;
                     break;

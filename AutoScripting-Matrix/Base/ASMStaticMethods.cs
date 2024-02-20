@@ -195,11 +195,18 @@ namespace Game {
         }
 
         /// <summary>
-        /// 输出一个三维向量，内容是输入矩阵第一行第一列，第一行第二列，第一行第三列的值
+        /// 输出一个三维横向量，内容是输入矩阵第一行第一列，第一行第二列，第一行第三列的值
         /// </summary>
         /// <param name="m"></param>
         /// <returns></returns>
-        public static Vector3 ToVector3(this Matrix m) => m.Right;
+        public static Vector3 ToVector3T(this Matrix m) => m.Right;
+
+        /// <summary>
+        /// 输出一个三维纵向量，内容是输入矩阵M11,M21,M31
+        /// </summary>
+        /// <param name="m"></param>
+        /// <returns></returns>
+        public static Vector3 ToVector3(this Matrix m) => Matrix.Transpose(m).Right;
 
         /// <summary>
         /// 输出一个内部元素全为输入浮点数的矩阵: m[0...15] = f

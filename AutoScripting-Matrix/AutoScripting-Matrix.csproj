@@ -163,6 +163,15 @@
 	  <None Update="Assets\Textures\Decomposers\ASMatrixToTRS.png">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Assets\Textures\Decomposers\ASMatrixTo2X2.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Assets\Textures\Decomposers\ASMatrixToVector4.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Assets\Textures\Decomposers\ASMVector4ToFloat.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 	<ItemGroup>
 	  <Reference Include="Engine">
