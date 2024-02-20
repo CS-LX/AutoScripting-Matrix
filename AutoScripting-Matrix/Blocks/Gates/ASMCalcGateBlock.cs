@@ -71,12 +71,12 @@ namespace Game
             int data = Terrain.ExtractData(value);
             if (GetFace(value) == face)
             {
-                ElectricConnectorDirection? connectorDirection = SubsystemElectricity.GetConnectorDirection(GetFace(value), GetRotation(data), connectorFace);
-                if (connectorDirection == ElectricConnectorDirection.Right || connectorDirection == ElectricConnectorDirection.Left)
+                ASMElectricConnectorDirection? connectorDirection = SubsystemASMElectricity.GetConnectorDirection(GetFace(value), GetRotation(data), connectorFace);
+                if (connectorDirection == ASMElectricConnectorDirection.Right || connectorDirection == ASMElectricConnectorDirection.Left)
                 {
                     return ASMElectricConnectorType.Input;
                 }
-                if (connectorDirection == ElectricConnectorDirection.Top || connectorDirection == ElectricConnectorDirection.In)
+                if (connectorDirection == ASMElectricConnectorDirection.Top || connectorDirection == ASMElectricConnectorDirection.In)
                 {
                     return ASMElectricConnectorType.Output;
                 }

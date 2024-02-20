@@ -9,15 +9,15 @@ namespace Game
         public const int Index = 608;
 
         public readonly MatrixSourceInfo[] Infos = [
-            new MatrixSourceInfo("矩阵源: 世界方块坐标", "", "ASMatrixSourceWorldPosition", [], [ElectricConnectorDirection.Top]),
-            new MatrixSourceInfo("矩阵源: 玩家变换", "", "ASMatrixSourcePlayerTransform", [ElectricConnectorDirection.Bottom], [ElectricConnectorDirection.Top]),
-            new MatrixSourceInfo("矩阵源: 玩家摄像机视图", "输出最近玩家的摄像机视图矩阵，包含观测的位置，方向，垂直Y方向 \n(注意: 若要直接使用此矩阵作为绘制的变换，须对其求逆)", "ASMatrixSourcePlayerCamera", [ElectricConnectorDirection.Bottom], [ElectricConnectorDirection.Top]),
-            new MatrixSourceInfo("矩阵源: 玩家摄像机投影", "输出最近玩家的摄像机投影矩阵(左)、屏幕投影矩阵(右)", "ASMatrixSourcePlayerCameraProjection", [], [ElectricConnectorDirection.Left, ElectricConnectorDirection.Right]),
-            new MatrixSourceInfo("矩阵源: 从位移创建", "", "ASMatrixSourceFromTranslation", [ElectricConnectorDirection.Left, ElectricConnectorDirection.Bottom, ElectricConnectorDirection.Right], [ElectricConnectorDirection.Top]),
-            new MatrixSourceInfo("矩阵源: 从欧拉角(三轴旋转)创建", "", "ASMatrixSourceFromYPR", [ElectricConnectorDirection.Left, ElectricConnectorDirection.Bottom, ElectricConnectorDirection.Right], [ElectricConnectorDirection.Top]),
-            new MatrixSourceInfo("矩阵源: 从缩放创建", "", "ASMatrixSourceFromScale", [ElectricConnectorDirection.Bottom], [ElectricConnectorDirection.Top]),
-            new MatrixSourceInfo("矩阵源: 从三轴缩放创建", "", "ASMatrixSourceFromScaleXYZ", [ElectricConnectorDirection.Left, ElectricConnectorDirection.Bottom, ElectricConnectorDirection.Right], [ElectricConnectorDirection.Top]),
-            new MatrixSourceInfo("矩阵源: 从观察创建", "", "ASMatrixSourceFromLookAt", [ElectricConnectorDirection.Left, ElectricConnectorDirection.Bottom, ElectricConnectorDirection.Right], [ElectricConnectorDirection.Top]),
+            new MatrixSourceInfo("矩阵源: 世界方块坐标", "", "ASMatrixSourceWorldPosition", [], [ASMElectricConnectorDirection.Top]),
+            new MatrixSourceInfo("矩阵源: 玩家变换", "", "ASMatrixSourcePlayerTransform", [ASMElectricConnectorDirection.Bottom], [ASMElectricConnectorDirection.Top]),
+            new MatrixSourceInfo("矩阵源: 玩家摄像机视图", "输出最近玩家的摄像机视图矩阵，包含观测的位置，方向，垂直Y方向 \n(注意: 若要直接使用此矩阵作为绘制的变换，须对其求逆)", "ASMatrixSourcePlayerCamera", [ASMElectricConnectorDirection.Bottom], [ASMElectricConnectorDirection.Top]),
+            new MatrixSourceInfo("矩阵源: 玩家摄像机投影", "输出最近玩家的摄像机投影矩阵(左)、屏幕投影矩阵(右)", "ASMatrixSourcePlayerCameraProjection", [], [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right]),
+            new MatrixSourceInfo("矩阵源: 从位移创建", "", "ASMatrixSourceFromTranslation", [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Bottom, ASMElectricConnectorDirection.Right], [ASMElectricConnectorDirection.Top]),
+            new MatrixSourceInfo("矩阵源: 从欧拉角(三轴旋转)创建", "", "ASMatrixSourceFromYPR", [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Bottom, ASMElectricConnectorDirection.Right], [ASMElectricConnectorDirection.Top]),
+            new MatrixSourceInfo("矩阵源: 从缩放创建", "", "ASMatrixSourceFromScale", [ASMElectricConnectorDirection.Bottom], [ASMElectricConnectorDirection.Top]),
+            new MatrixSourceInfo("矩阵源: 从三轴缩放创建", "", "ASMatrixSourceFromScaleXYZ", [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Bottom, ASMElectricConnectorDirection.Right], [ASMElectricConnectorDirection.Top]),
+            new MatrixSourceInfo("矩阵源: 从观察创建", "", "ASMatrixSourceFromLookAt", [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Bottom, ASMElectricConnectorDirection.Right], [ASMElectricConnectorDirection.Top]),
         ];
 
         public Texture2D[] textures;
@@ -71,7 +71,7 @@ namespace Game
             int type = GetType(data);
             if (GetFace(value) == face)
             {
-                ElectricConnectorDirection? connectorDirection = SubsystemElectricity.GetConnectorDirection(GetFace(value), GetRotation(data), connectorFace);
+                ASMElectricConnectorDirection? connectorDirection = SubsystemASMElectricity.GetConnectorDirection(GetFace(value), GetRotation(data), connectorFace);
                 if(Infos[type].InputDirections.Any(e => e == connectorDirection)) return ASMElectricConnectorType.Input;
                 if(Infos[type].OutputDirections.Any(e => e == connectorDirection)) return ASMElectricConnectorType.Output;
             }
