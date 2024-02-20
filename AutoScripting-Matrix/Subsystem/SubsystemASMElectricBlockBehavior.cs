@@ -21,6 +21,7 @@ namespace Game
 			ASMTranslatePlateBlock.Index,
 			ASMRelayBlock.Index,
 			ASMCreatureModelTransformerBlock.Index,
+			ASMDecomposerBlock.Index,
 		};
 
 		public override void OnBlockGenerated(int value, int x, int y, int z, bool isLoaded)

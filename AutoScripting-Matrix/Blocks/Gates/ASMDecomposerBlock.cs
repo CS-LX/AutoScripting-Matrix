@@ -10,6 +10,7 @@ namespace Game
 
         public readonly ASMDecomposerInfo[] Infos = [
             new ASMDecomposerInfo("矩阵TO解构器", "", "ASMatrixToTO", [ASMElectricConnectorDirection.Bottom], [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right]),
+            new ASMDecomposerInfo("矩阵TRS解构器", "", "ASMatrixToTRS", [ASMElectricConnectorDirection.Bottom], [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right, ASMElectricConnectorDirection.Top]),
         ];
 
         public Texture2D[] textures;
@@ -56,21 +57,16 @@ namespace Game
             showDebris = true;
         }
 
-        public override ASMElectricElement CreateElectricElement(SubsystemASMElectricity subsystemElectricity, int value, int x, int y, int z) => new ASMCalcGateElectricElement(subsystemElectricity, new CellFace(x, y, z, GetFace(value)), value);
+        public override ASMElectricElement CreateElectricElement(SubsystemASMElectricity subsystemElectricity, int value, int x, int y, int z) => new ASMDecomposerElectricElement(subsystemElectricity, new CellFace(x, y, z, GetFace(value)), value);
         public override ASMElectricConnectorType? GetConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z)
         {
             int data = Terrain.ExtractData(value);
+            int type = GetType(data);
             if (GetFace(value) == face)
             {
                 ASMElectricConnectorDirection? connectorDirection = SubsystemASMElectricity.GetConnectorDirection(GetFace(value), GetRotation(data), connectorFace);
-                if (connectorDirection == ASMElectricConnectorDirection.Right || connectorDirection == ASMElectricConnectorDirection.Left)
-                {
-                    return ASMElectricConnectorType.Input;
-                }
-                if (connectorDirection == ASMElectricConnectorDirection.Top || connectorDirection == ASMElectricConnectorDirection.In)
-                {
-                    return ASMElectricConnectorType.Output;
-                }
+                if(Infos[type].InputDirections.Any(e => e == connectorDirection)) return ASMElectricConnectorType.Input;
+                if(Infos[type].OutputDirections.Any(e => e == connectorDirection)) return ASMElectricConnectorType.Output;
             }
             return null;
         }

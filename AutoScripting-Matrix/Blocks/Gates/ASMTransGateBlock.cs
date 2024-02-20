@@ -15,7 +15,7 @@ namespace Game
             new CalcGateInfo("矩阵三次方", "将输入矩阵立方再输出", "ASMCuber"),
             new CalcGateInfo("矩阵转平均浮点数", "将矩阵内每一个非0元素相加再除以非0元素的个数，将所得浮点数结果输出", "ASMAverager"),
             new CalcGateInfo("浮点数转常数矩阵", "输出一个内部元素全为输入浮点数的矩阵", "ASMFloat2CMatrixConverter"),
-            new CalcGateInfo("矩阵转三维横向量", "输出一个三维向量，内容是输入矩阵M11，M12，M13的值", "ASMMatrix2Vector3Converter"),
+            new CalcGateInfo("矩阵转三维横向量", "输出一个三维向量，内容是输入矩阵M11，M12，M13的值", "ASMMatrix2Vector3Converter", false, false),
             new CalcGateInfo("矩阵提取取向", "求输入矩阵的取向矩阵", "ASMExtractOrientation", false, false),
             new CalcGateInfo("矩阵提取平移", "求输入矩阵的平移矩阵", "ASMExtractTranslation", false, false),
             new CalcGateInfo("矩阵弧度转角度", "", "ASMRad2Deg", true),
