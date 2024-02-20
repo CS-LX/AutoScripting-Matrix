@@ -36,19 +36,23 @@ namespace Game {
             }
 
             switch (m_type) {
-                case 0: m_voltage = leftInput + rightInput;//加法器
+                case 0: m_voltage = leftInput + rightInput;//加法器(点对点)
                     break;
-                case 1: m_voltage = leftInput - rightInput;//减法器
+                case 1: m_voltage = leftInput - rightInput;//减法器(点对点)
                     break;
-                case 2: m_voltage = leftInput * rightInput;//乘法器
+                case 2: m_voltage = ASMStaticMethods.Multiply(leftInput, rightInput);//乘法器(点对点)
                     break;
-                case 3: m_voltage = leftInput / rightInput;//除法器
+                case 3: m_voltage = leftInput / rightInput;//除法器(点对点)
                     break;
                 case 4: m_voltage = ASMStaticMethods.Power(leftInput, rightInput);
                     break;
                 case 5: m_voltage = ASMStaticMethods.Remain(leftInput, rightInput);
                     break;
                 case 6: m_voltage = ASMStaticMethods.Logarithm(leftInput, rightInput);
+                    break;
+                case 7: Matrix.MultiplyRestricted(ref leftInput, ref rightInput, out m_voltage);//矩阵乘法器
+                    break;
+                case 8: m_voltage = leftInput * Matrix.Invert(rightInput);//矩阵除法器
                     break;
             }
 

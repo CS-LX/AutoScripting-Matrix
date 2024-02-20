@@ -9,19 +9,21 @@ namespace Game
         public const int Index = 605;
 
         public readonly CalcGateInfo[] Infos = [
-            new CalcGateInfo("矩阵加法器(点对点)", "", "ASMAdder"),
-            new CalcGateInfo("矩阵减法器(点对点)", "", "ASMSubtracter"),
-            new CalcGateInfo("矩阵乘法器", "", "ASMMultiplier"),
-            new CalcGateInfo("矩阵除法器(点对点)", "", "ASMDivider"),
-            new CalcGateInfo("矩阵乘方器(点对点)", "", "ASMPower"),
-            new CalcGateInfo("矩阵除余器(点对点)", "", "ASMRemainder"),
-            new CalcGateInfo("矩阵对数器(点对点)", "", "ASMLogarithmer"),
+            new CalcGateInfo("矩阵加法器", "", "ASMAdder", true),
+            new CalcGateInfo("矩阵减法器", "", "ASMSubtracter", true),
+            new CalcGateInfo("矩阵乘法器", "", "ASMMultiplier", true),
+            new CalcGateInfo("矩阵除法器", "", "ASMDivider", true),
+            new CalcGateInfo("矩阵乘方器", "", "ASMPower", true),
+            new CalcGateInfo("矩阵除余器", "", "ASMRemainder", true),
+            new CalcGateInfo("矩阵对数器", "", "ASMLogarithmer", true),
+            new CalcGateInfo("矩阵乘法器", "", "ASMMultiplier", false),
+            new CalcGateInfo("矩阵除法器", "", "ASMDivider", false),
         ];
 
         public Texture2D[] textures;
 
         public ASMCalcGateBlock()
-            : base("Models/ASMCalcGate", "CalcGate", 0.5f)
+            : base("Models/ASMCalcGate", "CalcGate", 0.5f, "CalcP2PGate")
         {
         }
 
@@ -35,23 +37,24 @@ namespace Game
 
         public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
             int type = GetType(Terrain.ExtractData(value));
-            BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneBlockMesh, textures[type], color, 2f * size, ref matrix, environmentData);
+            BlocksManager.DrawMeshBlock(primitivesRenderer, Infos[type].IsPointToPoint ? m_standaloneBlockMesh2 : m_standaloneBlockMesh, textures[type], color, 2f * size, ref matrix, environmentData);
         }
 
         public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z)
         {
             int num = Terrain.ExtractData(value) & 0x1F;
             int type = GetType(Terrain.ExtractData(value));
-            generator.GenerateMeshVertices(this, x, y, z, m_blockMeshes[num], Color.White, null, geometry.GetGeometry(textures[type]).SubsetOpaque);
+            generator.GenerateMeshVertices(this, x, y, z, Infos[type].IsPointToPoint ? m_blockMeshes2[num] : m_blockMeshes[num], Color.White, null, geometry.GetGeometry(textures[type]).SubsetOpaque);
             GenerateASMWireVertices(generator, value, x, y, z, GetFace(value), m_centerBoxSize, Vector2.Zero, geometry.SubsetOpaque);
         }
 
-        public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => Infos[GetType(Terrain.ExtractData(value))].DisplayName;
+        public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => Infos[GetType(Terrain.ExtractData(value))].DisplayName + (Infos[GetType(Terrain.ExtractData(value))].IsPointToPoint ? "(点对点)" : string.Empty);
 
         public override string GetDescription(int value) => Infos[GetType(Terrain.ExtractData(value))].Description;
 
         public override IEnumerable<int> GetCreativeValues() {
             for (int i = 0; i < Infos.Length; i++) {
+                if (!Infos[i].IsDisplay) continue;
                 yield return Terrain.MakeBlockValue(Index, 0, SetType(0, i));
             }
         }

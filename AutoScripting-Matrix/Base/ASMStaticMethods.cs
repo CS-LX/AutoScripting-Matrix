@@ -243,6 +243,21 @@ namespace Game {
         }
 
         /// <summary>
+        /// 点对点的矩阵乘法
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public static Matrix Multiply(Matrix x, Matrix y) {
+            Matrix m = Matrix.Zero;
+            for (int i = 0; i < 16; i++) {
+                SetElement(ref m, i, x.GetElement(i) * y.GetElement(i));
+            }
+            return m;
+        }
+        
+
+        /// <summary>
         /// 返回一个矩阵，内部每个元素都为以传入矩阵y对应元素为底，传入矩阵x的对应元素的对数 m[i] = log(x[i], y[i])
         /// </summary>
         /// <param name="x"></param>

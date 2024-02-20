@@ -8,29 +8,39 @@ namespace Game {
 
 		public string m_meshName;
 
+		public string m_mesh2Name;
+
 		public float m_centerBoxSize;
 
 		public string textureName;
 
 		public BlockMesh[] m_blockMeshes = new BlockMesh[24];
 
+		public BlockMesh[] m_blockMeshes2 = new BlockMesh[24];
+
 		public BlockMesh m_standaloneBlockMesh = new BlockMesh();
+
+		public BlockMesh m_standaloneBlockMesh2 = new BlockMesh();
 
 		public BlockMesh m_standaloneBlockMesh_noRotation = new BlockMesh();
 
+		public BlockMesh m_standaloneBlockMesh2_noRotation = new BlockMesh();
+
 		public BoundingBox[][] m_collisionBoxes = new BoundingBox[24][];
 
-		public ASMRotateableMountedElectricElementBlock(string modelName, string meshName, float centerBoxSize)
+		public ASMRotateableMountedElectricElementBlock(string modelName, string meshName, float centerBoxSize, string mesh2Name = "")
 		{
 			m_modelName = modelName;
 			m_meshName = meshName;
 			m_centerBoxSize = centerBoxSize;
+			m_mesh2Name = (mesh2Name == meshName || mesh2Name == "") ? meshName : mesh2Name;
 		}
 
 		public override void Initialize()
 		{
 			Model model = ContentManager.Get<Model>(m_modelName);
 			Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh(m_meshName).ParentBone);
+			Matrix boneAbsoluteTransform2 = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh(m_mesh2Name).ParentBone);
 			for (int i = 0; i < 6; i++)
 			{
 				float radians;
@@ -57,6 +67,8 @@ namespace Game {
 					Matrix m = Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateRotationZ(radians2) * Matrix.CreateTranslation(0f, 0f, -0.5f) * (flag ? Matrix.CreateRotationX(radians) : Matrix.CreateRotationY(radians)) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
 					m_blockMeshes[num] = new BlockMesh();
 					m_blockMeshes[num].AppendModelMeshPart(model.FindMesh(m_meshName).MeshParts[0], boneAbsoluteTransform * m, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
+					m_blockMeshes2[num] = new BlockMesh();
+					m_blockMeshes2[num].AppendModelMeshPart(model.FindMesh(m_mesh2Name).MeshParts[0], boneAbsoluteTransform2 * m, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
 					m_collisionBoxes[num] = new BoundingBox[1]
 					{
 						m_blockMeshes[num].CalculateBoundingBox()
@@ -65,8 +77,10 @@ namespace Game {
 			}
 			Matrix m2 = Matrix.CreateRotationY(-(float)Math.PI / 2f) * Matrix.CreateRotationZ((float)Math.PI / 2f);
 			m_standaloneBlockMesh.AppendModelMeshPart(model.FindMesh(m_meshName).MeshParts[0], boneAbsoluteTransform * m2, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
-
 			m_standaloneBlockMesh_noRotation.AppendModelMeshPart(model.FindMesh(m_meshName).MeshParts[0], boneAbsoluteTransform, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
+
+			m_standaloneBlockMesh2.AppendModelMeshPart(model.FindMesh(m_mesh2Name).MeshParts[0], boneAbsoluteTransform * m2, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
+			m_standaloneBlockMesh2_noRotation.AppendModelMeshPart(model.FindMesh(m_mesh2Name).MeshParts[0], boneAbsoluteTransform, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
 		}
 
 		public override int GetFace(int value)

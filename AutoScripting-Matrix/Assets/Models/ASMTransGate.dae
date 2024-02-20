@@ -5,76 +5,94 @@
       <author>Blender User</author>
       <authoring_tool>Blender 3.4.0 commit date:2022-12-06, commit time:18:46, hash:a95bf1ac01be</authoring_tool>
     </contributor>
-    <created>2024-02-16T08:51:14</created>
-    <modified>2024-02-16T08:51:14</modified>
+    <created>2024-02-20T12:51:29</created>
+    <modified>2024-02-20T12:51:29</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
-  <library_effects>
-    <effect id="材质-effect">
-      <profile_COMMON>
-        <technique sid="common">
-          <lambert>
-            <emission>
-              <color sid="emission">0 0 0 1</color>
-            </emission>
-            <diffuse>
-              <color sid="diffuse">0.8 0.8 0.8 1</color>
-            </diffuse>
-            <reflectivity>
-              <float sid="specular">0.5</float>
-            </reflectivity>
-          </lambert>
-        </technique>
-      </profile_COMMON>
-    </effect>
-  </library_effects>
   <library_images/>
-  <library_materials>
-    <material id="材质-material" name="材质">
-      <instance_effect url="#材质-effect"/>
-    </material>
-  </library_materials>
   <library_geometries>
-    <geometry id="TransGate-mesh" name="TransGate">
+    <geometry id="TransGate_001-mesh" name="TransGate.001">
       <mesh>
-        <source id="TransGate-mesh-positions">
-          <float_array id="TransGate-mesh-positions-array" count="42">6.25 -18.75 6.25 25 6.25 6.25 25 -31.25 6.25 -25 6.25 6.25 -6.25 -18.75 6.25 -25 -31.25 6.25 0 31.25 6.25 6.25 -18.75 0 25 -31.25 0 25 6.25 0 -25 6.25 0 -25 -31.25 0 -6.25 -18.75 0 0 31.25 0</float_array>
+        <source id="TransGate_001-mesh-positions">
+          <float_array id="TransGate_001-mesh-positions-array" count="42">6.25 -18.75 6.25 25 6.25 6.25 25 -31.25 6.25 -25 6.25 6.25 -6.25 -18.75 6.25 -25 -31.25 6.25 0 31.25 6.25 6.25 -18.75 0 25 -31.25 0 25 6.25 0 -25 6.25 0 -25 -31.25 0 -6.25 -18.75 0 0 31.25 0</float_array>
           <technique_common>
-            <accessor source="#TransGate-mesh-positions-array" count="14" stride="3">
+            <accessor source="#TransGate_001-mesh-positions-array" count="14" stride="3">
               <param name="X" type="float"/>
               <param name="Y" type="float"/>
               <param name="Z" type="float"/>
             </accessor>
           </technique_common>
         </source>
-        <source id="TransGate-mesh-normals">
-          <float_array id="TransGate-mesh-normals-array" count="33">0 0 1 0 0 1 0 0 1 -0.5547003 -0.8320503 0 1 0 0 -1 0 0 0.5547002 -0.8320503 0 0.7071068 0.7071068 0 -0.7071068 0.7071068 0 1.52588e-7 -1 0 0 0 -1</float_array>
+        <source id="TransGate_001-mesh-normals">
+          <float_array id="TransGate_001-mesh-normals-array" count="27">0 0 1 -0.5547002 -0.8320503 0 1 0 0 -1 0 0 0.5547002 -0.8320503 0 0.7071068 0.7071068 0 -0.7071068 0.7071068 0 0 -1 0 0 0 -1</float_array>
           <technique_common>
-            <accessor source="#TransGate-mesh-normals-array" count="11" stride="3">
+            <accessor source="#TransGate_001-mesh-normals-array" count="9" stride="3">
               <param name="X" type="float"/>
               <param name="Y" type="float"/>
               <param name="Z" type="float"/>
             </accessor>
           </technique_common>
         </source>
-        <source id="TransGate-mesh-map-0">
-          <float_array id="TransGate-mesh-map-0-array" count="144">0.79988 0.6009281 0.948664 0.5017357 0.948664 0.799304 0.551904 0.799304 0.551904 0.5017357 0.7006879 0.6009281 0.79988 0.6009281 0.948664 0.799304 0.7502799 0.9976883 0.79988 0.6009281 0.7502799 0.9976883 0.551904 0.799304 0.79988 0.6009281 0.551904 0.799304 0.7006879 0.6009281 0.1963758 0.4450722 0.001199722 0.4450722 0.001199722 0.499208 0.001199722 0.499208 0.1963758 0.499208 0.1963758 0.4450722 0.3261519 0.4451442 0.001351833 0.4451442 0.001351833 0.49928 0.001351833 0.49928 0.3261519 0.49928 0.3261519 0.4451442 0.3260961 0.445272 0.001296043 0.445272 0.001296043 0.4994001 0.001296043 0.4994001 0.3260961 0.4994001 0.3260961 0.445272 0.1967358 0.4449597 0.001560211 0.4449597 0.001560211 0.4990959 0.001560211 0.4990959 0.1967358 0.4990959 0.1967358 0.4449597 0.3078318 0.445168 0.001607894 0.445168 0.001607894 0.4993038 0.001607894 0.4993038 0.3078318 0.4993038 0.3078318 0.445168 0.3079362 0.444984 0.001711845 0.444984 0.001711845 0.4991198 0.001711845 0.4991198 0.3079362 0.4991198 0.3079362 0.444984 0.1100401 0.4450798 0.001768112 0.4450798 0.001768112 0.4992161 0.001768112 0.4992161 0.1100401 0.4992161 0.1100401 0.4450798 0.05190396 0.799304 0.2502799 0.9976883 0.448664 0.799304 0.448664 0.799304 0.448664 0.5017357 0.29988 0.6009281 0.2006878 0.6009281 0.05190396 0.5017357 0.05190396 0.799304 0.05190396 0.799304 0.448664 0.799304 0.29988 0.6009281 0.29988 0.6009281 0.2006878 0.6009281 0.05190396 0.799304</float_array>
+        <source id="TransGate_001-mesh-map-0">
+          <float_array id="TransGate_001-mesh-map-0-array" count="144">0.79988 0.6009281 0.948664 0.5017357 0.948664 0.799304 0.551904 0.799304 0.551904 0.5017357 0.7006879 0.6009281 0.79988 0.6009281 0.948664 0.799304 0.7502799 0.9976883 0.79988 0.6009281 0.7502799 0.9976883 0.551904 0.799304 0.79988 0.6009281 0.551904 0.799304 0.7006879 0.6009281 0.1963758 0.4450722 0.001199722 0.4450722 0.001199722 0.499208 0.001199722 0.499208 0.1963758 0.499208 0.1963758 0.4450722 0.3261519 0.4451442 0.001351833 0.4451442 0.001351833 0.49928 0.001351833 0.49928 0.3261519 0.49928 0.3261519 0.4451442 0.3260961 0.445272 0.001296043 0.445272 0.001296043 0.4994001 0.001296043 0.4994001 0.3260961 0.4994001 0.3260961 0.445272 0.1967357 0.4449597 0.001560211 0.4449597 0.001560211 0.4990959 0.001560211 0.4990959 0.1967357 0.4990959 0.1967357 0.4449597 0.3078318 0.445168 0.001607835 0.445168 0.001607835 0.4993038 0.001607835 0.4993038 0.3078318 0.4993038 0.3078318 0.445168 0.3079362 0.444984 0.001711845 0.444984 0.001711845 0.4991198 0.001711845 0.4991198 0.3079362 0.4991198 0.3079362 0.444984 0.1100401 0.4450798 0.001768112 0.4450798 0.001768112 0.4992161 0.001768112 0.4992161 0.1100401 0.4992161 0.1100401 0.4450798 0.05190396 0.799304 0.2502799 0.9976883 0.448664 0.799304 0.448664 0.799304 0.448664 0.5017357 0.29988 0.6009281 0.2006878 0.6009281 0.05190396 0.5017357 0.05190396 0.799304 0.05190396 0.799304 0.448664 0.799304 0.29988 0.6009281 0.29988 0.6009281 0.2006878 0.6009281 0.05190396 0.799304</float_array>
           <technique_common>
-            <accessor source="#TransGate-mesh-map-0-array" count="72" stride="2">
+            <accessor source="#TransGate_001-mesh-map-0-array" count="72" stride="2">
               <param name="S" type="float"/>
               <param name="T" type="float"/>
             </accessor>
           </technique_common>
         </source>
-        <vertices id="TransGate-mesh-vertices">
-          <input semantic="POSITION" source="#TransGate-mesh-positions"/>
+        <vertices id="TransGate_001-mesh-vertices">
+          <input semantic="POSITION" source="#TransGate_001-mesh-positions"/>
         </vertices>
-        <triangles material="材质-material" count="24">
-          <input semantic="VERTEX" source="#TransGate-mesh-vertices" offset="0"/>
-          <input semantic="NORMAL" source="#TransGate-mesh-normals" offset="1"/>
-          <input semantic="TEXCOORD" source="#TransGate-mesh-map-0" offset="2" set="0"/>
-          <p>0 0 0 2 0 1 1 0 2 3 0 3 5 0 4 4 0 5 0 1 6 1 1 7 6 1 8 0 2 9 6 2 10 3 2 11 0 0 12 3 0 13 4 0 14 7 3 15 8 3 16 2 3 17 2 3 18 0 3 19 7 3 20 8 4 21 9 4 22 1 4 23 1 4 24 2 4 25 8 4 26 10 5 27 11 5 28 5 5 29 5 5 30 3 5 31 10 5 32 11 6 33 12 6 34 4 6 35 4 6 36 5 6 37 11 6 38 9 7 39 13 7 40 6 7 41 6 7 42 1 7 43 9 7 44 13 8 45 10 8 46 3 8 47 3 8 48 6 8 49 13 8 50 12 9 51 7 9 52 0 9 53 0 9 54 4 9 55 12 9 56 10 10 57 13 10 58 9 10 59 9 10 60 8 10 61 7 10 62 12 10 63 11 10 64 10 10 65 10 10 66 9 10 67 7 10 68 7 10 69 12 10 70 10 10 71</p>
+        <triangles count="24">
+          <input semantic="VERTEX" source="#TransGate_001-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#TransGate_001-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#TransGate_001-mesh-map-0" offset="2" set="0"/>
+          <p>0 0 0 2 0 1 1 0 2 3 0 3 5 0 4 4 0 5 0 0 6 1 0 7 6 0 8 0 0 9 6 0 10 3 0 11 0 0 12 3 0 13 4 0 14 7 1 15 8 1 16 2 1 17 2 1 18 0 1 19 7 1 20 8 2 21 9 2 22 1 2 23 1 2 24 2 2 25 8 2 26 10 3 27 11 3 28 5 3 29 5 3 30 3 3 31 10 3 32 11 4 33 12 4 34 4 4 35 4 4 36 5 4 37 11 4 38 9 5 39 13 5 40 6 5 41 6 5 42 1 5 43 9 5 44 13 6 45 10 6 46 3 6 47 3 6 48 6 6 49 13 6 50 12 7 51 7 7 52 0 7 53 0 7 54 4 7 55 12 7 56 10 8 57 13 8 58 9 8 59 9 8 60 8 8 61 7 8 62 12 8 63 11 8 64 10 8 65 10 8 66 9 8 67 7 8 68 7 8 69 12 8 70 10 8 71</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="TransP2PGate_001-mesh" name="TransP2PGate.001">
+      <mesh>
+        <source id="TransP2PGate_001-mesh-positions">
+          <float_array id="TransP2PGate_001-mesh-positions-array" count="66">6.25 -18.75 6.25 25 6.25 6.25 25 -31.25 6.25 -25 6.25 6.25 -6.25 -18.75 6.25 -25 -31.25 6.25 0 31.25 6.25 6.25 -18.75 0 25 -31.25 0 25 6.25 0 -25 6.25 0 -25 -31.25 0 -6.25 -18.75 0 0 31.25 0 -6.257362 37.50602 6.250004 6.242638 37.50602 6.250004 -0.007361948 31.25602 6.250004 -0.007361948 43.75602 6.250005 -6.257362 37.50602 4.47107e-6 -0.007361948 31.25602 3.72601e-6 6.242638 37.50602 4.47107e-6 -0.007361948 43.75602 5.21612e-6</float_array>
+          <technique_common>
+            <accessor source="#TransP2PGate_001-mesh-positions-array" count="22" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="TransP2PGate_001-mesh-normals">
+          <float_array id="TransP2PGate_001-mesh-normals-array" count="51">0 0 1 -0.5547002 -0.8320503 0 1 0 0 -1 0 0 0.5547002 -0.8320503 0 0.7071068 0.7071068 0 -0.7071068 0.7071068 0 0 -1 0 0 0 -1 0 -1.52588e-7 1 -0.7071068 -0.7071068 0 0.7071068 -0.7071068 0 -0.7071068 0.7071068 0 0.7071068 0.7071068 0 0.7071068 0.7071069 0 0 1.1921e-7 -1 0 0 -1</float_array>
+          <technique_common>
+            <accessor source="#TransP2PGate_001-mesh-normals-array" count="17" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="TransP2PGate_001-mesh-map-0">
+          <float_array id="TransP2PGate_001-mesh-map-0-array" count="216">0.79988 0.6009281 0.948664 0.5017357 0.948664 0.799304 0.551904 0.799304 0.551904 0.5017357 0.7006879 0.6009281 0.79988 0.6009281 0.948664 0.799304 0.7502799 0.9976883 0.79988 0.6009281 0.7502799 0.9976883 0.551904 0.799304 0.79988 0.6009281 0.551904 0.799304 0.7006879 0.6009281 0.1963758 0.4450722 0.001199722 0.4450722 0.001199722 0.499208 0.001199722 0.499208 0.1963758 0.499208 0.1963758 0.4450722 0.3261519 0.4451442 0.001351833 0.4451442 0.001351833 0.49928 0.001351833 0.49928 0.3261519 0.49928 0.3261519 0.4451442 0.3260961 0.445272 0.001296043 0.445272 0.001296043 0.4994001 0.001296043 0.4994001 0.3260961 0.4994001 0.3260961 0.445272 0.1967357 0.4449597 0.001560211 0.4449597 0.001560211 0.4990959 0.001560211 0.4990959 0.1967357 0.4990959 0.1967357 0.4449597 0.3078318 0.445168 0.001607835 0.445168 0.001607835 0.4993038 0.001607835 0.4993038 0.3078318 0.4993038 0.3078318 0.445168 0.3079362 0.444984 0.001711845 0.444984 0.001711845 0.4991198 0.001711845 0.4991198 0.3079362 0.4991198 0.3079362 0.444984 0.1100401 0.4450798 0.001768112 0.4450798 0.001768112 0.4992161 0.001768112 0.4992161 0.1100401 0.4992161 0.1100401 0.4450798 0.05190396 0.799304 0.2502799 0.9976883 0.448664 0.799304 0.448664 0.799304 0.448664 0.5017357 0.29988 0.6009281 0.2006878 0.6009281 0.05190396 0.5017357 0.05190396 0.799304 0.05190396 0.799304 0.448664 0.799304 0.29988 0.6009281 0.29988 0.6009281 0.2006878 0.6009281 0.05190396 0.799304 0.1889998 0.4378481 0.25 0.375 0.3113761 0.4378481 0.25 0.5 0.1889998 0.4378481 0.3113761 0.4378481 0.09551191 0.4979282 0.001759946 0.4979282 0.001759946 0.435432 0.001759946 0.435432 0.09551191 0.435432 0.09551191 0.4979282 0.09551191 0.3416801 0.001759946 0.3416801 0.001759946 0.2791758 0.001759946 0.2791758 0.09551191 0.2791758 0.09551191 0.3416801 0.09551191 0.435432 0.001759946 0.435432 0.001759946 0.3729282 0.001759946 0.3729282 0.09551191 0.3729282 0.09551191 0.435432 0.1892638 0.3416801 0.09551191 0.3416801 0.09551191 0.2791758 0.09551191 0.2791758 0.1892638 0.2791758 0.1892638 0.3416801 0.3113761 0.4378481 0.25 0.375 0.1889998 0.4378481 0.3113761 0.4378481 0.1889998 0.4378481 0.25 0.5</float_array>
+          <technique_common>
+            <accessor source="#TransP2PGate_001-mesh-map-0-array" count="108" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="TransP2PGate_001-mesh-vertices">
+          <input semantic="POSITION" source="#TransP2PGate_001-mesh-positions"/>
+        </vertices>
+        <triangles count="36">
+          <input semantic="VERTEX" source="#TransP2PGate_001-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#TransP2PGate_001-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#TransP2PGate_001-mesh-map-0" offset="2" set="0"/>
+          <p>0 0 0 2 0 1 1 0 2 3 0 3 5 0 4 4 0 5 0 0 6 1 0 7 6 0 8 0 0 9 6 0 10 3 0 11 0 0 12 3 0 13 4 0 14 7 1 15 8 1 16 2 1 17 2 1 18 0 1 19 7 1 20 8 2 21 9 2 22 1 2 23 1 2 24 2 2 25 8 2 26 10 3 27 11 3 28 5 3 29 5 3 30 3 3 31 10 3 32 11 4 33 12 4 34 4 4 35 4 4 36 5 4 37 11 4 38 9 5 39 13 5 40 6 5 41 6 5 42 1 5 43 9 5 44 13 6 45 10 6 46 3 6 47 3 6 48 6 6 49 13 6 50 12 7 51 7 7 52 0 7 53 0 7 54 4 7 55 12 7 56 10 8 57 13 8 58 9 8 59 9 8 60 8 8 61 7 8 62 12 8 63 11 8 64 10 8 65 10 8 66 9 8 67 7 8 68 7 8 69 12 8 70 10 8 71 14 0 72 16 0 73 15 0 74 17 9 75 14 9 76 15 9 77 18 10 78 19 10 79 16 10 80 16 10 81 14 10 82 18 10 83 19 11 84 20 11 85 15 11 86 15 11 87 16 11 88 19 11 89 21 12 90 18 12 91 14 12 92 14 6 93 17 6 94 21 6 95 20 13 96 21 13 97 17 13 98 17 14 99 15 14 100 20 14 101 20 15 102 19 15 103 18 15 104 20 16 105 18 16 106 21 16 107</p>
         </triangles>
       </mesh>
     </geometry>
@@ -82,16 +100,12 @@
   <library_visual_scenes>
     <visual_scene id="Scene" name="Scene">
       <node id="TransGate" name="TransGate" type="NODE">
-        <matrix sid="transform">0.01 0 0 0 0 -1.62921e-9 0.01 0 0 -0.01 -1.62921e-9 0 0 0 0 1</matrix>
-        <instance_geometry url="#TransGate-mesh" name="TransGate">
-          <bind_material>
-            <technique_common>
-              <instance_material symbol="材质-material" target="#材质-material">
-                <bind_vertex_input semantic="OrGate-mesh-map" input_semantic="TEXCOORD" input_set="0"/>
-              </instance_material>
-            </technique_common>
-          </bind_material>
-        </instance_geometry>
+        <matrix sid="transform">0.01 0 0 0 0 -2.8213e-9 0.01 0 0 -0.01 -2.8213e-9 0 0 0 0 1</matrix>
+        <instance_geometry url="#TransGate_001-mesh" name="TransGate"/>
+      </node>
+      <node id="TransP2PGate" name="TransP2PGate" type="NODE">
+        <matrix sid="transform">0.01 0 0 0 0 -2.8213e-9 0.01 0 0 -0.01 -2.8213e-9 0 0 0 0 1</matrix>
+        <instance_geometry url="#TransP2PGate_001-mesh" name="TransP2PGate"/>
       </node>
     </visual_scene>
   </library_visual_scenes>
