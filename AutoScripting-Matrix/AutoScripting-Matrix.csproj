@@ -184,6 +184,10 @@
 	  <None Update="Assets\Textures\ASMGeBlock.png">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Assets\Textures\ASMExpandableLED.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Remove="Subsystem\ExpandableLED\**" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Reference Include="Engine">
@@ -204,8 +208,10 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Compile Remove="Blocks\Decomposer\**" />
+	  <Compile Remove="Subsystem\ExpandableLED\**" />
 	</ItemGroup>
 	<ItemGroup>
 	  <EmbeddedResource Remove="Blocks\Decomposer\**" />
+	  <EmbeddedResource Remove="Subsystem\ExpandableLED\**" />
 	</ItemGroup>
 </Project>
