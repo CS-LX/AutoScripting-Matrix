@@ -21,7 +21,6 @@ namespace Game {
                 TerrainRaycastResult result = (TerrainRaycastResult)obj;
                 int id = result.Value;
                 CellFace cellFace = result.CellFace;
-                cellFace.Face = 4;
                 if (BlocksManager.Blocks[Terrain.ExtractContents(id)] is IASMElectricElementBlock) {
                     try {
                         displayText = $"P: ({result.CellFace})\r\n"

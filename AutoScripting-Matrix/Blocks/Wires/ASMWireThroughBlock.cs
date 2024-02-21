@@ -8,8 +8,9 @@ namespace Game {
         public Texture2D texture;
 
         public WireTroughtInfo[] Infos = [
-            new WireTroughtInfo("矩阵变体锗穿线快", "", 0, 21, true),
+            new WireTroughtInfo("变体矩阵锗穿线快", "", 0, 21, true),
             new WireTroughtInfo("矩阵锗穿线快", "", 14, 35, true),
+            new WireTroughtInfo("矩阵铁穿线快", "", 1, 22, true),
         ];
 
         public override void Initialize() {
@@ -92,6 +93,12 @@ namespace Game {
                 }
                 return null;
             }
+        }
+
+        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
+            int data = Terrain.ExtractData(oldValue);
+            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, SetWiredFaceAndType(0, 0, GetType(data))), Count = 1 });
+            showDebris = true;
         }
 
         public int GetConnectionMask(int value) => int.MaxValue;
