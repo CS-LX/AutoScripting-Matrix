@@ -154,7 +154,7 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Remove="Blocks\Decomposer\**" />
-	  <None Update="Assets\Textures\Decomposers\ASMatrixToTO_Hide.png">
+	  <None Update="Assets\Textures\Decomposers\ASMatrixToRUF.png">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Assets\Textures\Decomposers\ASMatrixToTO.png">

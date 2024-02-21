@@ -74,39 +74,41 @@ namespace Game {
                     m_voltage_left = input_bottom.TranslationMatrix;
                     m_voltage_right = input_bottom.OrientationMatrix;
                     break;
-                case 1: input_bottom.Decompose(out Vector3 scale, out Quaternion rotation, out Vector3 translation);
+                case 1: input_bottom.Decompose(out Vector3 scale, out Quaternion rotation, out Vector3 translation);//TRS解构器
                     m_voltage_left.Right = translation;
                     m_voltage_top.Right = rotation.ToYawPitchRoll();
                     m_voltage_right.Right = scale;
-                    m_voltage_left = Matrix.Transpose(m_voltage_left);
-                    m_voltage_top = Matrix.Transpose(m_voltage_top);
-                    m_voltage_right = Matrix.Transpose(m_voltage_right);
                     break;
-                case 2:
+                case 2: //RUF(XYZ)解构器
+                    m_voltage_left.Right = input_bottom.Right;
+                    m_voltage_top.Right = input_bottom.Up;
+                    m_voltage_right.Right = input_bottom.Forward;
+                    break;
+                case 3:
                     m_voltage_top = new Matrix(m.M11, m.M12, 0, 0, m.M21, m.M22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
                     m_voltage_right = new Matrix(m.M13, m.M14, 0, 0, m.M23, m.M24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
                     m_voltage_bottom = new Matrix(m.M31, m.M32, 0, 0, m.M41, m.M42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
                     m_voltage_left = new Matrix(m.M33, m.M34, 0, 0, m.M43, m.M44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
                     break;
-                case 3:
+                case 4:
                     m_voltage_top = new Matrix(m.M11, 0, 0, 0, m.M21, 0, 0, 0, m.M31, 0, 0, 0, m.M41, 0, 0, 0);
                     m_voltage_right = new Matrix(m.M12, 0, 0, 0, m.M22, 0, 0, 0, m.M32, 0, 0, 0, m.M42, 0, 0, 0);
                     m_voltage_bottom = new Matrix(m.M13, 0, 0, 0, m.M23, 0, 0, 0, m.M33, 0, 0, 0, m.M43, 0, 0, 0);
                     m_voltage_left = new Matrix(m.M14, 0, 0, 0, m.M24, 0, 0, 0, m.M34, 0, 0, 0, m.M44, 0, 0, 0);
                     break;
-                case 4:
+                case 5:
                     m_voltage_top.M11 = m.M11;
                     m_voltage_right.M11 = m.M21;
                     m_voltage_bottom.M11 = m.M31;
                     m_voltage_left.M11 = m.M41;
                     break;
-                case 5:
+                case 6:
                     m_voltage_top = new Matrix(m.M11, m.M12, m.M13, m.M14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
                     m_voltage_right = new Matrix(m.M21, m.M22, m.M23, m.M24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
                     m_voltage_bottom = new Matrix(m.M31, m.M32, m.M33, m.M34, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
                     m_voltage_left = new Matrix(m.M41, m.M42, m.M43, m.M44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
                     break;
-                case 6:
+                case 7:
                     m_voltage_top.M11 = m.M11;
                     m_voltage_right.M11 = m.M12;
                     m_voltage_bottom.M11 = m.M13;

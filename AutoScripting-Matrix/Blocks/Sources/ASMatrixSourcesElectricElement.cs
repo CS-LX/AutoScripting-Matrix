@@ -131,7 +131,7 @@ namespace Game {
                     break;
                 case 8://创建观察矩阵
                     GetInputs(Rotation, out Matrix position, out Matrix up, out Matrix target);
-                    m_voltage_top = Matrix.CreateLookAt(position.ToVector3(), target.ToVector3(), up.ToVector3());
+                    m_voltage_top = Matrix.CreateLookAt(position.ToVector3T(), target.ToVector3T(), up.ToVector3T());
                     break;
             }
             return m_voltage_top != voltage_top || m_voltage_left != voltage_left || m_voltage_right != voltage_right;
