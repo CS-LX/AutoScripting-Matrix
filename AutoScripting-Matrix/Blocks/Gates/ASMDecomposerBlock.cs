@@ -53,6 +53,7 @@ namespace Game
 
         public override IEnumerable<int> GetCreativeValues() {
             for (int i = 0; i < Infos.Length; i++) {
+                if (!Infos[i].IsDisplay) continue;
                 yield return Terrain.MakeBlockValue(Index, 0, SetType(0, i));
             }
         }
