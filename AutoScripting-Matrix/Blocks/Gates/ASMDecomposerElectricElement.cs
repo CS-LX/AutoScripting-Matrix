@@ -100,6 +100,18 @@ namespace Game {
                     m_voltage_bottom.M11 = m.M31;
                     m_voltage_left.M11 = m.M41;
                     break;
+                case 5:
+                    m_voltage_top = new Matrix(m.M11, m.M12, m.M13, m.M14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+                    m_voltage_right = new Matrix(m.M21, m.M22, m.M23, m.M24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+                    m_voltage_bottom = new Matrix(m.M31, m.M32, m.M33, m.M34, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+                    m_voltage_left = new Matrix(m.M41, m.M42, m.M43, m.M44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+                    break;
+                case 6:
+                    m_voltage_top.M11 = m.M11;
+                    m_voltage_right.M11 = m.M12;
+                    m_voltage_bottom.M11 = m.M13;
+                    m_voltage_left.M11 = m.M14;
+                    break;
             }
 
             return m_voltage_top != voltage_top || m_voltage_left != voltage_left || m_voltage_right != voltage_right || m_voltage_bottom != voltage_bottom || m_voltage_in != voltage_in;

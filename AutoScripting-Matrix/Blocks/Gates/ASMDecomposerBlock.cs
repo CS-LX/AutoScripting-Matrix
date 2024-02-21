@@ -12,8 +12,10 @@ namespace Game
             new ASMDecomposerInfo("矩阵TO解构器", "", "ASMatrixToTO", [ASMElectricConnectorDirection.Bottom], [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right]),
             new ASMDecomposerInfo("矩阵TRS解构器", "", "ASMatrixToTRS", [ASMElectricConnectorDirection.Bottom], [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right, ASMElectricConnectorDirection.Top]),
             new ASMDecomposerInfo("矩阵转二阶方阵", "", "ASMatrixTo2X2", [ASMElectricConnectorDirection.In], [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right, ASMElectricConnectorDirection.Top, ASMElectricConnectorDirection.Bottom]),
-            new ASMDecomposerInfo("矩阵转四维纵向量", "", "ASMatrixToVector4", [ASMElectricConnectorDirection.In], [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right, ASMElectricConnectorDirection.Top, ASMElectricConnectorDirection.Bottom]),
-            new ASMDecomposerInfo("四维纵向量转浮点", "", "ASMVector4ToFloat", [ASMElectricConnectorDirection.In], [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right, ASMElectricConnectorDirection.Top, ASMElectricConnectorDirection.Bottom]),
+            new ASMDecomposerInfo("矩阵转四维纵向量", "", "ASMatrixToVector4", [ASMElectricConnectorDirection.In], [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right, ASMElectricConnectorDirection.Top, ASMElectricConnectorDirection.Bottom], false),
+            new ASMDecomposerInfo("四维纵向量转浮点", "", "ASMVector4ToFloat", [ASMElectricConnectorDirection.In], [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right, ASMElectricConnectorDirection.Top, ASMElectricConnectorDirection.Bottom], false),
+            new ASMDecomposerInfo("矩阵转四维横向量", "", "ASMatrixToVector4T", [ASMElectricConnectorDirection.In], [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right, ASMElectricConnectorDirection.Top, ASMElectricConnectorDirection.Bottom]),
+            new ASMDecomposerInfo("四维横向量转浮点", "", "ASMVector4TToFloat", [ASMElectricConnectorDirection.In], [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right, ASMElectricConnectorDirection.Top, ASMElectricConnectorDirection.Bottom]),
         ];
 
         public Texture2D[] textures;
