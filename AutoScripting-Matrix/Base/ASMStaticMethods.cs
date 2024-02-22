@@ -278,6 +278,22 @@ namespace Game {
             return m;
         }
 
+        public static Matrix Max(Matrix x, Matrix y) {
+            Matrix m = Matrix.Zero;
+            for (int i = 0; i < 16; i++) {
+                SetElement(ref m, i, MathUtils.Max(x.GetElement(i), y.GetElement(i)));
+            }
+            return m;
+        }
+
+        public static Matrix Min(Matrix x, Matrix y) {
+            Matrix m = Matrix.Zero;
+            for (int i = 0; i < 16; i++) {
+                SetElement(ref m, i, MathUtils.Min(x.GetElement(i), y.GetElement(i)));
+            }
+            return m;
+        }
+
         /// <summary>
         /// 返回一个矩阵，内部每个元素都为以e为底，传入矩阵x的对应元素的对数 m[i] = log(x[i], e)
         /// </summary>
@@ -313,6 +329,54 @@ namespace Game {
             Matrix m = Matrix.Zero;
             for (int i = 0; i < 16; i++) {
                 SetElement(ref m, i, MathUtils.RadToDeg(x.GetElement(i)));
+            }
+            return m;
+        }
+
+        public static Matrix Sin(Matrix x) {
+            Matrix m = Matrix.Zero;
+            for (int i = 0; i < 16; i++) {
+                SetElement(ref m, i, MathUtils.Sin(x.GetElement(i)));
+            }
+            return m;
+        }
+
+        public static Matrix Cos(Matrix x) {
+            Matrix m = Matrix.Zero;
+            for (int i = 0; i < 16; i++) {
+                SetElement(ref m, i, MathUtils.Cos(x.GetElement(i)));
+            }
+            return m;
+        }
+
+        public static Matrix Tan(Matrix x) {
+            Matrix m = Matrix.Zero;
+            for (int i = 0; i < 16; i++) {
+                SetElement(ref m, i, MathUtils.Tan(x.GetElement(i)));
+            }
+            return m;
+        }
+
+        public static Matrix ASin(Matrix x) {
+            Matrix m = Matrix.Zero;
+            for (int i = 0; i < 16; i++) {
+                SetElement(ref m, i, MathUtils.Asin(x.GetElement(i)));
+            }
+            return m;
+        }
+
+        public static Matrix ACos(Matrix x) {
+            Matrix m = Matrix.Zero;
+            for (int i = 0; i < 16; i++) {
+                SetElement(ref m, i, MathUtils.Acos((x.GetElement(i))));
+            }
+            return m;
+        }
+
+        public static Matrix ATan(Matrix x) {
+            Matrix m = Matrix.Zero;
+            for (int i = 0; i < 16; i++) {
+                SetElement(ref m, i, MathUtils.Atan(x.GetElement(i)));
             }
             return m;
         }

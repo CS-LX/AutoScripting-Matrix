@@ -54,6 +54,10 @@ namespace Game {
                     break;
                 case 8: m_voltage = leftInput * Matrix.Invert(rightInput);//矩阵除法器
                     break;
+                case 9: m_voltage = ASMStaticMethods.Min(leftInput, rightInput);
+                    break;
+                case 10: m_voltage = ASMStaticMethods.Max(leftInput, rightInput);
+                    break;
             }
 
             return m_voltage != voltage;

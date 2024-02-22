@@ -20,6 +20,12 @@ namespace Game
             new CalcGateInfo("矩阵提取平移", "求输入矩阵的平移矩阵", "ASMExtractTranslation", false, false),
             new CalcGateInfo("矩阵弧度转角度", "", "ASMRad2Deg", true),
             new CalcGateInfo("矩阵角度转弧度", "", "ASMDeg2Rad", true),
+            new CalcGateInfo("矩阵正弦", "", "ASMSin", true),
+            new CalcGateInfo("矩阵余弦", "", "ASMCos", true),
+            new CalcGateInfo("矩阵正切", "", "ASMTan", true),
+            new CalcGateInfo("矩阵反正弦", "", "ASMAsin", true),
+            new CalcGateInfo("矩阵反余弦", "", "ASMAcos", true),
+            new CalcGateInfo("矩阵反正切", "", "ASMAtan", true),
         ];
 
         public Texture2D[] textures;
@@ -86,8 +92,8 @@ namespace Game
             return null;
         }
 
-        public static int GetType(int data) => (data >> 5) & 15;
+        public static int GetType(int data) => (data >> 5) & 31;
 
-        public static int SetType(int data, int type) => (data & -481) | ((type & 15) << 5);
+        public static int SetType(int data, int type) => (data & 0b1111111111111111111110000011111) | ((type & 31) << 5);
     }
 }

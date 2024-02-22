@@ -18,6 +18,8 @@ namespace Game
             new CalcGateInfo("矩阵对数器", "", "ASMLogarithmer", true),
             new CalcGateInfo("矩阵乘法器", "", "ASMMultiplier", false),
             new CalcGateInfo("矩阵除法器", "", "ASMDivider", false),
+            new CalcGateInfo("矩阵取小器", "", "ASMMinimumer", true),
+            new CalcGateInfo("矩阵取大器", "", "ASMMaximumer", true),
         ];
 
         public Texture2D[] textures;

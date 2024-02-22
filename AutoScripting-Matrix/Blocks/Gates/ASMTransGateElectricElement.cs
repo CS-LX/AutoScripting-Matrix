@@ -54,6 +54,19 @@ namespace Game {
                     break;
                 case 10: m_voltage = ASMStaticMethods.Deg2Rad(input);
                     break;
+                case 11: m_voltage = ASMStaticMethods.Sin(input);
+                    break;
+                case 12: m_voltage = ASMStaticMethods.Cos(input);
+                    break;
+                case 13: m_voltage = ASMStaticMethods.Tan(input);
+                    break;
+                case 14: m_voltage = ASMStaticMethods.ASin(input);
+                    break;
+                case 15: m_voltage = ASMStaticMethods.ACos(input);
+                    break;
+                case 16: m_voltage = ASMStaticMethods.ATan(input);
+                    break;
+
             }
 
             return m_voltage != voltage;
