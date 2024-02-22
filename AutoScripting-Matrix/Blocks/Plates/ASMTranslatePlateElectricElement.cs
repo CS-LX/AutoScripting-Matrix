@@ -23,16 +23,20 @@ namespace Game {
                 return false;
             }
 
-            Matrix normalTransform = Matrix.Zero;
-            Matrix velocityTransform = Matrix.Zero;
+            Matrix normalTransform = Matrix.Identity;
+            Matrix velocityTransform = Matrix.Identity;
 
             foreach (ASMElectricConnection connection in Connections) {
                 if (connection.ConnectorType != ASMElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {
                     ASMElectricConnectorDirection? connectorDirection = SubsystemASMElectricity.GetConnectorDirection(CellFaces[0].Face, Rotation, connection.ConnectorFace);
                     if (connectorDirection.HasValue) {
-                        if (connectorDirection == ASMElectricConnectorDirection.Left) normalTransform = connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-                        else if (connectorDirection == ASMElectricConnectorDirection.Right) velocityTransform = connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+                        if (connectorDirection == ASMElectricConnectorDirection.Left) {
+                            normalTransform = connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+                        }
+                        else if (connectorDirection == ASMElectricConnectorDirection.Right) {
+                            velocityTransform = connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+                        }
                     }
                 }
             }
