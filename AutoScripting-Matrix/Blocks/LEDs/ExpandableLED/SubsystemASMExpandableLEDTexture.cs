@@ -6,43 +6,46 @@ using TemplatesDatabase;
 
 namespace Game {
     public class SubsystemASMExpandableLEDTexture : Subsystem {
+
         List<ASMELEDFacialData> m_facialData = new List<ASMELEDFacialData>();
 
-        public Dictionary<ASMELEDFacialData, int> m_facialDataToSlot = new Dictionary<ASMELEDFacialData, int>();
-
-        public static Texture2D m_ledTexture = null;
+        public Dictionary<ASMELEDFacialData, Texture2D> m_facialDataToSlot = new Dictionary<ASMELEDFacialData, Texture2D>();
 
         public override void Load(ValuesDictionary valuesDictionary) {
             GenerateFacialData();
-            Image rawImage = ContentManager.Get<Image>("Textures/ASMExpandableLED");
+            Image rawImage = ContentManager.Get<Image>("Textures/ASMGeBlock");
             for (int i = 0; i < m_facialData.Count; i++) {
                 //添加数据入字典，方便查询格子
                 ASMELEDFacialData facialData = m_facialData[i];
-                m_facialDataToSlot.Add(facialData, i);
 
-                //获取该在哪个格子绘制
-                int slotX = i % 8;
-                int slotY = (int)MathUtils.Floor(i / 8f);
+                Image slotImage = new (rawImage);
 
                 //画点
-                if(facialData.m_points[0]) DrawRectangle(rawImage, slotX * 32, slotY * 32, 2, 2);
-                if(facialData.m_points[1]) DrawRectangle(rawImage, slotX * 32 + 30, slotY * 32, 2, 2);
-                if(facialData.m_points[2]) DrawRectangle(rawImage, slotX * 32 + 30, slotY * 32 + 30, 2, 2);
-                if(facialData.m_points[3]) DrawRectangle(rawImage, slotX * 32, slotY * 32 + 30, 2, 2);
+                if(facialData.m_points[0]) DrawRectangle(slotImage, 0, 0, 2, 2);
+                if(facialData.m_points[1]) DrawRectangle(slotImage, 30, 0, 2, 2);
+                if(facialData.m_points[2]) DrawRectangle(slotImage, 30, 30, 2, 2);
+                if(facialData.m_points[3]) DrawRectangle(slotImage, 0, 30, 2, 2);
                 //画线
-                if(facialData.m_sides[0]) DrawRectangle(rawImage, slotX * 32 + 2, slotY * 32, 28, 2);
-                if(facialData.m_sides[1]) DrawRectangle(rawImage, slotX * 32 + 30, slotY * 32 + 2, 2, 28);
-                if(facialData.m_sides[2]) DrawRectangle(rawImage, slotX * 32 + 2, slotY * 32 + 30, 28, 2);
-                if(facialData.m_sides[3]) DrawRectangle(rawImage, slotX * 32, slotY * 32 + 2, 2, 28);
-            }
-            using (FileStream stream = new FileStream(@"D:\AAA.png", FileMode.OpenOrCreate)) {
-                Image.Save(rawImage, stream, ImageFileFormat.Png, true);
+                if(facialData.m_sides[0]) DrawRectangle(slotImage, 2, 0, 28, 2);
+                if(facialData.m_sides[1]) DrawRectangle(slotImage, 30, 2, 2, 28);
+                if(facialData.m_sides[2]) DrawRectangle(slotImage, 2, 30, 28, 2);
+                if(facialData.m_sides[3]) DrawRectangle(slotImage, 0, 2, 2, 28);
+
+                m_facialDataToSlot.Add(facialData, Texture2D.Load(slotImage));
+
+                #if false
+                using (FileStream fileStream = new FileStream(@"D:\Slots\AAA" + i.ToString() + ".png", FileMode.OpenOrCreate)) {
+                    Image.Save(slotImage, fileStream, ImageFileFormat.Png, true);
+                }
+                #endif
             }
         }
 
         private void GenerateFacialData() {
             bool[] points = [false, false, false, false];
             bool[] sides = [false, false, false, false];
+            //无
+            m_facialData.Add(new ASMELEDFacialData(points, sides));
             //1点
             for (int i = 0; i < 4; i++) {
                 bool[] p = [false, false, false, false];
@@ -88,12 +91,43 @@ namespace Game {
 
                 m_facialData.Add(new ASMELEDFacialData(p, l));
             }
+            //3点带1线2
+            for (int j = 0; j < 4; j++) {
+                for (int i = 0; i < 4; i++) {
+                    bool[] p = [true, true, true, true];
+                    bool[] l = [false, false, false, false];
+
+                    p[i] = false;
+                    l[(i + j) % 4] = true;
+
+                    m_facialData.Add(new ASMELEDFacialData(p, l));
+                }
+            }
             //只开1线口
             for (int i = 0; i < 4; i++) {
                 bool[] p = [true, true, true, true];
                 bool[] l = [true, true, true, true];
 
                 l[i] = false;
+
+                m_facialData.Add(new ASMELEDFacialData(p, l));
+            }
+            //只开2线口
+            for (int i = 0; i < 4; i++) {
+                for (int j = 1; j < 4 - i; j++) {
+                    bool[] p = [true, true, true, true];
+                    bool[] l = [true, true, true, true];
+                    l[i] = false;
+                    l[j + i] = false;
+                    m_facialData.Add(new ASMELEDFacialData(p, l));
+                }
+            }
+            //只开3线口
+            for (int i = 0; i < 4; i++) {
+                bool[] p = [true, true, true, true];
+                bool[] l = [false, false, false, false];
+
+                l[i] = true;
 
                 m_facialData.Add(new ASMELEDFacialData(p, l));
             }
@@ -111,6 +145,5 @@ namespace Game {
                 }
             }
         }
-
     }
 }

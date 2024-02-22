@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <asset>
+    <contributor>
+      <author>Blender User</author>
+      <authoring_tool>Blender 3.4.0 commit date:2022-12-06, commit time:18:46, hash:a95bf1ac01be</authoring_tool>
+    </contributor>
+    <created>2024-02-22T18:56:29</created>
+    <modified>2024-02-22T18:56:29</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_effects>
+    <effect id="材质-effect">
+      <profile_COMMON>
+        <technique sid="common">
+          <lambert>
+            <emission>
+              <color sid="emission">0 0 0 1</color>
+            </emission>
+            <diffuse>
+              <color sid="diffuse">0.8 0.8 0.8 1</color>
+            </diffuse>
+            <reflectivity>
+              <float sid="specular">0.5</float>
+            </reflectivity>
+            <index_of_refraction>
+              <float sid="ior">1.45</float>
+            </index_of_refraction>
+          </lambert>
+        </technique>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+  <library_images/>
+  <library_materials>
+    <material id="材质-material" name="材质">
+      <instance_effect url="#材质-effect"/>
+    </material>
+  </library_materials>
+  <library_geometries>
+    <geometry id="Face-mesh" name="Face">
+      <mesh>
+        <source id="Face-mesh-positions">
+          <float_array id="Face-mesh-positions-array" count="12">-50 -50 6.25 50 50 6.25 50 -50 6.25 -50 50 6.25</float_array>
+          <technique_common>
+            <accessor source="#Face-mesh-positions-array" count="4" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Face-mesh-normals">
+          <float_array id="Face-mesh-normals-array" count="3">0 0 1</float_array>
+          <technique_common>
+            <accessor source="#Face-mesh-normals-array" count="1" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Face-mesh-map-0">
+          <float_array id="Face-mesh-map-0-array" count="12">0 0 1 0 1 1 1 1 0 1 0 0</float_array>
+          <technique_common>
+            <accessor source="#Face-mesh-map-0-array" count="6" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Face-mesh-vertices">
+          <input semantic="POSITION" source="#Face-mesh-positions"/>
+        </vertices>
+        <triangles material="材质-material" count="2">
+          <input semantic="VERTEX" source="#Face-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Face-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Face-mesh-map-0" offset="2" set="0"/>
+          <p>0 0 0 2 0 1 1 0 2 1 0 3 3 0 4 0 0 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="ASMLed-mesh" name="ASMLed">
+      <mesh>
+        <source id="ASMLed-mesh-positions">
+          <float_array id="ASMLed-mesh-positions-array" count="24">-50 -50 6.25 50 50 6.25 50 -50 6.25 -50 50 6.25 -50 -50 0 50 -50 0 50 50 0 -50 50 0</float_array>
+          <technique_common>
+            <accessor source="#ASMLed-mesh-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="ASMLed-mesh-normals">
+          <float_array id="ASMLed-mesh-normals-array" count="15">0 -1 0 1 0 0 0 1 0 -1 0 0 0 0 -1</float_array>
+          <technique_common>
+            <accessor source="#ASMLed-mesh-normals-array" count="5" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="ASMLed-mesh-map-0">
+          <float_array id="ASMLed-mesh-map-0-array" count="60">0.03124994 0 0.03124994 0.5 0 0.5 0 0.5 0 0 0.03124994 0 0.03125 0 0.03124994 0.5 0 0.5 0 0.5 0 0 0.03125 0 0.03125 0 0.03125 0.5 0 0.5 0 0.5 0 0 0.03125 0 0.03125 0 0.03125 0.5 0 0.5 0 0.5 0 0 0.03125 0 0.5 1 0 1 0 0.5 0.5 1 0 0.5 0.5 0.5</float_array>
+          <technique_common>
+            <accessor source="#ASMLed-mesh-map-0-array" count="30" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="ASMLed-mesh-vertices">
+          <input semantic="POSITION" source="#ASMLed-mesh-positions"/>
+        </vertices>
+        <triangles material="材质-material" count="10">
+          <input semantic="VERTEX" source="#ASMLed-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#ASMLed-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#ASMLed-mesh-map-0" offset="2" set="0"/>
+          <p>4 0 0 5 0 1 2 0 2 2 0 3 0 0 4 4 0 5 5 1 6 6 1 7 1 1 8 1 1 9 2 1 10 5 1 11 6 2 12 7 2 13 3 2 14 3 2 15 1 2 16 6 2 17 7 3 18 4 3 19 0 3 20 0 3 21 3 3 22 7 3 23 5 4 24 4 4 25 7 4 26 5 4 27 7 4 28 6 4 29</p>
+        </triangles>
+      </mesh>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="Scene" name="Scene">
+      <node id="Face" name="Face" type="NODE">
+        <matrix sid="transform">0.01 0 0 0 0 -2.8213e-9 0.01 0 0 -0.01 -2.8213e-9 0 0 0 0 1</matrix>
+        <instance_geometry url="#Face-mesh" name="Face">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="材质-material" target="#材质-material">
+                <bind_vertex_input semantic="ASMLed-mesh-map-0" input_semantic="TEXCOORD" input_set="0"/>
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="ASMLed" name="ASMLed" type="NODE">
+        <matrix sid="transform">0.01 0 0 0 0 -2.8213e-9 0.01 0 0 -0.01 -2.8213e-9 0 0 0 0 1</matrix>
+        <instance_geometry url="#ASMLed-mesh" name="ASMLed">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="材质-material" target="#材质-material">
+                <bind_vertex_input semantic="ASMLed-mesh-map-0" input_semantic="TEXCOORD" input_set="0"/>
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#Scene"/>
+  </scene>
+</COLLADA>

@@ -184,10 +184,13 @@
 	  <None Update="Assets\Textures\ASMGeBlock.png">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Assets\Textures\ASMExpandableLED.png">
+	  <None Remove="Subsystem\ExpandableLED\**" />
+	  <None Update="Assets\Models\ASMExpandableLED.dae">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Remove="Subsystem\ExpandableLED\**" />
+	  <None Update="Assets\Textures\ASMExpandableLEDDefault.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 	<ItemGroup>
 	  <Reference Include="Engine">

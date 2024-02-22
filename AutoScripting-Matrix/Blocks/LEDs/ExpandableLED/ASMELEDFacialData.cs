@@ -12,11 +12,11 @@ namespace Game {
             m_sides = sides;
         }
 
-        public bool Equals(ASMELEDFacialData other) => m_points.Equals(other.m_points) && m_sides.Equals(other.m_sides);
+        public bool Equals(ASMELEDFacialData other) => m_points.SequenceEqual(other.m_points) && m_sides.SequenceEqual(other.m_sides);
 
         public override bool Equals(object? obj) => obj is ASMELEDFacialData other && Equals(other);
 
-        public override int GetHashCode() => HashCode.Combine(m_points, m_sides);
+        public override int GetHashCode() => HashCode.Combine(m_points[0], m_points[1], m_points[2], m_points[3], m_sides[0], m_sides[1], m_sides[2], m_sides[3]);
 
         public static bool operator ==(ASMELEDFacialData left, ASMELEDFacialData right) => left.Equals(right);
 
