@@ -105,11 +105,19 @@ namespace Game {
 			for (int i = 0; i < 4; i++) {
 				Point3 pos = point + axes[i];//获取四个邻面的绝对坐标
 				Point3 posN = point + axes[(i + 3) % 4];//获取四个邻面的绝对坐标
-				s[i] = Terrain.ExtractContents(terrain.Terrain.GetCellValueFast(pos.X, pos.Y, pos.Z)) != Index;
+				s[i] = CheckBlock(terrain, point, pos);
 				Point3 posC = point + conners[i];//获取四个角绝对坐标
-				p[i] = Terrain.ExtractContents(terrain.Terrain.GetCellValueFast(posC.X, posC.Y, posC.Z)) != Index || Terrain.ExtractContents(terrain.Terrain.GetCellValueFast(pos.X, pos.Y, pos.Z)) != Index || Terrain.ExtractContents(terrain.Terrain.GetCellValueFast(posN.X, posN.Y, posN.Z)) != Index;
+				p[i] = CheckBlock(terrain, point, posC) || CheckBlock(terrain, point, pos) || CheckBlock(terrain, point, posN);
 			}
 			return new ASMELEDFacialData(p, s);
+		}
+
+		private bool CheckBlock(SubsystemTerrain terrain, Point3 position, Point3 neighborPosition) {
+			if (Terrain.ExtractContents(terrain.Terrain.GetCellValueFast(neighborPosition.X, neighborPosition.Y, neighborPosition.Z)) == Index
+				&& GetFace(terrain.Terrain.GetCellValueFast(position.X, position.Y, position.Z)) == GetFace(terrain.Terrain.GetCellValueFast(neighborPosition.X, neighborPosition.Y, neighborPosition.Z))) {
+				return false;
+			}
+			return true;
 		}
 	}
 }
