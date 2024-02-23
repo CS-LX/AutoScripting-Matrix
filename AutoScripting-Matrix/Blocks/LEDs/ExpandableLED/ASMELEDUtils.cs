@@ -47,5 +47,38 @@ namespace Game {
 
             return maxRect;
         }
+
+        public static void FaceToAxesAndConner(int face, out Point3[] axes, out Point3[] conners) {
+            switch (face) {
+                case 0:
+                    axes = [Point3.UnitY, Point3.UnitX, -Point3.UnitY, -Point3.UnitX];
+                    conners = [new Point3(-1, 1, 0), new Point3(1, 1, 0), new Point3(1, -1, 0), new Point3(-1, -1, 0)];
+                    break;
+                case 1:
+                    axes = [Point3.UnitY, -Point3.UnitZ, -Point3.UnitY, Point3.UnitZ];
+                    conners = [new Point3(0, 1, 1), new Point3(0, 1, -1), new Point3(0, -1, -1), new Point3(0, -1, 1)];
+                    break;
+                case 2:
+                    axes = [Point3.UnitY, -Point3.UnitX, -Point3.UnitY, Point3.UnitX];
+                    conners = [new Point3(1, 1, 0), new Point3(-1, 1, 0), new Point3(-1, -1, 0), new Point3(1, -1, 0)];
+                    break;
+                case 3:
+                    axes = [Point3.UnitY, Point3.UnitZ, -Point3.UnitY, -Point3.UnitZ];
+                    conners = [new Point3(0, 1, -1), new Point3(0, 1, 1), new Point3(0, -1, 1), new Point3(0, -1, -1)];
+                    break;
+                case 4:
+                    axes = [-Point3.UnitZ, Point3.UnitX, Point3.UnitZ, -Point3.UnitX];
+                    conners = [new Point3(-1, 0, -1), new Point3(1, 0, -1), new Point3(1, 0, 1), new Point3(-1, 0, 1)];
+                    break;
+                case 5:
+                    axes = [Point3.UnitZ, Point3.UnitX, -Point3.UnitZ, -Point3.UnitX];
+                    conners = [new Point3(-1, 0, 1), new Point3(1, 0, 1), new Point3(1, 0, -1), new Point3(-1, 0, -1)];
+                    break;
+                default:
+                    axes = [-Point3.UnitZ, Point3.UnitX, Point3.UnitZ, -Point3.UnitX];
+                    conners = [new Point3(-1, 0, -1), new Point3(1, 0, -1), new Point3(1, 0, 1), new Point3(-1, 0, 1)];
+                    break;
+            }
+        }
     }
 }

@@ -64,32 +64,8 @@ namespace Game {
 			Point3[] axes = [-Point3.UnitZ, Point3.UnitX, Point3.UnitZ, -Point3.UnitX];
 			Point3[] conners = [new Point3(-1, 0, -1), new Point3(1, 0, -1), new Point3(1, 0, 1), new Point3(-1, 0, 1)];
 
-			switch (face) {
-				case 0:
-					axes = [Point3.UnitY, Point3.UnitX, -Point3.UnitY, -Point3.UnitX];
-					conners = [new Point3(-1, 1, 0), new Point3(1, 1, 0), new Point3(1, -1, 0), new Point3(-1, -1, 0)];
-					break;
-				case 1:
-					axes = [Point3.UnitY, -Point3.UnitZ, -Point3.UnitY, Point3.UnitZ];
-					conners = [new Point3(0, 1, 1), new Point3(0, 1, -1), new Point3(0, -1, -1), new Point3(0, -1, 1)];
-					break;
-				case 2:
-					axes = [Point3.UnitY, -Point3.UnitX, -Point3.UnitY, Point3.UnitX];
-					conners = [new Point3(1, 1, 0), new Point3(-1, 1, 0), new Point3(-1, -1, 0), new Point3(1, -1, 0)];
-					break;
-				case 3:
-					axes = [Point3.UnitY, Point3.UnitZ, -Point3.UnitY, -Point3.UnitZ];
-					conners = [new Point3(0, 1, -1), new Point3(0, 1, 1), new Point3(0, -1, 1), new Point3(0, -1, -1)];
-					break;
-				case 4:
-					axes = [-Point3.UnitZ, Point3.UnitX, Point3.UnitZ, -Point3.UnitX];
-					conners = [new Point3(-1, 0, -1), new Point3(1, 0, -1), new Point3(1, 0, 1), new Point3(-1, 0, 1)];
-					break;
-				case 5:
-					axes = [Point3.UnitZ, Point3.UnitX, -Point3.UnitZ, -Point3.UnitX];
-					conners = [new Point3(-1, 0, 1), new Point3(1, 0, 1), new Point3(1, 0, -1), new Point3(-1, 0, -1)];
-					break;
-			}
+			ASMELEDUtils.FaceToAxesAndConner(face, out axes, out conners);
+
 			for (int i = 0; i < 4; i++) {
 				Point3 pos = point + axes[i];//获取四个邻面的绝对坐标
 				Point3 posN = point + axes[(i + 3) % 4];//获取四个邻面的绝对坐标
