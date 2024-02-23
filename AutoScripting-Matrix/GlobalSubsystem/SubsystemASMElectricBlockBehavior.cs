@@ -23,6 +23,7 @@ namespace Game
 			ASMCreatureModelTransformerBlock.Index,
 			ASMDecomposerBlock.Index,
 			ASMWireThroughBlock.Index,
+			ASMExpandableLEDBlock.Index,
 		};
 
 		public override void OnBlockGenerated(int value, int x, int y, int z, bool isLoaded)

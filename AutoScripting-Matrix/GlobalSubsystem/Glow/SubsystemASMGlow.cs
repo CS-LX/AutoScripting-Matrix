@@ -44,6 +44,12 @@ namespace Game {
             return glowBlock;
         }
 
+        public ASMGlowLine AddGlowLine() {
+            var glowBlock = new ASMGlowLine();
+            m_glowGeometries.Add(glowBlock, true);
+            return glowBlock;
+        }
+
         public void RemoveGlowPoint(ASMGlowPoint glowPoint) {
             m_glowPoints.Remove(glowPoint);
         }

@@ -53,21 +53,9 @@ namespace Game {
 			return result;
 		}
 
-		public override ASMElectricElement CreateElectricElement(SubsystemASMElectricity subsystemElectricity, int value, int x, int y, int z) => new ASMBlockDisplayerElectricElement(subsystemElectricity, new CellFace(x, y, z, GetFace(value)), value);
+		public override ASMElectricElement CreateElectricElement(SubsystemASMElectricity subsystemElectricity, int value, int x, int y, int z) => new ASMExpandableLedElectricElement(subsystemElectricity, new CellFace(x, y, z, GetFace(value)));
 
-		public override ASMElectricConnectorType? GetConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z)
-		{
-			int data = Terrain.ExtractData(value);
-			if (GetFace(value) == face)
-			{
-				ASMElectricConnectorDirection? connectorDirection = SubsystemASMElectricity.GetConnectorDirection(GetFace(value), GetRotation(data), connectorFace);
-				if (connectorDirection == ASMElectricConnectorDirection.Right || connectorDirection == ASMElectricConnectorDirection.Left)
-				{
-					return ASMElectricConnectorType.Input;
-				}
-			}
-			return null;
-		}
+		public override ASMElectricConnectorType? GetConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) => ASMElectricConnectorType.Input;
 
 		public ASMELEDFacialData GetFacialData(int face, Point3 point, SubsystemTerrain terrain) {
 			bool[] p = [true, true, true, true];
