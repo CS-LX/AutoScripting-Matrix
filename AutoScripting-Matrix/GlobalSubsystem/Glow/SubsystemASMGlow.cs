@@ -14,9 +14,13 @@ namespace Game {
 
         public Dictionary<ASMGlowBlock, bool> m_glowBlocks = new Dictionary<ASMGlowBlock, bool>();
 
+        public Dictionary<IASMGlowGeometry, bool> m_glowGeometries = new Dictionary<IASMGlowGeometry, bool>();
+
         public PrimitivesRenderer3D m_primitivesRenderer = new PrimitivesRenderer3D();
 
         public TexturedBatch3D[] m_batchesByType = new TexturedBatch3D[4];
+
+        public FlatBatch3D m_geometryBatch;
 
         public static int[] m_drawOrders = new int[1] { 110 };
 
@@ -34,12 +38,22 @@ namespace Game {
             return glowBlock;
         }
 
+        public ASMGlowCuboid AddGlowCuboid() {
+            var glowBlock = new ASMGlowCuboid();
+            m_glowGeometries.Add(glowBlock, true);
+            return glowBlock;
+        }
+
         public void RemoveGlowPoint(ASMGlowPoint glowPoint) {
             m_glowPoints.Remove(glowPoint);
         }
 
         public void RemoveGlowBlock(ASMGlowBlock glowBlock) {
             m_glowBlocks.Remove(glowBlock);
+        }
+
+        public void RemoveGlowGeometry(IASMGlowGeometry glowGeometry) {
+            m_glowGeometries.Remove(glowGeometry);
         }
 
         public void Draw(Camera camera, int drawOrder) {
@@ -102,6 +116,10 @@ namespace Game {
                 //绘制方块
                 block.DrawBlock(m_primitivesRenderer, glowBlock.index, Color.White, (float)(block.InHandScale * 1), ref glowBlock.transform, glowBlock.environmentallySusceptible ? environmentData : BlocksManager.m_defaultEnvironmentData);
             }
+            //绘制几何方面
+            foreach (var glowGeometry in m_glowGeometries) {
+                glowGeometry.Key.Draw(m_geometryBatch);
+            }
             m_primitivesRenderer.Flush(camera.ViewProjectionMatrix);
         }
 
@@ -144,6 +162,7 @@ namespace Game {
                 BlendState.AlphaBlend,
                 SamplerState.LinearClamp
             );
+            m_geometryBatch = m_primitivesRenderer.FlatBatch();
         }
     }
 }

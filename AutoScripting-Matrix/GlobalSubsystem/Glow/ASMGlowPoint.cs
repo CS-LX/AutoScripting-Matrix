@@ -1,4 +1,5 @@
 using Engine;
+using Engine.Graphics;
 
 namespace Game {
     public class ASMGlowPoint {
@@ -27,5 +28,19 @@ namespace Game {
         public Matrix transform;
 
         public bool environmentallySusceptible;
+    }
+
+    public interface IASMGlowGeometry {
+        public abstract void Draw(FlatBatch3D flatBatch3D);
+    }
+
+    public class ASMGlowCuboid : IASMGlowGeometry {
+        public Vector3 m_start;
+        public Vector3 m_end;
+        public Color m_color;
+
+        public void Draw(FlatBatch3D flatBatch3D) {
+            flatBatch3D.QueueBoundingBox(new BoundingBox(m_start, m_end), m_color);
+        }
     }
 }
