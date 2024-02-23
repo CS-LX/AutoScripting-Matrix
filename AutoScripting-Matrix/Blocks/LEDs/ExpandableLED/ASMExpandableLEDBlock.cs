@@ -53,7 +53,7 @@ namespace Game {
 			return result;
 		}
 
-		public override ASMElectricElement CreateElectricElement(SubsystemASMElectricity subsystemElectricity, int value, int x, int y, int z) => new ASMExpandableLedElectricElement(subsystemElectricity, new CellFace(x, y, z, GetFace(value)));
+		public override ASMElectricElement CreateElectricElement(SubsystemASMElectricity subsystemElectricity, int value, int x, int y, int z) => new ASMExpandableLEDElectricElement(subsystemElectricity, new CellFace(x, y, z, GetFace(value)));
 
 		public override ASMElectricConnectorType? GetConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) => ASMElectricConnectorType.Input;
 

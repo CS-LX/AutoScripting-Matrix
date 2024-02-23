@@ -3,6 +3,7 @@ using Engine;
 namespace Game {
     public class ASMELEDController {
         public Matrix Matrix;
+        public Point3 Position;
 
         public string SaveToString() {
             return Matrix.ToHexString();

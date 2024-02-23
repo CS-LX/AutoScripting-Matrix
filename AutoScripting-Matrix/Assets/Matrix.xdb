@@ -10,10 +10,12 @@
 		<MemberSubsystemTemplate Name="ASMExpandableLEDTexture" Guid="16594046-1002-4160-a198-bebd4a7f9cb2" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
 			<Parameter Name="Class" Guid="16594046-1002-4c80-bb75-280852883cac" Value="Game.SubsystemASMExpandableLEDTexture" Type="string"/>
 		</MemberSubsystemTemplate>
+		<!--
 		<MemberSubsystemTemplate Name="ASMExpandableLEDController" Guid="16594046-1003-4160-a198-bebd4a7f9cb2" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
 			<ParameterSet Name="Blocks" Guid="16594046-1003-42ec-ba48-2640daf1db47" />
 			<Parameter Name="Class" Guid="16594046-1003-4c80-bb75-280852883cac" Value="Game.SubsystemASMExpandableLEDController" Type="string"/>
 		</MemberSubsystemTemplate>
+		-->
 		<MemberSubsystemTemplate Name="ASMGlow" Guid="16594046-1002-41e4-b9df-dcba507c4b21" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
 			<Parameter Name="Class" Guid="16594046-1002-4eb9-9bee-95a8d0b68bcf" Value="Game.SubsystemASMGlow" Type="string"/>
 		</MemberSubsystemTemplate>

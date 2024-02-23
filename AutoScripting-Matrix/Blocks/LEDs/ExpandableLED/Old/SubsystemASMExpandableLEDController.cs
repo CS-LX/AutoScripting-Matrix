@@ -16,6 +16,7 @@ namespace Game {
         public ASMELEDController AddController(Point3 point) {//加入控制器
             if (m_controllers.Keys.Contains(point)) throw new Exception($"在此位置({point})已经存在控制器!");
             ASMELEDController controller = new ASMELEDController();
+            controller.Position = point;
             m_controllers.Add(point, controller);
             return controller;
         }
@@ -47,6 +48,7 @@ namespace Game {
             {
                 Point3 key = HumanReadableConverter.ConvertFromString<Point3>(item.Key);
                 m_controllers[key] = ASMELEDController.CreateByString(item.Value.ToString());
+                m_controllers[key].Position = key;
             }
         }
     }
