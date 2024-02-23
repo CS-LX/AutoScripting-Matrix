@@ -2,7 +2,6 @@ using Engine;
 
 namespace Game {
     public class ASMExpandableLEDElectricElement : ASMMountedElectricElement {
-        public ASMELEDController m_controller;
         public SubsystemTerrain m_subsystemTerrain;
 
         public ASMExpandableLEDElectricElement(SubsystemASMElectricity subsystemElectricity, CellFace cellFace) : base(subsystemElectricity, cellFace) {
@@ -33,7 +32,7 @@ namespace Game {
                 Point3 checkPoint = center + axes[i];
                 int blockID = Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValueFast(checkPoint.X, checkPoint.Y, checkPoint.Z));
                 if (blockID == ASMExpandableLEDBlock.Index) {
-                    //可以往x方向走
+                    //可以往某方向走
                     GetConnectedElectricElements(checkPoint.X, checkPoint.Y, checkPoint.Z, face, parent);
                 }
             }
