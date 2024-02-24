@@ -13,20 +13,20 @@ namespace Game {
         }
 
         public override bool OnInteract(TerrainRaycastResult raycastResult, ComponentMiner componentMiner) {
-            if (m_glowCuboids.Count > 0) return true;
             CellFace cellFace = CellFaces[0];
 
-
+            RemoveGlows();//删除发光点（引用类型，其他LED内的一并会删除）
             Dictionary<CellFace, ASMExpandableLEDElectricElement> all = new();
             GetConnectedElectricElements(cellFace.X, cellFace.Y, cellFace.Z, cellFace.Face, all);
             foreach (var cell in all) {
+                if (cell.Value.m_glowCuboids != m_glowCuboids) cell.Value.RemoveGlows();//相邻的LED发光点不是引用自自己这的
                 ASMGlowCuboid m_glowCuboid = m_subsystemGlow.AddGlowCuboid();
                 m_glowCuboid = m_subsystemGlow.AddGlowCuboid();
                 m_glowCuboid.m_start = new Vector3(cell.Key.Point) + Vector3.One * 0.2f;
                 m_glowCuboid.m_end = new Vector3(cell.Key.Point) + Vector3.One * 0.8f;
                 m_glowCuboid.m_color = Color.Yellow;
                 m_glowCuboids.Add(m_glowCuboid);
-                cell.Value.m_glowCuboids = m_glowCuboids;
+                cell.Value.m_glowCuboids = m_glowCuboids;//设置相邻LED的发光点为自己这引用，一整块LED共用一个发光点
             }
             SubsystemElectricity.SubsystemAudio.PlaySound("Audio/Click", 1f, 0f, new Vector3(cellFace.X, cellFace.Y, cellFace.Z), 2f, autoDelay: true);
             return true;
@@ -34,6 +34,10 @@ namespace Game {
 
         public override void OnRemoved() {
             base.OnRemoved();
+            RemoveGlows();
+        }
+
+        public void RemoveGlows() {
             for (int i = 0; i < m_glowCuboids.Count; i++) {
                 m_subsystemGlow.RemoveGlowGeometry(m_glowCuboids[i]);
             }
