@@ -5,43 +5,57 @@ namespace Game {
         public SubsystemTerrain m_subsystemTerrain;
         public SubsystemASMGlow m_subsystemGlow;
 
-        public List<ASMGlowCuboid> m_glowCuboids = new List<ASMGlowCuboid>();
+        public SubsystemASMExpandableLEDControllers m_subsystemControllers;
+
+        public ASMGlowCuboid m_glowCubiod;
 
         public ASMExpandableLEDElectricElement(SubsystemASMElectricity subsystemElectricity, CellFace cellFace) : base(subsystemElectricity, cellFace) {
             m_subsystemTerrain = SubsystemElectricity.SubsystemTerrain;
             m_subsystemGlow = SubsystemElectricity.Project.FindSubsystem<SubsystemASMGlow>();
+            m_subsystemControllers = SubsystemElectricity.Project.FindSubsystem<SubsystemASMExpandableLEDControllers>();
+        }
+
+        public override void OnAdded() {
+            base.OnAdded();
+            m_glowCubiod = m_subsystemGlow.AddGlowCuboid();
+            m_glowCubiod.m_start = new Vector3(CellFaces[0].Point) + Vector3.One * 0.2f;
+            m_glowCubiod.m_end = new Vector3(CellFaces[0].Point) + Vector3.One * 0.8f;
         }
 
         public override bool OnInteract(TerrainRaycastResult raycastResult, ComponentMiner componentMiner) {
             CellFace cellFace = CellFaces[0];
-
-            RemoveGlows();//删除发光点（引用类型，其他LED内的一并会删除）
             Dictionary<CellFace, ASMExpandableLEDElectricElement> all = new();
             GetConnectedElectricElements(cellFace.X, cellFace.Y, cellFace.Z, cellFace.Face, all);
-            foreach (var cell in all) {
-                if (cell.Value.m_glowCuboids != m_glowCuboids) cell.Value.RemoveGlows();//相邻的LED发光点不是引用自自己这的
-                ASMGlowCuboid m_glowCuboid = m_subsystemGlow.AddGlowCuboid();
-                m_glowCuboid = m_subsystemGlow.AddGlowCuboid();
-                m_glowCuboid.m_start = new Vector3(cell.Key.Point) + Vector3.One * 0.2f;
-                m_glowCuboid.m_end = new Vector3(cell.Key.Point) + Vector3.One * 0.8f;
-                m_glowCuboid.m_color = Color.Yellow;
-                m_glowCuboids.Add(m_glowCuboid);
-                cell.Value.m_glowCuboids = m_glowCuboids;//设置相邻LED的发光点为自己这引用，一整块LED共用一个发光点
+
+            //已经有控制器，则删除旧的
+            foreach (var cell in all.Keys) {
+                if(m_subsystemControllers.IsThereAController(cell)) m_subsystemControllers.RemoveController(m_subsystemControllers.GetController(cell));
             }
+
+            //为新的板子添加新控制器实例与对应关系
+            m_subsystemControllers.AddControllerByPoints(all.Keys.ToArray(), new ASMExpandableLEDController());
+
             SubsystemElectricity.SubsystemAudio.PlaySound("Audio/Click", 1f, 0f, new Vector3(cellFace.X, cellFace.Y, cellFace.Z), 2f, autoDelay: true);
             return true;
         }
 
         public override void OnRemoved() {
             base.OnRemoved();
-            RemoveGlows();
+            m_subsystemControllers.RemovePoint(CellFaces[0]);
+            m_subsystemGlow.RemoveGlowGeometry(m_glowCubiod);
         }
 
-        public void RemoveGlows() {
-            for (int i = 0; i < m_glowCuboids.Count; i++) {
-                m_subsystemGlow.RemoveGlowGeometry(m_glowCuboids[i]);
+
+        public override bool Simulate() {
+            Console.WriteLine(m_subsystemControllers.GetControllersCount());
+            if (m_subsystemControllers.IsThereAController(CellFaces[0])) {
+                m_glowCubiod.m_color = Color.Yellow;
             }
-            m_glowCuboids.Clear();
+            else {
+                m_glowCubiod.m_color = Color.Transparent;
+            }
+            SubsystemElectricity.QueueElectricElementForSimulation(this, SubsystemElectricity.CircuitStep + 10);
+            return false;
         }
 
         public void GetConnectedElectricElements(int x, int y, int z, int face, Dictionary<CellFace, ASMExpandableLEDElectricElement> parent) {
