@@ -20,29 +20,25 @@ namespace Game {
             m_glowCubiod = m_subsystemGlow.AddGlowCuboid();
             m_glowCubiod.m_start = new Vector3(CellFaces[0].Point) + Vector3.One * 0.2f;
             m_glowCubiod.m_end = new Vector3(CellFaces[0].Point) + Vector3.One * 0.8f;
-        }
 
-        public override bool OnInteract(TerrainRaycastResult raycastResult, ComponentMiner componentMiner) {
-            CellFace cellFace = CellFaces[0];
-            Dictionary<CellFace, ASMExpandableLEDElectricElement> all = new();
-            GetConnectedElectricElements(cellFace.X, cellFace.Y, cellFace.Z, cellFace.Face, all);
-
-            //已经有控制器，则删除旧的
-            foreach (var cell in all.Keys) {
-                if(m_subsystemControllers.IsThereAController(cell)) m_subsystemControllers.RemoveController(m_subsystemControllers.GetController(cell));
-            }
-
-            //为新的板子添加新控制器实例与对应关系
-            m_subsystemControllers.AddControllerByPoints(all.Keys.ToArray(), new ASMExpandableLEDController());
-
-            SubsystemElectricity.SubsystemAudio.PlaySound("Audio/Click", 1f, 0f, new Vector3(cellFace.X, cellFace.Y, cellFace.Z), 2f, autoDelay: true);
-            return true;
+            UpdateController();
         }
 
         public override void OnRemoved() {
             base.OnRemoved();
             m_subsystemControllers.RemovePoint(CellFaces[0]);
             m_subsystemGlow.RemoveGlowGeometry(m_glowCubiod);
+
+            ASMELEDUtils.FaceToAxesAndConner(CellFaces[0].Face, out Point3[] axes, out _);
+            Point3 center = CellFaces[0].Point;
+            for (int i = 0; i < 4; i++) {
+                Point3 checkPoint = center + axes[i];
+                int blockID = Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValueFast(checkPoint.X, checkPoint.Y, checkPoint.Z));
+                if (blockID == ASMExpandableLEDBlock.Index) {
+                    ASMExpandableLEDElectricElement electricElement = SubsystemElectricity.GetElectricElement(checkPoint.X, checkPoint.Y, checkPoint.Z, CellFaces[0].Face) as ASMExpandableLEDElectricElement;
+                    electricElement.UpdateController();
+                }
+            }
         }
 
 
@@ -56,6 +52,20 @@ namespace Game {
             }
             SubsystemElectricity.QueueElectricElementForSimulation(this, SubsystemElectricity.CircuitStep + 10);
             return false;
+        }
+
+        public void UpdateController() {
+            CellFace cellFace = CellFaces[0];
+            Dictionary<CellFace, ASMExpandableLEDElectricElement> all = new();
+            GetConnectedElectricElements(cellFace.X, cellFace.Y, cellFace.Z, cellFace.Face, all);
+
+            //已经有控制器，则删除旧的
+            foreach (var cell in all.Keys) {
+                if(m_subsystemControllers.IsThereAController(cell)) m_subsystemControllers.RemoveController(m_subsystemControllers.GetController(cell));
+            }
+
+            //为新的板子添加新控制器实例与对应关系
+            m_subsystemControllers.AddControllerByPoints(all.Keys.ToArray(), new ASMExpandableLEDController());
         }
 
         public void GetConnectedElectricElements(int x, int y, int z, int face, Dictionary<CellFace, ASMExpandableLEDElectricElement> parent) {
