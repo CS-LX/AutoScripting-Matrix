@@ -20,6 +20,15 @@ namespace Game {
         public bool environmentallySusceptible;
     }
 
+    public class ASMGlowText {
+        public string m_text;
+        public Vector3 m_position;
+        public Vector3 m_right;
+        public Vector3 m_down;
+        public Color m_color;
+        public bool m_billBoard = false;
+    }
+
     public interface IASMGlowGeometry {
         public abstract void Draw(FlatBatch3D flatBatch3D);
     }

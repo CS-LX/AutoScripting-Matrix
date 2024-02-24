@@ -2,6 +2,7 @@ using Engine;
 using Engine.Graphics;
 using GameEntitySystem;
 using System.Collections.Generic;
+using Engine.Media;
 using TemplatesDatabase;
 
 namespace Game {
@@ -16,11 +17,15 @@ namespace Game {
 
         public Dictionary<IASMGlowGeometry, bool> m_glowGeometries = new Dictionary<IASMGlowGeometry, bool>();
 
+        public Dictionary<ASMGlowText, bool> m_glowTexts = new Dictionary<ASMGlowText, bool>();
+
         public PrimitivesRenderer3D m_primitivesRenderer = new PrimitivesRenderer3D();
 
         public TexturedBatch3D[] m_batchesByType = new TexturedBatch3D[4];
 
         public FlatBatch3D m_geometryBatch;
+
+        public FontBatch3D m_textBatch;
 
         public static int[] m_drawOrders = new int[1] { 110 };
 
@@ -50,6 +55,12 @@ namespace Game {
             return glowBlock;
         }
 
+        public ASMGlowText AddGlowText() {
+            var glowBlock = new ASMGlowText();
+            m_glowTexts.Add(glowBlock, true);
+            return glowBlock;
+        }
+
         public void RemoveGlowPoint(ASMGlowPoint glowPoint) {
             m_glowPoints.Remove(glowPoint);
         }
@@ -60,6 +71,10 @@ namespace Game {
 
         public void RemoveGlowGeometry(IASMGlowGeometry glowGeometry) {
             m_glowGeometries.Remove(glowGeometry);
+        }
+
+        public void RemoveGlowText(ASMGlowText glowText) {
+            m_glowTexts.Remove(glowText);
         }
 
         public void Draw(Camera camera, int drawOrder) {
@@ -126,6 +141,14 @@ namespace Game {
             foreach (var glowGeometry in m_glowGeometries) {
                 glowGeometry.Key.Draw(m_geometryBatch);
             }
+            //绘制文字
+            foreach (var glowText in m_glowTexts) {
+                Vector3 viewDirection = camera.ViewDirection;
+                var vector = Vector3.Normalize(Vector3.Cross(viewDirection, Vector3.UnitY));
+                Vector3 v = -Vector3.Normalize(Vector3.Cross(vector, viewDirection));
+                float s = 0.006f;
+                m_textBatch.QueueText(glowText.Key.m_text, glowText.Key.m_position, glowText.Key.m_billBoard ? vector * s : glowText.Key.m_right, glowText.Key.m_billBoard ? v * s : glowText.Key.m_down, glowText.Key.m_color, TextAnchor.HorizontalCenter | TextAnchor.VerticalCenter, Vector2.Zero);
+            }
             m_primitivesRenderer.Flush(camera.ViewProjectionMatrix);
         }
 
@@ -169,6 +192,7 @@ namespace Game {
                 SamplerState.LinearClamp
             );
             m_geometryBatch = m_primitivesRenderer.FlatBatch();
+            m_textBatch = m_primitivesRenderer.FontBatch(BitmapFont.DebugFont, 0, DepthStencilState.None);
         }
     }
 }
