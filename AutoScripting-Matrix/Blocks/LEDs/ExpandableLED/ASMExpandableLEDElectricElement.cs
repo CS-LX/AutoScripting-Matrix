@@ -8,6 +8,7 @@ namespace Game {
         public SubsystemASMExpandableLEDControllers m_subsystemControllers;
 
         public ASMGlowCuboid m_glowCubiod;
+        public ASMGlowText m_glowText;
 
         public ASMExpandableLEDElectricElement(SubsystemASMElectricity subsystemElectricity, CellFace cellFace) : base(subsystemElectricity, cellFace) {
             m_subsystemTerrain = SubsystemElectricity.SubsystemTerrain;
@@ -21,6 +22,13 @@ namespace Game {
             m_glowCubiod.m_start = new Vector3(CellFaces[0].Point) + Vector3.One * 0.2f;
             m_glowCubiod.m_end = new Vector3(CellFaces[0].Point) + Vector3.One * 0.8f;
 
+            m_glowText = m_subsystemGlow.AddGlowText();
+            m_glowText.m_color = Color.White;
+            m_glowText.m_position = new Vector3(CellFaces[0].Point) + Vector3.One * 0.5f;
+            m_glowText.m_right = Vector3.UnitX;
+            m_glowText.m_down = -Vector3.UnitY;
+            m_glowText.m_billBoard = true;
+
             UpdateController();
         }
 
@@ -28,6 +36,7 @@ namespace Game {
             base.OnRemoved();
             m_subsystemControllers.RemovePoint(CellFaces[0]);
             m_subsystemGlow.RemoveGlowGeometry(m_glowCubiod);
+            m_subsystemGlow.RemoveGlowText(m_glowText);
 
             ASMELEDUtils.FaceToAxesAndConner(CellFaces[0].Face, out Point3[] axes, out _);
             Point3 center = CellFaces[0].Point;
@@ -35,8 +44,8 @@ namespace Game {
                 Point3 checkPoint = center + axes[i];
                 int blockID = Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValueFast(checkPoint.X, checkPoint.Y, checkPoint.Z));
                 if (blockID == ASMExpandableLEDBlock.Index) {
-                    ASMExpandableLEDElectricElement electricElement = SubsystemElectricity.GetElectricElement(checkPoint.X, checkPoint.Y, checkPoint.Z, CellFaces[0].Face) as ASMExpandableLEDElectricElement;
-                    electricElement.UpdateController();
+                    ASMExpandableLEDElectricElement? electricElement = SubsystemElectricity.GetElectricElement(checkPoint.X, checkPoint.Y, checkPoint.Z, CellFaces[0].Face) as ASMExpandableLEDElectricElement;
+                    electricElement?.UpdateController();
                 }
             }
         }
@@ -46,9 +55,11 @@ namespace Game {
             Console.WriteLine(m_subsystemControllers.GetControllersCount());
             if (m_subsystemControllers.IsThereAController(CellFaces[0])) {
                 m_glowCubiod.m_color = Color.Yellow;
+                m_glowText.m_text = m_subsystemControllers.GetController(CellFaces[0]).ID;
             }
             else {
                 m_glowCubiod.m_color = Color.Transparent;
+                m_glowText.m_text = string.Empty;
             }
             SubsystemElectricity.QueueElectricElementForSimulation(this, SubsystemElectricity.CircuitStep + 10);
             return false;
