@@ -215,6 +215,9 @@
 	  <None Update="Assets\Textures\CalcGates\ASMTan.png">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Assets\Textures\MatrixSources\ASMatrixSourceRandomGenerator.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 	<ItemGroup>
 	  <Reference Include="Engine">

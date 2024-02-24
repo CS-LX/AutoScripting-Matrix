@@ -18,6 +18,7 @@ namespace Game
             new MatrixSourceInfo("矩阵源: 从缩放创建", "", "ASMatrixSourceFromScale", [ASMElectricConnectorDirection.Bottom], [ASMElectricConnectorDirection.Top]),
             new MatrixSourceInfo("矩阵源: 从三轴缩放创建", "", "ASMatrixSourceFromScaleXYZ", [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Bottom, ASMElectricConnectorDirection.Right], [ASMElectricConnectorDirection.Top]),
             new MatrixSourceInfo("矩阵源: 从观察创建", "", "ASMatrixSourceFromLookAt", [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Bottom, ASMElectricConnectorDirection.Right], [ASMElectricConnectorDirection.Top]),
+            new MatrixSourceInfo("矩阵源: 随机常数矩阵", "", "ASMatrixSourceRandomGenerator", [ASMElectricConnectorDirection.Bottom], [ASMElectricConnectorDirection.Top]),
         ];
 
         public Texture2D[] textures;

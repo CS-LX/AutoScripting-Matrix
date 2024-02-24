@@ -8,6 +8,7 @@ namespace Game {
         public int m_type;
         public SubsystemPlayers m_subsystemPlayers;
         public SubsystemGameWidgets m_subsystemViews;
+        public static Random s_random = new Random();
 
         public bool m_clockAllowed;
 
@@ -25,6 +26,10 @@ namespace Game {
                     Matrix? viewVoltage = SubsystemElectricity.ReadPersistentVoltage(CellFaces[0].Point); //读取存着的电压
                     if (viewVoltage.HasValue) m_voltage_top = viewVoltage.Value;
                     else GetPlayerViewMatrix(out m_voltage_top, out _, out _, out _);
+                    break;
+                case 9:
+                    Matrix? randomVoltage = SubsystemElectricity.ReadPersistentVoltage(CellFaces[0].Point); //读取存着的电压
+                    m_voltage_top = randomVoltage.HasValue ? randomVoltage.Value : s_random.Float(0, 1).ToCMatrix();
                     break;
             }
         }
@@ -132,6 +137,34 @@ namespace Game {
                 case 8://创建观察矩阵
                     GetInputs(Rotation, out Matrix position, out Matrix up, out Matrix target);
                     m_voltage_top = Matrix.CreateLookAt(position.ToVector3T(), target.ToVector3T(), up.ToVector3T());
+                    break;
+                case 9://随机数
+                    foreach (ASMElectricConnection connection in Connections) {
+                        if (connection.ConnectorType != ASMElectricConnectorType.Output
+                            && connection.NeighborConnectorType != 0) //有时钟端输入
+                        {
+                            if (connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace).ToFloat() > 0) {
+                                if (m_clockAllowed) {
+                                    needClockOutput = true;
+                                    m_clockAllowed = false;
+                                }
+                            }
+                            else {
+                                m_clockAllowed = true;
+                            }
+                            hasClockConnection = true;
+                        }
+                    }
+                    if (hasClockConnection) {
+                        if (needClockOutput) m_voltage_top = s_random.Float(0, 1).ToCMatrix();
+                    }
+                    else {
+                        m_voltage_top = s_random.Float(0, 1).ToCMatrix();
+                        SubsystemElectricity.QueueElectricElementForSimulation(this, SubsystemElectricity.CircuitStep + 1);
+                    }
+                    if (m_voltage_top != voltage_top) {
+                        SubsystemElectricity.WritePersistentVoltage(CellFaces[0].Point, m_voltage_top);
+                    }
                     break;
             }
             return m_voltage_top != voltage_top || m_voltage_left != voltage_left || m_voltage_right != voltage_right;
