@@ -31,10 +31,10 @@ namespace Game {
             m_glowText.m_billBoard = true;
 
             m_matrixDisplayData = m_subsystemMatrixDisplay.Add(true);
-            m_matrixDisplayData.Height = 1;
-            m_matrixDisplayData.Width = 1;
+            m_matrixDisplayData.Height = 2;
+            m_matrixDisplayData.Width = 2f;
             m_matrixDisplayData.DisplayPoint = CellFaces[0];
-            m_matrixDisplayData.DisplayType = ASMatrixDisplayType.Brackets | ASMatrixDisplayType.ColumnLines | ASMatrixDisplayType.RowLines;
+            m_matrixDisplayData.DisplayType = ASMatrixDisplayType.ColumnLines | ASMatrixDisplayType.RowLines;
 
             UpdateController();
         }
@@ -77,7 +77,7 @@ namespace Game {
             else {
                 m_glowText.m_text = string.Empty;
             }
-            SubsystemElectricity.QueueElectricElementForSimulation(this, SubsystemElectricity.CircuitStep + 10);
+            m_subsystemControllers.GetController(CellFaces[0])?.SimulateControlledElement();
             return false;
         }
 
@@ -92,7 +92,7 @@ namespace Game {
             }
 
             //为新的板子添加新控制器实例与对应关系
-            m_subsystemControllers.AddControllerByPoints(all.Keys.ToArray(), new ASMExpandableLEDController(all));
+            m_subsystemControllers.AddControllerByPoints(all.Keys.ToArray(), new ASMExpandableLEDController(all, SubsystemElectricity));
         }
 
         public void GetConnectedElectricElements(int x, int y, int z, int face, Dictionary<CellFace, ASMExpandableLEDElectricElement> parent) {

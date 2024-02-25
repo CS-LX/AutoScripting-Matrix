@@ -8,13 +8,17 @@ namespace Game {
         public CellFace DisplayPoint;
         public float RowLinesWidth = 0.01f;
         public float ColumnLinesWidth = 0.01f;
+        public Color RowLinesColor = Color.Gray;
+        public Color ColumnLinesColor = Color.Gray;
+        public float FontScale = 1;
+        public int NumRoundLength = 1;
+        public Color FontColor = Color.White;
         public ASMatrixDisplayType DisplayType;
     }
 
     [Flags]
     public enum ASMatrixDisplayType : int{
-        Brackets = 1,
-        RowLines = 2,
-        ColumnLines = 4
+        RowLines = 1,
+        ColumnLines = 2
     }
 }

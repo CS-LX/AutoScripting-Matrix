@@ -45,8 +45,36 @@ namespace Game {
                             p2 + up * (height - matrixDisplay.RowLinesWidth / 2),
                             p2 + up * (height + matrixDisplay.RowLinesWidth / 2),
                             p1 + up * (height + matrixDisplay.RowLinesWidth / 2),
-                            Color.Red
+                            matrixDisplay.RowLinesColor
                         );
+                    }
+                }
+
+                //绘制方纵向分割线
+                if ((matrixDisplay.DisplayType & ASMatrixDisplayType.ColumnLines) == ASMatrixDisplayType.ColumnLines) {
+                    for (int i = 1; i < 4; i++) {
+                        float width = matrixDisplay.Width * (i / 4f);
+                        m_geometryBatch.QueueQuad(
+                            p1 + right * (width - matrixDisplay.ColumnLinesWidth / 2),
+                            p1 + right * (width + matrixDisplay.ColumnLinesWidth / 2),
+                            p4 + right * (width + matrixDisplay.ColumnLinesWidth / 2),
+                            p4 + right * (width - matrixDisplay.ColumnLinesWidth / 2),
+                            matrixDisplay.ColumnLinesColor
+                        );
+                    }
+                }
+
+                //文字
+                for (int i = 0; i < 4; i++) {
+                    for (int j = 0; j < 4; j++) {
+                        float element = matrixDisplay.Matrix.GetElement(j * 4 + i);
+                        string displayNum = element.ToString("0." + new string('0', matrixDisplay.NumRoundLength));//保留NumRoundLength位小数
+                        float width = matrixDisplay.Width * (i / 4f) + matrixDisplay.Width / 8f;
+                        float height = matrixDisplay.Height * ((4 - j) / 4f) - matrixDisplay.Height / 8f;
+                        Vector3 displayNumPos = p1 + right * width + up * height;
+
+                        float offsetScale = 0.005f * matrixDisplay.FontScale;
+                        m_numbersBatch.QueueText(displayNum, displayNumPos, right * offsetScale, -up * offsetScale, matrixDisplay.FontColor, TextAnchor.HorizontalCenter | TextAnchor.VerticalCenter, Vector2.Zero);
                     }
                 }
             }
@@ -56,7 +84,7 @@ namespace Game {
         public override void Load(ValuesDictionary valuesDictionary) {
             base.Load(valuesDictionary);
             m_geometryBatch = m_primitivesRenderer.FlatBatch();
-            m_numbersBatch = m_primitivesRenderer.FontBatch(LabelWidget.BitmapFont, 0, DepthStencilState.None);
+            m_numbersBatch = m_primitivesRenderer.FontBatch(LabelWidget.BitmapFont, 1, DepthStencilState.DepthRead, RasterizerState.CullNoneScissor, BlendState.AlphaBlend, SamplerState.LinearClamp);
         }
     }
 }

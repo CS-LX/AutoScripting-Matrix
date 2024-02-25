@@ -19,12 +19,15 @@ namespace Game {
 
         public Matrix DisplayMatrix;
 
+        SubsystemASMElectricity m_subsystemElectricity;
+
         /// <summary>
         /// 通过指定一个控制器所管辖的LED来实例化一个控制器（实例化中控制器会执行CollectCellsMatrix）
         /// </summary>
         /// <param name="ledElectricElements"></param>
-        public ASMExpandableLEDController(Dictionary<CellFace, ASMExpandableLEDElectricElement> ledElectricElements) {
+        public ASMExpandableLEDController(Dictionary<CellFace, ASMExpandableLEDElectricElement> ledElectricElements, SubsystemASMElectricity subsystemAsmElectricity) {
             m_ledElements = ledElectricElements;
+            m_subsystemElectricity = subsystemAsmElectricity;
             CollectCellsMatrix();
         }
 
@@ -36,6 +39,16 @@ namespace Game {
             foreach (var ledElement in m_ledElements.Values) {
                 if(ledElement == null) continue;
                 DisplayMatrix += ledElement.OutputMatrixToController();
+            }
+        }
+
+        /// <summary>
+        /// 使所有管辖的LED组件进行电路模拟一次
+        /// </summary>
+        public void SimulateControlledElement() {
+            foreach (var ledElement in m_ledElements.Values) {
+                if(ledElement == null) continue;
+                m_subsystemElectricity.QueueElectricElementForSimulation(ledElement, m_subsystemElectricity.CircuitStep + 1);
             }
         }
     }
