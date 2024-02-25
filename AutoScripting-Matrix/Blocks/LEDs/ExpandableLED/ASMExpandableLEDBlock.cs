@@ -64,7 +64,7 @@ namespace Game {
 			Point3[] axes = [-Point3.UnitZ, Point3.UnitX, Point3.UnitZ, -Point3.UnitX];
 			Point3[] conners = [new Point3(-1, 0, -1), new Point3(1, 0, -1), new Point3(1, 0, 1), new Point3(-1, 0, 1)];
 
-			ASMELEDUtils.FaceToAxesAndConner(face, out axes, out conners);
+			ASMUtils.FaceToAxesAndConner(face, out axes, out conners);
 
 			for (int i = 0; i < 4; i++) {
 				Point3 pos = point + axes[i];//获取四个邻面的绝对坐标

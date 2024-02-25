@@ -2,7 +2,7 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public static class ASMELEDUtils {
+    public static class ASMUtils {
 
         public static (Point2, Point2) LargestRectangle(Point2[] points)
         {
