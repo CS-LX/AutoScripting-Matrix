@@ -3,12 +3,10 @@ using Engine;
 namespace Game {
     public class ASMExpandableLEDElectricElement : ASMMountedElectricElement {
         public SubsystemTerrain m_subsystemTerrain;
-        public SubsystemASMGlow m_subsystemGlow;
         public SubsystemASMatrixDisplay m_subsystemMatrixDisplay;
 
         public SubsystemASMExpandableLEDControllers m_subsystemControllers;
 
-        public ASMGlowText m_glowText;
         public ASMatrixDisplayData m_matrixDisplayData;
 
         public Matrix m_outputMatrix;
@@ -16,23 +14,15 @@ namespace Game {
 
         public ASMExpandableLEDElectricElement(SubsystemASMElectricity subsystemElectricity, CellFace cellFace) : base(subsystemElectricity, cellFace) {
             m_subsystemTerrain = SubsystemElectricity.SubsystemTerrain;
-            m_subsystemGlow = SubsystemElectricity.Project.FindSubsystem<SubsystemASMGlow>();
             m_subsystemMatrixDisplay = SubsystemElectricity.Project.FindSubsystem<SubsystemASMatrixDisplay>();
             m_subsystemControllers = SubsystemElectricity.Project.FindSubsystem<SubsystemASMExpandableLEDControllers>();
         }
 
         public override void OnAdded() {
             base.OnAdded();
-            m_glowText = m_subsystemGlow.AddGlowText();
-            m_glowText.m_color = Color.White;
-            m_glowText.m_position = new Vector3(CellFaces[0].Point) + Vector3.One * 0.5f;
-            m_glowText.m_right = Vector3.UnitX;
-            m_glowText.m_down = -Vector3.UnitY;
-            m_glowText.m_billBoard = true;
-
             m_matrixDisplayData = m_subsystemMatrixDisplay.Add(true);
-            m_matrixDisplayData.Height = 2;
-            m_matrixDisplayData.Width = 2f;
+            m_matrixDisplayData.Height = 1;
+            m_matrixDisplayData.Width = 1;
             m_matrixDisplayData.DisplayPoint = CellFaces[0];
             m_matrixDisplayData.DisplayType = ASMatrixDisplayType.ColumnLines | ASMatrixDisplayType.RowLines;
 
@@ -42,7 +32,6 @@ namespace Game {
         public override void OnRemoved() {
             base.OnRemoved();
             m_subsystemControllers.RemovePoint(CellFaces[0]);
-            m_subsystemGlow.RemoveGlowText(m_glowText);
             m_subsystemMatrixDisplay.Remove(m_matrixDisplayData);
 
             ASMUtils.FaceToAxesAndConner(CellFaces[0].Face, out Point3[] axes, out _);
@@ -71,11 +60,7 @@ namespace Game {
             if(m_outputMatrix != voltage) m_subsystemControllers.GetController(CellFaces[0])?.CollectCellsMatrix();//如果输入的矩阵值发生变化，则告诉控制器重新收集各LED的矩阵电压
 
             if (m_subsystemControllers.IsThereAController(CellFaces[0])) {
-                m_glowText.m_text = m_subsystemControllers.GetController(CellFaces[0])?.ID + "\r\n" + m_subsystemControllers.GetController(CellFaces[0])?.ControlledCount + "\r\n";
                 m_matrixDisplayData.Matrix = m_subsystemControllers.GetController(CellFaces[0]).DisplayMatrix;
-            }
-            else {
-                m_glowText.m_text = string.Empty;
             }
             m_subsystemControllers.GetController(CellFaces[0])?.SimulateControlledElement();
             return false;
