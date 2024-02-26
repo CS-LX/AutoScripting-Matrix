@@ -64,6 +64,7 @@ namespace Game {
         }
 
         public void RemoveDisplayMatrix() {
+            if (m_matrixDisplayDatas == null) return;
             foreach (var data in m_matrixDisplayDatas) {
                 m_subsystemMatrixDisplay.Remove(data);
             }
@@ -71,6 +72,7 @@ namespace Game {
         }
 
         private void UpdateDisplayMatrix() {
+            RemoveDisplayMatrix();
             m_matrixDisplayDatas = new List<ASMatrixDisplayData>();
             Point3[] ledPoints = m_ledElements.Keys.Select(c => c.Point).ToArray();
             Point2[] flatPoints = ASMUtils.Point3ToPoint2(ledPoints, m_ledElements.Keys.First().Face);
@@ -84,24 +86,28 @@ namespace Game {
                 m_matrixDisplayDatas.Add(matrixDisplayData);
                 CellFace firstLedCell = m_ledElements.Keys.First();
                 Point3 displayPoint = Point3.Zero;
+                //这段代码的坐标偏移量是看实际效果慢慢修正过来的
+                //所以这段代码写得依托答辩
                 switch (firstLedCell.Face) {
                     case 0:
-                        break;
-                    case 2:
-                        displayPoint = new Point3(minPoint.X, minPoint.Y, firstLedCell.Z);
                         (w, h) = (h, w);
+                        displayPoint = new Point3(minPoint.X , minPoint.Y, firstLedCell.Z);
                         break;
                     case 1:
-                        displayPoint = new Point3(firstLedCell.X, minPoint.X, minPoint.Y);
+                        displayPoint = new Point3(firstLedCell.X, minPoint.X, minPoint.Y + h - 1);
+                        break;
+                    case 2:
+                        displayPoint = new Point3(minPoint.X + w - 1, minPoint.Y, firstLedCell.Z);
+                        (w, h) = (h, w);
                         break;
                     case 3:
                         displayPoint = new Point3(firstLedCell.X, minPoint.X, minPoint.Y);
                         break;
                     case 4:
-                        displayPoint = new Point3(minPoint.X, firstLedCell.Y, minPoint.Y);
+                        displayPoint = new Point3(minPoint.X, firstLedCell.Y, minPoint.Y );
                         break;
                     case 5:
-                        displayPoint = new Point3(minPoint.X, firstLedCell.Y, minPoint.Y);
+                        displayPoint = new Point3(minPoint.X, firstLedCell.Y, minPoint.Y + h - 1);
                         break;
                 }
                 matrixDisplayData.DisplayPoint = new CellFace(displayPoint.X, displayPoint.Y, displayPoint.Z, firstLedCell.Face);
