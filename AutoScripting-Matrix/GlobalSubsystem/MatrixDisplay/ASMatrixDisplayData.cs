@@ -5,6 +5,7 @@ namespace Game {
         public Matrix Matrix;
         public float Width;
         public float Height;
+        public Vector2 Offset;
         public CellFace DisplayPoint;
         public float RowLinesWidth = 0.01f;
         public float ColumnLinesWidth = 0.01f;

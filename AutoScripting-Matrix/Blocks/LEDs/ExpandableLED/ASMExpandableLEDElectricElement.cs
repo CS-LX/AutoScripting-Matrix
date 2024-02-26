@@ -7,7 +7,7 @@ namespace Game {
 
         public SubsystemASMExpandableLEDControllers m_subsystemControllers;
 
-        public ASMatrixDisplayData m_matrixDisplayData;
+        //public ASMatrixDisplayData m_matrixDisplayData;
 
         public Matrix m_outputMatrix;
         public Matrix OutputMatrixToController() => m_outputMatrix;
@@ -20,19 +20,18 @@ namespace Game {
 
         public override void OnAdded() {
             base.OnAdded();
-            m_matrixDisplayData = m_subsystemMatrixDisplay.Add(true);
-            m_matrixDisplayData.Height = 1;
-            m_matrixDisplayData.Width = 1;
-            m_matrixDisplayData.DisplayPoint = CellFaces[0];
-            m_matrixDisplayData.DisplayType = ASMatrixDisplayType.ColumnLines | ASMatrixDisplayType.RowLines;
+            // m_matrixDisplayData = m_subsystemMatrixDisplay.Add(true);
+            // m_matrixDisplayData.Height = 1;
+            // m_matrixDisplayData.Width = 1;
+            // m_matrixDisplayData.DisplayPoint = CellFaces[0];
+            // m_matrixDisplayData.DisplayType = ASMatrixDisplayType.ColumnLines | ASMatrixDisplayType.RowLines;
 
             UpdateController();
         }
 
         public override void OnRemoved() {
             base.OnRemoved();
-            m_subsystemControllers.RemovePoint(CellFaces[0]);
-            m_subsystemMatrixDisplay.Remove(m_matrixDisplayData);
+            if(m_subsystemControllers.IsThereAController(CellFaces[0])) m_subsystemControllers.RemoveController(m_subsystemControllers.GetController(CellFaces[0]));
 
             ASMUtils.FaceToAxesAndConner(CellFaces[0].Face, out Point3[] axes, out _);
             Point3 center = CellFaces[0].Point;
@@ -57,10 +56,10 @@ namespace Game {
                     m_outputMatrix += connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
                 }
             }
-            if(m_outputMatrix != voltage) m_subsystemControllers.GetController(CellFaces[0])?.CollectCellsMatrix();//如果输入的矩阵值发生变化，则告诉控制器重新收集各LED的矩阵电压
+            if(m_outputMatrix != voltage) m_subsystemControllers.GetController(CellFaces[0])?.CollectAndDisplayCellsMatrix();//如果输入的矩阵值发生变化，则告诉控制器重新收集各LED的矩阵电压
 
             if (m_subsystemControllers.IsThereAController(CellFaces[0])) {
-                m_matrixDisplayData.Matrix = m_subsystemControllers.GetController(CellFaces[0]).DisplayMatrix;
+                // m_matrixDisplayData.Matrix = m_subsystemControllers.GetController(CellFaces[0]).DisplayMatrix;
             }
             m_subsystemControllers.GetController(CellFaces[0])?.SimulateControlledElement();
             return false;

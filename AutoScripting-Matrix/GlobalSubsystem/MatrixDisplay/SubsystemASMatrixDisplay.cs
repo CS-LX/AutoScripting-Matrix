@@ -31,10 +31,11 @@ namespace Game {
                 Vector3 up = (cellFace.Face < 4) ? Vector3.UnitY : Vector3.UnitX;
                 Vector3 right = Vector3.Cross(up, forward);
 
-                Vector3 p1 = position + (-right - up) / 2;
-                Vector3 p2 = position + right * (matrixDisplay.Width - 0.5f) - up / 2;
-                Vector3 p3 = position + right * (matrixDisplay.Width - 0.5f) + up * (matrixDisplay.Height - 0.5f);
-                Vector3 p4 = position - right / 2 + up * (matrixDisplay.Height - 0.5f);
+                Vector3 offset = right * matrixDisplay.Offset.X + up * matrixDisplay.Offset.Y;
+                Vector3 p1 = position + offset + (-right - up) / 2;
+                Vector3 p2 = position + offset + right * (matrixDisplay.Width - 0.5f) - up / 2;
+                Vector3 p3 = position + offset + right * (matrixDisplay.Width - 0.5f) + up * (matrixDisplay.Height - 0.5f);
+                Vector3 p4 = position + offset - right / 2 + up * (matrixDisplay.Height - 0.5f);
 
                 //绘制方横向分割线
                 if ((matrixDisplay.DisplayType & ASMatrixDisplayType.RowLines) == ASMatrixDisplayType.RowLines) {

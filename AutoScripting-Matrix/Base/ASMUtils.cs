@@ -80,5 +80,42 @@ namespace Game {
                     break;
             }
         }
+
+        public static Point2[] Point3ToPoint2(Point3[] points, int face) {
+            switch (face) {
+                case 0:
+                case 2: return points.Select(p => new Point2(p.X, p.Y)).ToArray();
+                case 1:
+                case 3: return points.Select(p => new Point2(p.Y, p.Z)).ToArray();
+                default: return points.Select(p => new Point2(p.X, p.Z)).ToArray();
+            }
+        }
+
+        public static bool CheckRectangle(Point2[] points, out Point2 min, out int w, out int h) {
+            w = h = 0;
+            min = points[0];
+            Point2 max = points[0];
+            for (int i = 0; i < points.Length; i++)
+            {
+                min.X = MathUtils.Min(min.X, points[i].X);
+                min.Y = MathUtils.Min(min.Y, points[i].Y);
+
+                max.X = MathUtils.Max(max.X, points[i].X);
+                max.Y = MathUtils.Max(max.Y, points[i].Y);
+            }
+
+            int square = (max.X - min.X + 1) * (max.Y - min.Y + 1);
+            if(points.Length != square) return false;
+
+            foreach (Point2 p in points)
+            {
+                if (p.X < min.X ||  p.Y < min.Y) return false;
+                if (p.X > max.X || p.Y > max.Y) return false;
+            }
+            w = max.X - min.X + 1;
+            h = max.Y - min.Y + 1;
+            return true;
+        }
+
     }
 }

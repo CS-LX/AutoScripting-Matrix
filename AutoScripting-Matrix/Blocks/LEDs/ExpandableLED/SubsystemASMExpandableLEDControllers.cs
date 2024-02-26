@@ -55,28 +55,12 @@ namespace Game {
         }
 
         /// <summary>
-        /// 删除指定坐标点LED与实例的对应关系
-        /// </summary>
-        /// <param name="cellFace"></param>
-        /// <returns></returns>
-        public bool RemovePoint(CellFace cellFace) => m_positionToControllers.Remove(cellFace);
-
-        /// <summary>
-        /// 删除一系列坐标点LED与实例的对应关系
-        /// </summary>
-        /// <param name="cellFaces"></param>
-        public void RemovePoints(CellFace[] cellFaces) {
-            foreach (var cellFace in cellFaces) {
-                m_positionToControllers.Remove(cellFace);
-            }
-        }
-
-        /// <summary>
         /// 删除某一个控制器，以及它与所有对应坐标点的对应关系
         /// </summary>
         /// <param name="controller"></param>
         public void RemoveController(ASMExpandableLEDController controller) {
             CellFace[] cellFaces = GetCellFaces(controller);
+            controller.RemoveDisplayMatrix();
             foreach (var cellFace in cellFaces) {
                 m_positionToControllers.Remove(cellFace);
             }
