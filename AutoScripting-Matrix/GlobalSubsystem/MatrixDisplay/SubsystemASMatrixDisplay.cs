@@ -39,7 +39,7 @@ namespace Game {
 
                 //绘制方横向分割线
                 if ((matrixDisplay.DisplayType & ASMatrixDisplayType.RowLines) == ASMatrixDisplayType.RowLines) {
-                    for (int i = 1; i < 4; i++) {
+                    for (int i = 0; i <= 4; i++) {
                         float height = matrixDisplay.Height * (i / 4f);
                         m_geometryBatch.QueueQuad(
                             p1 + up * (height - matrixDisplay.RowLinesWidth / 2),
@@ -53,7 +53,7 @@ namespace Game {
 
                 //绘制方纵向分割线
                 if ((matrixDisplay.DisplayType & ASMatrixDisplayType.ColumnLines) == ASMatrixDisplayType.ColumnLines) {
-                    for (int i = 1; i < 4; i++) {
+                    for (int i = 0; i <= 4; i++) {
                         float width = matrixDisplay.Width * (i / 4f);
                         m_geometryBatch.QueueQuad(
                             p1 + right * (width - matrixDisplay.ColumnLinesWidth / 2),
@@ -69,7 +69,8 @@ namespace Game {
                 for (int i = 0; i < 4; i++) {
                     for (int j = 0; j < 4; j++) {
                         float element = matrixDisplay.Matrix.GetElement(j * 4 + i);
-                        string displayNum = element.ToString("0." + new string('0', matrixDisplay.NumRoundLength));//保留NumRoundLength位小数
+                        int signOffset = MathUtils.Sign(element) < 0 ? -1 : 0;//如果带负号，则少保留一位小数
+                        string displayNum = element.ToString("0." + new string('0', matrixDisplay.NumRoundLength + signOffset));//保留NumRoundLength位小数
                         float width = matrixDisplay.Width * (i / 4f) + matrixDisplay.Width / 8f;
                         float height = matrixDisplay.Height * ((4 - j) / 4f) - matrixDisplay.Height / 8f;
                         Vector3 displayNumPos = p1 + right * width + up * height;

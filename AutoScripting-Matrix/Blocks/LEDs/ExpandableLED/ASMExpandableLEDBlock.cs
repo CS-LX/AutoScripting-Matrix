@@ -22,7 +22,7 @@ namespace Game {
 			facialDefault = ContentManager.Get<Texture2D>("Textures/ASMExpandableLEDDefault");
 		}
 
-		public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => "矩阵可拓展LED";
+		public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => "矩阵可拓展数码LED";
 
 		public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z)
 		{

@@ -86,6 +86,8 @@ namespace Game {
                 m_matrixDisplayDatas.Add(matrixDisplayData);
                 CellFace firstLedCell = m_ledElements.Keys.First();
                 Point3 displayPoint = Point3.Zero;
+                int oriW = w;
+                int oriH = h;
                 //这段代码的坐标偏移量是看实际效果慢慢修正过来的
                 //所以这段代码写得依托答辩
                 switch (firstLedCell.Face) {
@@ -116,6 +118,8 @@ namespace Game {
                 matrixDisplayData.Offset = new Vector2(1 / 16f, 1 / 16f);
                 matrixDisplayData.DisplayType = ASMatrixDisplayType.RowLines | ASMatrixDisplayType.ColumnLines;
                 matrixDisplayData.Matrix = DisplayMatrix;
+                matrixDisplayData.NumRoundLength = oriW;
+                matrixDisplayData.FontScale = MathUtils.Min(1 + (oriW - 1) * 0.25f, 1 + (oriH - 1) * 0.25f);
             }
             else {
                 foreach (var ledElement in m_ledElements) {
@@ -128,6 +132,8 @@ namespace Game {
                     matrixDisplayData.DisplayPoint = cellFace;
                     matrixDisplayData.DisplayType = ASMatrixDisplayType.RowLines | ASMatrixDisplayType.ColumnLines;
                     matrixDisplayData.Matrix = DisplayMatrix;
+                    matrixDisplayData.NumRoundLength = 1;
+                    matrixDisplayData.FontScale = 1;
                 }
             }
         }
