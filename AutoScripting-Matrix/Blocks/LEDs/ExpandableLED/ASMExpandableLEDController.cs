@@ -118,8 +118,9 @@ namespace Game {
                 matrixDisplayData.Offset = new Vector2(1 / 16f, 1 / 16f);
                 matrixDisplayData.DisplayType = ASMatrixDisplayType.RowLines | ASMatrixDisplayType.ColumnLines;
                 matrixDisplayData.Matrix = DisplayMatrix;
+                if(firstLedCell.Face is 1 or 3) (oriW, oriH) = (oriH, oriW);
                 matrixDisplayData.NumRoundLength = oriW;
-                matrixDisplayData.FontScale = MathUtils.Min(1 + (oriW - 1) * 0.25f, 1 + (oriH - 1) * 0.25f);
+                matrixDisplayData.FontScale = MathUtils.Min(1 + (w - 1) * 0.25f, 1 + (h - 1) * 0.25f);
             }
             else {
                 foreach (var ledElement in m_ledElements) {
