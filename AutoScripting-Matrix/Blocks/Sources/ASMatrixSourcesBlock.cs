@@ -19,12 +19,15 @@ namespace Game
             new MatrixSourceInfo("矩阵源: 从三轴缩放创建", "", "ASMatrixSourceFromScaleXYZ", [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Bottom, ASMElectricConnectorDirection.Right], [ASMElectricConnectorDirection.Top]),
             new MatrixSourceInfo("矩阵源: 从观察创建", "", "ASMatrixSourceFromLookAt", [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Bottom, ASMElectricConnectorDirection.Right], [ASMElectricConnectorDirection.Top]),
             new MatrixSourceInfo("矩阵源: 随机常数矩阵", "", "ASMatrixSourceRandomGenerator", [ASMElectricConnectorDirection.Bottom], [ASMElectricConnectorDirection.Top]),
+            new MatrixSourceInfo("二阶方阵转矩阵", "", "ASM2X2ToMatrix", [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right, ASMElectricConnectorDirection.Bottom, ASMElectricConnectorDirection.Top], [ASMElectricConnectorDirection.In], true),
+            new MatrixSourceInfo("四维横向量转矩阵", "", "ASMVector4TToMatrix", [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right, ASMElectricConnectorDirection.Bottom, ASMElectricConnectorDirection.Top], [ASMElectricConnectorDirection.In], true),
+            new MatrixSourceInfo("浮点转四维横向量", "", "ASMFloatToVector4T", [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right, ASMElectricConnectorDirection.Bottom, ASMElectricConnectorDirection.Top], [ASMElectricConnectorDirection.In], true),
         ];
 
         public Texture2D[] textures;
 
         public ASMatrixSourcesBlock()
-            : base("Models/ASMatrixSource", "ASMatrixSource", 0.5f)
+            : base("Models/ASMatrixSource", "ASMatrixSource", 0.5f, "ASMatrixSourceLarger")
         {
         }
 
@@ -38,20 +41,22 @@ namespace Game
 
         public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
             int type = GetType(Terrain.ExtractData(value));
-            BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneBlockMesh, textures[type], color, 2f * size, ref matrix, environmentData);
+            BlocksManager.DrawMeshBlock(primitivesRenderer,Infos[type].IsLarger ? m_standaloneBlockMesh2 : m_standaloneBlockMesh, textures[type], color, 2f * size, ref matrix, environmentData);
         }
 
         public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z)
         {
             int num = Terrain.ExtractData(value) & 0x1F;
             int type = GetType(Terrain.ExtractData(value));
-            generator.GenerateMeshVertices(this, x, y, z, m_blockMeshes[num], Color.White, null, geometry.GetGeometry(textures[type]).SubsetOpaque);
+            generator.GenerateMeshVertices(this, x, y, z, Infos[type].IsLarger ? m_blockMeshes2[num] : m_blockMeshes[num], Color.White, null, geometry.GetGeometry(textures[type]).SubsetOpaque);
             GenerateASMWireVertices(generator, value, x, y, z, GetFace(value), m_centerBoxSize, Vector2.Zero, geometry.SubsetOpaque);
         }
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => Infos[GetType(Terrain.ExtractData(value))].DisplayName;
 
         public override string GetDescription(int value) => Infos[GetType(Terrain.ExtractData(value))].Description;
+
+        public override float GetIconViewScale(int value, DrawBlockEnvironmentData environmentData) => Infos[GetType(Terrain.ExtractData(value))].IsLarger ? 1 : 1.2f;
 
         public override IEnumerable<int> GetCreativeValues() {
             for (int i = 0; i < Infos.Length; i++) {

@@ -5,6 +5,7 @@ namespace Game {
         public Matrix m_voltage_top;
         public Matrix m_voltage_left;
         public Matrix m_voltage_right;
+        public Matrix m_voltage_in;
         public int m_type;
         public SubsystemPlayers m_subsystemPlayers;
         public SubsystemGameWidgets m_subsystemViews;
@@ -24,8 +25,10 @@ namespace Game {
                     break;
                 case 2:
                     Matrix? viewVoltage = SubsystemElectricity.ReadPersistentVoltage(CellFaces[0].Point); //读取存着的电压
-                    if (viewVoltage.HasValue) m_voltage_top = viewVoltage.Value;
-                    else GetPlayerViewMatrix(out m_voltage_top, out _, out _, out _);
+                    if (viewVoltage.HasValue)
+                        m_voltage_top = viewVoltage.Value;
+                    else
+                        GetPlayerViewMatrix(out m_voltage_top, out _, out _, out _);
                     break;
                 case 9:
                     Matrix? randomVoltage = SubsystemElectricity.ReadPersistentVoltage(CellFaces[0].Point); //读取存着的电压
@@ -41,6 +44,7 @@ namespace Game {
                     case ASMElectricConnectorDirection.Left: return m_voltage_left;
                     case ASMElectricConnectorDirection.Right: return m_voltage_right;
                     case ASMElectricConnectorDirection.Top: return m_voltage_top;
+                    case ASMElectricConnectorDirection.In: return m_voltage_in;
                 }
             }
             return m_voltage_top;
@@ -50,6 +54,7 @@ namespace Game {
             Matrix voltage_top = m_voltage_top;
             Matrix voltage_left = m_voltage_left;
             Matrix voltage_right = m_voltage_right;
+            Matrix voltage_in = m_voltage_in;
             bool hasClockConnection = false;
             bool needClockOutput = false;
             switch (m_type) {
@@ -73,7 +78,6 @@ namespace Game {
                             hasClockConnection = true;
                         }
                     }
-
                     if (hasClockConnection) {
                         if (needClockOutput) m_voltage_top = GetPlayerTransform();
                     }
@@ -85,7 +89,7 @@ namespace Game {
                         SubsystemElectricity.WritePersistentVoltage(CellFaces[0].Point, m_voltage_top);
                     }
                     break;
-                case 2://玩家视图
+                case 2: //玩家视图
                     foreach (ASMElectricConnection connection in Connections) {
                         if (connection.ConnectorType != ASMElectricConnectorType.Output
                             && connection.NeighborConnectorType != 0) //有时钟端输入
@@ -102,7 +106,6 @@ namespace Game {
                             hasClockConnection = true;
                         }
                     }
-
                     if (hasClockConnection) {
                         if (needClockOutput) GetPlayerViewMatrix(out m_voltage_top, out _, out _, out _);
                     }
@@ -114,31 +117,61 @@ namespace Game {
                         SubsystemElectricity.WritePersistentVoltage(CellFaces[0].Point, m_voltage_top);
                     }
                     break;
-                case 3://投影视图
+                case 3: //投影视图
                     GetPlayerViewMatrix(out _, out m_voltage_left, out m_voltage_right, out _);
                     SubsystemElectricity.QueueElectricElementForSimulation(this, SubsystemElectricity.CircuitStep + 1);
                     break;
-                case 4://创建位移
-                    GetInputs(Rotation, out Matrix leftInput, out Matrix rightInput, out Matrix bottomInput);
+                case 4: //创建位移
+                    GetInputs(
+                        Rotation,
+                        out Matrix leftInput,
+                        out Matrix rightInput,
+                        out Matrix bottomInput,
+                        out _
+                    );
                     m_voltage_top = Matrix.CreateTranslation(leftInput.ToFloat(), bottomInput.ToFloat(), rightInput.ToFloat());
                     break;
-                case 5://创建旋转
-                    GetInputs(Rotation, out Matrix leftInput2, out Matrix rightInput2, out Matrix bottomInput2);
+                case 5: //创建旋转
+                    GetInputs(
+                        Rotation,
+                        out Matrix leftInput2,
+                        out Matrix rightInput2,
+                        out Matrix bottomInput2,
+                        out _
+                    );
                     m_voltage_top = Matrix.CreateFromYawPitchRoll(leftInput2.ToFloat(), bottomInput2.ToFloat(), rightInput2.ToFloat());
                     break;
-                case 6://创建缩放
-                    GetInputs(Rotation, out Matrix _, out Matrix _, out Matrix scale);
+                case 6: //创建缩放
+                    GetInputs(
+                        Rotation,
+                        out Matrix _,
+                        out Matrix _,
+                        out Matrix scale,
+                        out _
+                    );
                     m_voltage_top = Matrix.CreateScale(scale.ToFloat());
                     break;
-                case 7://创建三轴缩放
-                    GetInputs(Rotation, out Matrix scaleX, out Matrix scaleZ, out Matrix scaleY);
+                case 7: //创建三轴缩放
+                    GetInputs(
+                        Rotation,
+                        out Matrix scaleX,
+                        out Matrix scaleZ,
+                        out Matrix scaleY,
+                        out _
+                    );
                     m_voltage_top = Matrix.CreateScale(scaleX.ToFloat(), scaleY.ToFloat(), scaleZ.ToFloat());
                     break;
-                case 8://创建观察矩阵
-                    GetInputs(Rotation, out Matrix position, out Matrix up, out Matrix target);
+                case 8: //创建观察矩阵
+                    GetInputs(
+                        Rotation,
+                        out Matrix position,
+                        out Matrix up,
+                        out Matrix target,
+                        out _
+                    );
                     m_voltage_top = Matrix.CreateLookAt(position.ToVector3T(), target.ToVector3T(), up.ToVector3T());
                     break;
-                case 9://随机数
+                case 9: //随机数
                     foreach (ASMElectricConnection connection in Connections) {
                         if (connection.ConnectorType != ASMElectricConnectorType.Output
                             && connection.NeighborConnectorType != 0) //有时钟端输入
@@ -166,8 +199,89 @@ namespace Game {
                         SubsystemElectricity.WritePersistentVoltage(CellFaces[0].Point, m_voltage_top);
                     }
                     break;
+                case 10: //二阶方阵转矩阵
+                    GetInputs(
+                        Rotation,
+                        out Matrix left,
+                        out Matrix right,
+                        out Matrix bottom,
+                        out Matrix top
+                    );
+                    m_voltage_in = new Matrix(
+                        top.M11,
+                        top.M12,
+                        right.M11,
+                        right.M12,
+                        top.M21,
+                        top.M22,
+                        right.M21,
+                        right.M22,
+                        bottom.M11,
+                        bottom.M12,
+                        left.M11,
+                        left.M12,
+                        bottom.M21,
+                        bottom.M22,
+                        left.M21,
+                        left.M22
+                    );
+                    break;
+                case 11: //四维横向量转矩阵
+                    GetInputs(
+                        Rotation,
+                        out Matrix left2,
+                        out Matrix right2,
+                        out Matrix bottom2,
+                        out Matrix top2
+                    );
+                    m_voltage_in = new Matrix(
+                        top2.M11,
+                        top2.M12,
+                        top2.M13,
+                        top2.M14,
+                        right2.M11,
+                        right2.M12,
+                        right2.M13,
+                        right2.M14,
+                        bottom2.M11,
+                        bottom2.M12,
+                        bottom2.M13,
+                        bottom2.M14,
+                        left2.M11,
+                        left2.M12,
+                        left2.M13,
+                        left2.M14
+                    );
+                    break;
+                case 12: //浮点转四维横向量
+                    GetInputs(
+                        Rotation,
+                        out Matrix left3,
+                        out Matrix right3,
+                        out Matrix bottom3,
+                        out Matrix top3
+                    );
+                    m_voltage_in = new Matrix(
+                        top3.ToFloat(),
+                        right3.ToFloat(),
+                        bottom3.ToFloat(),
+                        left3.ToFloat(),
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                    );
+                    break;
             }
-            return m_voltage_top != voltage_top || m_voltage_left != voltage_left || m_voltage_right != voltage_right;
+            return m_voltage_top != voltage_top || m_voltage_left != voltage_left || m_voltage_right != voltage_right || m_voltage_in != voltage_in;
         }
 
         private Matrix GetPlayerTransform() {
@@ -196,8 +310,8 @@ namespace Game {
             }
         }
 
-        private void GetInputs(int rotation, out Matrix leftInput, out Matrix rightInput, out Matrix bottomInput) {
-            leftInput = rightInput = bottomInput = Matrix.Zero;
+        private void GetInputs(int rotation, out Matrix leftInput, out Matrix rightInput, out Matrix bottomInput, out Matrix topInput) {
+            leftInput = rightInput = bottomInput = topInput = Matrix.Zero;
             foreach (ASMElectricConnection connection in Connections) {
                 if (connection.ConnectorType != ASMElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {
@@ -211,6 +325,9 @@ namespace Game {
                         }
                         else if (connectorDirection == ASMElectricConnectorDirection.Bottom) {
                             bottomInput = connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+                        }
+                        else if (connectorDirection == ASMElectricConnectorDirection.Top) {
+                            topInput = connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
                         }
                     }
                 }
