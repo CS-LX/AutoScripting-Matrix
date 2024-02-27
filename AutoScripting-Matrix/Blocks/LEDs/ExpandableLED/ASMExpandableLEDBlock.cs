@@ -75,7 +75,7 @@ namespace Game {
 					r + up * (height - 0.02f / 2),
 					r + up * (height + 0.02f / 2),
 					zero + up * (height + 0.02f / 2),
-					Color.Gray
+					new Color(110, 110, 110)
 				);
 			}
 
@@ -86,7 +86,7 @@ namespace Game {
 					zero + right * (width + 0.02f / 2),
 					u + right * (width + 0.02f / 2),
 					u + right * (width - 0.02f / 2),
-					Color.Gray
+					new Color(110, 110, 110)
 				);
 			}
 		}
