@@ -227,6 +227,9 @@
 	  <None Update="Assets\Textures\MatrixSources\ASMVector4TToMatrix.png">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Assets\Textures\CalcGates\ASMDeterminantor.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 	<ItemGroup>
 	  <Reference Include="Engine">

@@ -66,7 +66,8 @@ namespace Game {
                     break;
                 case 16: m_voltage = ASMStaticMethods.ATan(input);
                     break;
-
+                case 17: m_voltage = new Matrix { M11 = input.Determinant() };
+                    break;
             }
 
             return m_voltage != voltage;

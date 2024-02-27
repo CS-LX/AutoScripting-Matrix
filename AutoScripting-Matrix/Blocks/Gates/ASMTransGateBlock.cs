@@ -26,6 +26,7 @@ namespace Game
             new CalcGateInfo("矩阵反正弦", "", "ASMAsin", true),
             new CalcGateInfo("矩阵反余弦", "", "ASMAcos", true),
             new CalcGateInfo("矩阵反正切", "", "ASMAtan", true),
+            new CalcGateInfo("矩阵求行列式", "", "ASMDeterminantor"),
         ];
 
         public Texture2D[] textures;
