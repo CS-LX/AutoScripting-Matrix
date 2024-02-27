@@ -40,6 +40,55 @@ namespace Game {
 		{
 			BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneBlockMesh, texture, color, 2f * size, ref matrix, environmentData);
 			BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneBlockMesh2, facialDefault, color, 2f * size, ref matrix, environmentData);
+			if(environmentData.DrawBlockMode != DrawBlockMode.UI || !environmentData.ViewProjectionMatrix.HasValue) return;
+			Vector3 translation = matrix.Translation;
+			Vector3 vector2;
+			Vector3 vector3;
+			vector2 = matrix.Forward;
+			vector3 = matrix.Up;
+			size *= 14f / 16f;
+			Vector3 zero = translation + (size * (-vector2 - vector3));
+			Vector3 u = translation + (size * (vector2 - vector3));
+			Vector3 ur = translation + (size * (vector2 + vector3));
+			Vector3 r = translation + (size * (-vector2 + vector3));
+
+			zero -= 0.09f * matrix.Right;
+			u -= 0.09f * matrix.Right;
+			ur -= 0.09f * matrix.Right;
+			r -= 0.09f * matrix.Right;
+
+			FlatBatch3D flatBatch3D = primitivesRenderer.FlatBatch();
+			Matrix m = environmentData.ViewProjectionMatrix.Value;
+
+			Vector3.Transform(ref zero, ref m, out zero);
+			Vector3.Transform(ref u, ref m, out u);
+			Vector3.Transform(ref ur, ref m, out ur);
+			Vector3.Transform(ref r, ref m, out r);
+
+			Vector3 up = u - zero;
+			Vector3 right = r - zero;
+
+			for (int i = 0; i <= 4; i++) {
+				float height = i / 4f;
+				flatBatch3D.QueueQuad(
+					zero + up * (height - 0.02f / 2),
+					r + up * (height - 0.02f / 2),
+					r + up * (height + 0.02f / 2),
+					zero + up * (height + 0.02f / 2),
+					Color.Gray
+				);
+			}
+
+			for (int i = 0; i <= 4; i++) {
+				float width = i / 4f;
+				flatBatch3D.QueueQuad(
+					zero + right * (width - 0.02f / 2),
+					zero + right * (width + 0.02f / 2),
+					u + right * (width + 0.02f / 2),
+					u + right * (width - 0.02f / 2),
+					Color.Gray
+				);
+			}
 		}
 
 		public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult)
