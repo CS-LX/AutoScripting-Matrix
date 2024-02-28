@@ -127,9 +127,10 @@ namespace Game {
                         out Matrix leftInput,
                         out Matrix rightInput,
                         out Matrix bottomInput,
-                        out _
+                        out _,
+                        out Matrix inInput
                     );
-                    m_voltage_top = Matrix.CreateTranslation(leftInput.ToFloat(), bottomInput.ToFloat(), rightInput.ToFloat());
+                    m_voltage_top = Matrix.CreateTranslation(leftInput.ToFloat() + inInput.M11, bottomInput.ToFloat() + inInput.M12, rightInput.ToFloat() + inInput.M13);
                     break;
                 case 5: //创建旋转
                     GetInputs(
@@ -137,9 +138,10 @@ namespace Game {
                         out Matrix leftInput2,
                         out Matrix rightInput2,
                         out Matrix bottomInput2,
-                        out _
+                        out _,
+                        out Matrix inInput2
                     );
-                    m_voltage_top = Matrix.CreateFromYawPitchRoll(leftInput2.ToFloat(), bottomInput2.ToFloat(), rightInput2.ToFloat());
+                    m_voltage_top = Matrix.CreateFromYawPitchRoll(leftInput2.ToFloat() + inInput2.M11, bottomInput2.ToFloat() + inInput2.M12, rightInput2.ToFloat() + inInput2.M13);
                     break;
                 case 6: //创建缩放
                     GetInputs(
@@ -147,6 +149,7 @@ namespace Game {
                         out Matrix _,
                         out Matrix _,
                         out Matrix scale,
+                        out _,
                         out _
                     );
                     m_voltage_top = Matrix.CreateScale(scale.ToFloat());
@@ -157,9 +160,10 @@ namespace Game {
                         out Matrix scaleX,
                         out Matrix scaleZ,
                         out Matrix scaleY,
-                        out _
+                        out _,
+                        out Matrix scaleXYZ
                     );
-                    m_voltage_top = Matrix.CreateScale(scaleX.ToFloat(), scaleY.ToFloat(), scaleZ.ToFloat());
+                    m_voltage_top = Matrix.CreateScale(scaleX.ToFloat() + scaleXYZ.M11, scaleY.ToFloat() + scaleXYZ.M12, scaleZ.ToFloat() + scaleXYZ.M13);
                     break;
                 case 8: //创建观察矩阵
                     GetInputs(
@@ -167,6 +171,7 @@ namespace Game {
                         out Matrix position,
                         out Matrix up,
                         out Matrix target,
+                        out _,
                         out _
                     );
                     m_voltage_top = Matrix.CreateLookAt(position.ToVector3T(), target.ToVector3T(), up.ToVector3T());
@@ -205,7 +210,8 @@ namespace Game {
                         out Matrix left,
                         out Matrix right,
                         out Matrix bottom,
-                        out Matrix top
+                        out Matrix top,
+                        out _
                     );
                     m_voltage_in = new Matrix(
                         top.M11,
@@ -232,7 +238,8 @@ namespace Game {
                         out Matrix left2,
                         out Matrix right2,
                         out Matrix bottom2,
-                        out Matrix top2
+                        out Matrix top2,
+                        out _
                     );
                     m_voltage_in = new Matrix(
                         top2.M11,
@@ -259,7 +266,8 @@ namespace Game {
                         out Matrix left3,
                         out Matrix right3,
                         out Matrix bottom3,
-                        out Matrix top3
+                        out Matrix top3,
+                        out _
                     );
                     m_voltage_in = new Matrix(
                         top3.ToFloat(),
@@ -310,8 +318,8 @@ namespace Game {
             }
         }
 
-        private void GetInputs(int rotation, out Matrix leftInput, out Matrix rightInput, out Matrix bottomInput, out Matrix topInput) {
-            leftInput = rightInput = bottomInput = topInput = Matrix.Zero;
+        private void GetInputs(int rotation, out Matrix leftInput, out Matrix rightInput, out Matrix bottomInput, out Matrix topInput, out Matrix inInput) {
+            leftInput = rightInput = bottomInput = topInput = inInput = Matrix.Zero;
             foreach (ASMElectricConnection connection in Connections) {
                 if (connection.ConnectorType != ASMElectricConnectorType.Output
                     && connection.NeighborConnectorType != 0) {
@@ -328,6 +336,9 @@ namespace Game {
                         }
                         else if (connectorDirection == ASMElectricConnectorDirection.Top) {
                             topInput = connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+                        }
+                        else if (connectorDirection == ASMElectricConnectorDirection.In) {
+                            inInput = connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
                         }
                     }
                 }
