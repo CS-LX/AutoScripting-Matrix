@@ -54,5 +54,19 @@ namespace Game {
         {
             return (Terrain.ExtractData(value) >> 1) & 7;
         }
+
+        public override void OnItemHarvested(int x, int y, int z, int blockValue, ref BlockDropValue dropValue, ref int newBlockValue) {
+            ASMDelayData blockData = this.GetBlockData(new Point3(x, y, z));
+            if ((object)blockData == null) return;
+            int freeItemId = this.FindFreeItemId();
+            this.m_itemsData.Add(freeItemId, (ASMDelayData)blockData.Copy());
+            dropValue.Value = Terrain.ReplaceData(dropValue.Value, (freeItemId << 7) | (Terrain.ExtractData(blockValue) & 0b1100000));
+        }
+
+        public override void OnItemPlaced(int x, int y, int z, ref BlockPlacementData placementData, int itemValue) {
+            ASMDelayData itemData = this.GetItemData(Terrain.ExtractData(itemValue) >> 7);
+            if ((object)itemData == null) return;
+            this.m_blocksData[new Point3(x, y, z)] = (ASMDelayData)itemData.Copy();
+        }
     }
 }
