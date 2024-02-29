@@ -53,7 +53,7 @@ namespace Game {
             }
         }
 
-        public override ASMElectricElement CreateElectricElement(SubsystemASMElectricity subsystemASMElectricity, int value, int x, int y, int z) => new ASMDelayGateElectricElement(subsystemASMElectricity, new CellFace(x, y, z, GetFace(value)));
+        public override ASMElectricElement CreateElectricElement(SubsystemASMElectricity subsystemASMElectricity, int value, int x, int y, int z) => GetType(Terrain.ExtractData(value)) == 1 ? new ASMAdjustableDelayGateElectricElement(subsystemASMElectricity, new CellFace(x, y, z, GetFace(value))) : new ASMDelayGateElectricElement(subsystemASMElectricity, new CellFace(x, y, z, GetFace(value)));
 
         public override ASMElectricConnectorType? GetConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) {
             int data = Terrain.ExtractData(value);

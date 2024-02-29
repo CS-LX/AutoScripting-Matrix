@@ -22,7 +22,8 @@ namespace Game {
                     delayData,
                     m => {
                         delayData.Data = m;
-                        int data = (StoreItemDataAtUniqueId(delayData) << 7) | (Terrain.ExtractData(value) & 0b1111111);
+                        int dataId = StoreItemDataAtUniqueId(delayData);
+                        int data = (dataId << 7) | (Terrain.ExtractData(value) & 0b1111111);
                         int newBlockValue = Terrain.ReplaceData(value, data);
                         inventory.RemoveSlotItems(slotIndex, count);
                         inventory.AddSlotItems(slotIndex, newBlockValue, count);
@@ -41,9 +42,11 @@ namespace Game {
                     delayData.Data = m;
                     SetBlockData(new Point3(x, y, z), delayData);
                     SubsystemASMElectricity subsystemElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemASMElectricity>(throwOnError: true);
-                    ASMElectricElement electricElement = subsystemElectricity.GetElectricElement(x, y, z, GetFace(value));
+                    int face = GetFace(value);
+                    ASMElectricElement electricElement = subsystemElectricity.GetElectricElement(x, y, z, face);
                     if (electricElement != null)
                     {
+                        if(electricElement is ASMAdjustableDelayGateElectricElement asmAdjustableDelayGateElectricElement) asmAdjustableDelayGateElectricElement.AppendDelay();
                         subsystemElectricity.QueueElectricElementForSimulation(electricElement, subsystemElectricity.CircuitStep + 1);
                     }
                 }));
@@ -52,7 +55,7 @@ namespace Game {
 
         public static int GetFace(int value)
         {
-            return (Terrain.ExtractData(value) >> 1) & 7;
+            return (Terrain.ExtractData(value) >> 2) & 7;
         }
 
         public override void OnItemHarvested(int x, int y, int z, int blockValue, ref BlockDropValue dropValue, ref int newBlockValue) {

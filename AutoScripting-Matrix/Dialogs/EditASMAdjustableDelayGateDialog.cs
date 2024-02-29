@@ -21,6 +21,8 @@ namespace Game
 
 		public int m_delay;
 
+		public int m_lastDelay;
+
 		public EditASMAdjustableDelayGateDialog(ASMDelayData delay, Action<int> handler)
 		{
 			XElement node = ContentManager.Get<XElement>("Dialogs/EditASMAdjustableDelayGateDialog");
@@ -32,7 +34,7 @@ namespace Game
 			m_okButton = Children.Find<ButtonWidget>("EditAdjustableDelayGateDialog.OK");
 			m_cancelButton = Children.Find<ButtonWidget>("EditAdjustableDelayGateDialog.Cancel");
 			m_handler = handler;
-			m_delay = delay.Data;
+			m_delay = m_lastDelay = delay.Data;
 			UpdateControls();
 		}
 
@@ -74,7 +76,7 @@ namespace Game
 			DialogsManager.HideDialog(this);
 			if (m_handler != null && result.HasValue)
 			{
-				m_handler(result.Value);
+				if(m_lastDelay != result.Value) m_handler(result.Value);
 			}
 		}
 	}
