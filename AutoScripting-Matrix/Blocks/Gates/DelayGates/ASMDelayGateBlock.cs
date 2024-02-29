@@ -39,6 +39,14 @@ namespace Game {
 
         public override string GetDescription(int value) => Infos[GetType(Terrain.ExtractData(value))].Description;
 
+        public override bool IsNonDuplicable_(int value) => GetType(Terrain.ExtractData(value)) == 1;
+
+        public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris) {
+            int data = Terrain.ExtractData(oldValue);
+            dropValues.Add(new BlockDropValue { Value = Terrain.MakeBlockValue(Index, 0, SetType(data, GetType(data))), Count = 1 });
+            showDebris = true;
+        }
+
         public override IEnumerable<int> GetCreativeValues() {
             for (int i = 0; i < Infos.Length; i++) {
                 yield return Terrain.MakeBlockValue(Index, 0, SetType(0, i));
@@ -62,8 +70,13 @@ namespace Game {
             return null;
         }
 
-        public static int GetType(int data) => (data >> 5) & 15;
+        //从右往左数，1~5：旋转   6~7：不同延迟门ID   8~14：不同延迟值
+        public static int GetType(int data) => (data >> 5) & 3;
 
-        public static int SetType(int data, int type) => (data & -481) | ((type & 15) << 5);
+        public static int SetType(int data, int type) {
+            int a = data & -128;
+            int b = (type & 3) << 5;
+            return a | b;
+        }
     }
 }

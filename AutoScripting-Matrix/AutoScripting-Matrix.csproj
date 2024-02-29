@@ -239,6 +239,9 @@
 	  <None Update="Assets\Textures\DelayGates\ASMDelayGate.png">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Assets\Dialogs\EditASMAdjustableDelayGateDialog.xml">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 	<ItemGroup>
 	  <Reference Include="Engine">
