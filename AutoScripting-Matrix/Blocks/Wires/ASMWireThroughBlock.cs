@@ -2,7 +2,7 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class ASMWireThroughBlock : CubeBlock, IASMElectricWireElementBlock, IASMElectricElementBlock {
+    public class ASMWireThroughBlock : GenerateASMWireVerticesBlock, IASMElectricWireElementBlock, IASMElectricElementBlock {
         public const int Index = 614;
 
         public Texture2D texture;

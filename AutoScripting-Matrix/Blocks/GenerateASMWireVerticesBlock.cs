@@ -1,4 +1,5 @@
 using Engine;
+using Engine.Graphics;
 
 namespace Game {
     public abstract class GenerateASMWireVerticesBlock : Block
@@ -163,5 +164,10 @@ namespace Game {
 		}
 
 		public override string GetCategory(int value) => "[智械]矩阵";
+
+		public override BlockDebrisParticleSystem CreateDebrisParticleSystem(SubsystemTerrain subsystemTerrain, Vector3 position, int value, float strength)
+		{
+			return new BlockDebrisParticleSystem(subsystemTerrain, position, strength, DestructionDebrisScale, Color.White, 0, ContentManager.Get<Texture2D>("Textures/ASMGeBlock")){TextureSlotsCount = 1};
+		}
     }
 }

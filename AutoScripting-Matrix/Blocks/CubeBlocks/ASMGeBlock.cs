@@ -2,7 +2,7 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class ASMGeBlock : CubeBlock {
+    public class ASMGeBlock : GenerateASMWireVerticesBlock {
         public const int Index = 599;
 
         public Texture2D texture;
