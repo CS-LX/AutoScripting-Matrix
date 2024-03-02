@@ -1,10 +1,26 @@
 namespace Game {
     public class ASMTruthTableData : IEditableItemData {
+        public string[] Expressions = new string[16] {
+            string.Empty,
+            string.Empty,
+            string.Empty,
+            string.Empty,
+            string.Empty,
+            string.Empty,
+            string.Empty,
+            string.Empty,
+            string.Empty,
+            string.Empty,
+            string.Empty,
+            string.Empty,
+            string.Empty,
+            string.Empty,
+            string.Empty,
+            string.Empty
+        };
 
-        public string[] Expressions = new string[16];
 
-
-        public IEditableItemData Copy() => new ASMTruthTableData(){Expressions = (string[])Expressions.Clone()};
+        public IEditableItemData Copy() => new ASMTruthTableData() { Expressions = (string[])Expressions.Clone() };
 
         public void LoadString(string data) {
             string[] expressions = data.Split('|');
@@ -21,16 +37,22 @@ namespace Game {
                 if (expression.Contains('|')) throw new Exception($"储存失败, 原因: 第{i}个表达式存在非法字符\'|\'");
                 res += expression + "|";
             }
-            return res.TrimEnd('|');
+            return res.Substring(0, res.Length - 1);
         }
 
-        public bool Check() {
+        public bool Check(out int index) => Check(Expressions, out index);
+
+        public static bool Check(string[] expressions, out int index) {
             for (int i = 0; i < 16; i++) {
-                if (Expressions[i].Contains('|')) return false;
+                index = i;
+                if (expressions[i].Contains('|')) return false;
             }
+            index = -1;
             return true;
         }
 
-        public bool Check_Linq() => !Expressions.Take(16).Any(expression => expression.Contains('|'));
+        public bool Check_Linq() => Check_Linq(Expressions);
+
+        public static bool Check_Linq(string[] expressions) => !expressions.Take(16).Any(expressions => expressions.Contains('|'));
     }
 }
