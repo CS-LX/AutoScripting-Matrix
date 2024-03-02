@@ -1,4 +1,4 @@
-<CanvasWidget xmlns="runtime-namespace:Game" Size="500, 400" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
+<CanvasWidget xmlns="runtime-namespace:Game" Size="600, 400" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
 
 	<RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2" />
 	<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="10, 10">
@@ -6,6 +6,7 @@
 		<ScrollPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="0, 4">
 			<GridPanelWidget Name="InputMatrix" RowsCount="16" ColumnsCount="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 		</ScrollPanelWidget>
+		<LabelWidget Text="上一输出: " Name="LastOutputText"  Color="255, 255, 255" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="0, 5"/>
 		<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Far" Margin="0, 5">
 			<BevelledButtonWidget Name="OKButton" Text="确定" Style="{Styles/ButtonStyle_160x60}" Margin="40, 0"/>
 			<BevelledButtonWidget Name="CancelButton" Text="取消" Style="{Styles/ButtonStyle_160x60}" Margin="40, 0"/>

@@ -15,7 +15,7 @@ namespace Game {
             int id = Terrain.ExtractData(value);
             ASMTruthTableData asmTruthTableData = GetItemData(id);
             asmTruthTableData = asmTruthTableData != null ? (ASMTruthTableData)asmTruthTableData.Copy() : new ASMTruthTableData();
-            DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditASMTruthTableDialog(asmTruthTableData.Expressions,
+            DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditASMTruthTableDialog(asmTruthTableData,
                  m => {
                     asmTruthTableData.Expressions = m;
                     int data = StoreItemDataAtUniqueId(asmTruthTableData);
@@ -29,7 +29,7 @@ namespace Game {
         public override bool OnEditBlock(int x, int y, int z, int value, ComponentPlayer componentPlayer)
         {
             ASMTruthTableData asmTruthTableData = GetBlockData(new Point3(x, y, z)) ?? new ASMTruthTableData();
-            DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditASMTruthTableDialog(asmTruthTableData.Expressions,
+            DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditASMTruthTableDialog(asmTruthTableData,
                 m => {
                     asmTruthTableData.Expressions = m;
                     SetBlockData(new Point3(x, y, z), asmTruthTableData);

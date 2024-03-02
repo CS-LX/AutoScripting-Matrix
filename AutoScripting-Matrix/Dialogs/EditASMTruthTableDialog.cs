@@ -15,9 +15,11 @@ namespace Game {
 
 		public Action<string[]> callBack = _ => { };
 
-		public string[] m_data;
+		public ASMTruthTableData m_data;
 
-		public EditASMTruthTableDialog(string[] m_data, Action<string[]> callBack) {
+		public LabelWidget m_lastOutputLabel;
+
+		public EditASMTruthTableDialog(ASMTruthTableData m_data, Action<string[]> callBack) {
 			this.callBack = callBack;
 			this.m_data = m_data;
 			XElement node = ContentManager.Get<XElement>("Dialogs/EditASMTruthTableDialog");
@@ -25,11 +27,12 @@ namespace Game {
 			cancelButtonWidget = Children.Find<ButtonWidget>("CancelButton");
 			okButtonWidget = Children.Find<ButtonWidget>("OKButton");
 			inputMatrixGrid = Children.Find<GridPanelWidget>("InputMatrix");
+			m_lastOutputLabel = Children.Find<LabelWidget>("LastOutputText");
 
 			for (int x = 0; x < 16; x++) {
-					CanvasWidget canvasWidget = new() {Size = new Vector2(300, 32), HorizontalAlignment = WidgetAlignment.Center, VerticalAlignment = WidgetAlignment.Center, Margin = new Vector2(4, 4)};
+					CanvasWidget canvasWidget = new() {Size = new Vector2(360, 32), HorizontalAlignment = WidgetAlignment.Center, VerticalAlignment = WidgetAlignment.Center, Margin = new Vector2(4, 4)};
 					RectangleWidget rectangleWidget = new() {Size=new Vector2(float.MaxValue, 32), FillColor = new Color(0,0,0,0), OutlineColor = new Color(64, 64, 64, 64)};
-					TextBoxWidget textBoxWidget = new(){Text = this.m_data[x].ToString(CultureInfo.InvariantCulture), Color = new Color(255, 255, 255), Margin = new Vector2(4, 0), VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Stretch};
+					TextBoxWidget textBoxWidget = new(){Text = this.m_data.Expressions[x].ToString(CultureInfo.InvariantCulture), Color = new Color(255, 255, 255), Margin = new Vector2(4, 0), VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Stretch};
 					canvasWidget.Children.Add(rectangleWidget);
 					canvasWidget.Children.Add(textBoxWidget);
 					inputMatrixGrid.Children.Add(canvasWidget);
@@ -38,8 +41,8 @@ namespace Game {
 			}
 		}
 
-		public override void Update()
-		{
+		public override void Update() {
+			m_lastOutputLabel.Text = "上一输出: " + m_data.LastOutputStatus;
 			if (Input.Cancel || cancelButtonWidget.IsClicked) {
 				Dismiss(false);
 			}
@@ -54,11 +57,11 @@ namespace Game {
 			if (canInvoke) {
 				string[] newExpressions = GetExpressions();
 				if (ASMTruthTableData.Check(newExpressions, out int index)) {
-					if (!m_data.SequenceEqual(newExpressions)) callBack.Invoke(newExpressions);
+					if (!m_data.Expressions.SequenceEqual(newExpressions)) callBack.Invoke(newExpressions);
 					DialogsManager.HideDialog(this);
 				}
 				else {
-					DialogsManager.ShowDialog(this, new MessageDialog("错误", $"表达式{index}存在非法字符", "确定", null, null));
+					DialogsManager.ShowDialog(this, new MessageDialog("错误", $"表达式{index}非法", "确定", null, null));
 				}
 			}
 			else {
