@@ -34,13 +34,18 @@ namespace Game {
                     asmTruthTableData.Expressions = m;
                     SetBlockData(new Point3(x, y, z), asmTruthTableData);
                     SubsystemASMElectricity subsystemElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemASMElectricity>(throwOnError: true);
-                    ASMElectricElement electricElement = subsystemElectricity.GetElectricElement(x, y, z, 4);
+                    ASMElectricElement electricElement = subsystemElectricity.GetElectricElement(x, y, z, GetFace(value));
                     if (electricElement != null)
                     {
                         subsystemElectricity.QueueElectricElementForSimulation(electricElement, subsystemElectricity.CircuitStep + 1);
                     }
                 }));
             return true;
+        }
+
+        public static int GetFace(int value)
+        {
+            return (Terrain.ExtractData(value) >> 2) & 7;
         }
     }
 }
