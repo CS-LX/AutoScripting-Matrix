@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Xml.Linq;
 using Engine;
+using Engine.Graphics;
 
 namespace Game {
     public class EditASMTruthTableDialog : Dialog {
@@ -12,6 +13,10 @@ namespace Game {
 		public GridPanelWidget inputMatrixGrid;
 
 		public TextBoxWidget[] inputValues = new TextBoxWidget[16];
+
+		public BitmapButtonWidget[] m_copyButtons = new BitmapButtonWidget[16];
+
+		public BitmapButtonWidget[] m_pasteButtons = new BitmapButtonWidget[16];
 
 		public Action<string[]> callBack = _ => { };
 
@@ -33,16 +38,44 @@ namespace Game {
 					CanvasWidget canvasWidget = new() {Size = new Vector2(360, 32), HorizontalAlignment = WidgetAlignment.Center, VerticalAlignment = WidgetAlignment.Center, Margin = new Vector2(4, 4)};
 					RectangleWidget rectangleWidget = new() {Size=new Vector2(float.MaxValue, 32), FillColor = new Color(0,0,0,0), OutlineColor = new Color(64, 64, 64, 64)};
 					TextBoxWidget textBoxWidget = new(){Text = this.m_data.Expressions[x].ToString(CultureInfo.InvariantCulture), Color = new Color(255, 255, 255), Margin = new Vector2(4, 0), VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Stretch};
+					Subtexture copyTexture = new (ContentManager.Get<Texture2D>("Textures/Icons/Copy"), Vector2.Zero, Vector2.One);
+					BitmapButtonWidget copyButton = new() {
+						Size = new Vector2(16),
+						ClickedSubtexture = copyTexture,
+						NormalSubtexture = copyTexture,
+						HorizontalAlignment = WidgetAlignment.Far,
+						VerticalAlignment = WidgetAlignment.Center,
+						Margin = new Vector2(28, 0),
+
+					};
+					Subtexture pasteTexture = new (ContentManager.Get<Texture2D>("Textures/Icons/Paste"), Vector2.Zero, Vector2.One);
+					BitmapButtonWidget pasteButton = new() {
+						Size = new Vector2(16),
+						ClickedSubtexture = pasteTexture,
+						NormalSubtexture = pasteTexture,
+						HorizontalAlignment = WidgetAlignment.Far,
+						VerticalAlignment = WidgetAlignment.Center,
+						Margin = new Vector2(8, 0),
+
+					};
 					canvasWidget.Children.Add(rectangleWidget);
 					canvasWidget.Children.Add(textBoxWidget);
+					canvasWidget.Children.Add(copyButton);
+					canvasWidget.Children.Add(pasteButton);
 					inputMatrixGrid.Children.Add(canvasWidget);
 					inputMatrixGrid.SetWidgetCell(canvasWidget, new Point2(0, x));
 					inputValues[x] = textBoxWidget;
+					m_copyButtons[x] = copyButton;
+					m_pasteButtons[x] = pasteButton;
 			}
 		}
 
 		public override void Update() {
 			m_lastOutputLabel.Text = "上一输出: " + m_data.LastOutputStatus;
+			for (int i = 0; i < 16; i++) {
+				if (m_copyButtons[i].IsClicked) ClipboardManager.ClipboardString = inputValues[i].Text;
+				if (m_pasteButtons[i].IsClicked) inputValues[i].Text = ClipboardManager.ClipboardString;
+			}
 			if (Input.Cancel || cancelButtonWidget.IsClicked) {
 				Dismiss(false);
 			}
