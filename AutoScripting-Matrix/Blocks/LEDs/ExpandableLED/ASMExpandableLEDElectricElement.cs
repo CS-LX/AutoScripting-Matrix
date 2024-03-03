@@ -65,10 +65,10 @@ namespace Game {
             return false;
         }
 
-        public void UpdateController() {
+        public async void UpdateController() {
             CellFace cellFace = CellFaces[0];
             Dictionary<CellFace, ASMExpandableLEDElectricElement> all = new();
-            GetConnectedElectricElements(cellFace.X, cellFace.Y, cellFace.Z, cellFace.Face, all);
+            await GetConnectedElectricElements(cellFace.X, cellFace.Y, cellFace.Z, cellFace.Face, all);
 
             //已经有控制器，则删除旧的
             foreach (var cell in all.Keys) {
@@ -79,8 +79,8 @@ namespace Game {
             m_subsystemControllers.AddControllerByPoints(all.Keys.ToArray(), new ASMExpandableLEDController(all, SubsystemElectricity));
         }
 
-        public void GetConnectedElectricElements(int x, int y, int z, int face, Dictionary<CellFace, ASMExpandableLEDElectricElement> parent) {
-            if (parent.ContainsKey(new CellFace(x, y, z, face))) return;//有本地的，重复了，直接返回
+        public async Task GetConnectedElectricElements(int x, int y, int z, int face, Dictionary<CellFace, ASMExpandableLEDElectricElement> parent) {
+            if (parent.ContainsKey(new CellFace(x, y, z, face))) return;
             //先获取本地的电路元件
             ASMExpandableLEDElectricElement electricElement = SubsystemElectricity.GetElectricElement(x, y, z, face) as ASMExpandableLEDElectricElement;
             parent.Add(new CellFace(x, y, z, face), electricElement);
@@ -96,7 +96,7 @@ namespace Game {
                 int blockID = Terrain.ExtractContents(blockValue);
                 if (blockID == ASMExpandableLEDBlock.Index && GetFace(blockValue) == face) {
                     //可以往某方向走
-                    GetConnectedElectricElements(checkPoint.X, checkPoint.Y, checkPoint.Z, face, parent);
+                    await GetConnectedElectricElements(checkPoint.X, checkPoint.Y, checkPoint.Z, face, parent);
                 }
             }
             int GetFace(int value) => (Terrain.ExtractData(value) >> 2) & 7;
