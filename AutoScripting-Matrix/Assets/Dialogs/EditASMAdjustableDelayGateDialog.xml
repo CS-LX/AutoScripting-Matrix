@@ -1,6 +1,6 @@
 <CanvasWidget xmlns="runtime-namespace:Game">
 
-  <CanvasWidget Size="600, 360" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
+  <CanvasWidget Size="700, 360" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
     <RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2" />
     <StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="0, 15">
       
@@ -9,11 +9,15 @@
       <CanvasWidget Size="0, Infinity" />
 
       <StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
+        <BevelledButtonWidget Name="EditAdjustableDelayGateDialog.Minus100Button" Style="{Styles/ButtonStyle_Minus100}" VerticalAlignment="Center"/>
+        <BevelledButtonWidget Name="EditAdjustableDelayGateDialog.Minus10Button" Style="{Styles/ButtonStyle_Minus10}" VerticalAlignment="Center"/>
         <BevelledButtonWidget Name="EditAdjustableDelayGateDialog.MinusButton" Style="{Styles/ButtonStyle_Minus}" VerticalAlignment="Center"/>
         <CanvasWidget Size="200, 50" VerticalAlignment="Center">
           <LabelWidget Name="EditAdjustableDelayGateDialog.Label"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </CanvasWidget>
         <BevelledButtonWidget Name="EditAdjustableDelayGateDialog.PlusButton" Style="{Styles/ButtonStyle_Plus}" VerticalAlignment="Center"/>
+        <BevelledButtonWidget Name="EditAdjustableDelayGateDialog.Plus10Button" Style="{Styles/ButtonStyle_Plus10}" VerticalAlignment="Center"/>
+        <BevelledButtonWidget Name="EditAdjustableDelayGateDialog.Plus100Button" Style="{Styles/ButtonStyle_Plus100}" VerticalAlignment="Center"/>
       </StackPanelWidget>
 
       <CanvasWidget Size="0, Infinity" />

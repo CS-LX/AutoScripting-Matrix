@@ -1,0 +1,4 @@
+<BevelledButtonWidget xmlns="runtime-namespace:Game" Style="{Styles/ButtonStyle_70x60}" Text="" Margin="2, 0" >
+	<RectangleWidget Name="BevelledButton.Image" Size="32, 32" HorizontalAlignment="Center" VerticalAlignment="Center" Subtexture="{Textures/Atlas/Minus}" OutlineColor="0, 0, 0, 0" FillColor="255, 255, 255" IsVisible="true" />
+	<LabelWidget  Text=" 100" HorizontalAlignment="Near" VerticalAlignment="Near" FontScale="0.7" Margin="4, 4"/>
+</BevelledButtonWidget>
