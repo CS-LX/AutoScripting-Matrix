@@ -89,8 +89,14 @@ namespace Game {
 		public override void Update() {
 			m_lastOutputLabel.Text = "上一输出: " + m_data.LastOutputStatus;
 			for (int i = 0; i < 16; i++) {
-				if (m_copyButtons[i].IsClicked) ClipboardManager.ClipboardString = inputValues[i].Text == null ? string.Empty : inputValues[i].Text;
-				if (m_pasteButtons[i].IsClicked) inputValues[i].Text = ClipboardManager.ClipboardString;
+				if (m_copyButtons[i].IsClicked) {
+					if (inputValues[i].Text == null || inputValues[i].Text.Length <= 0) continue;
+					ClipboardManager.ClipboardString = inputValues[i].Text;
+				}
+				if (m_pasteButtons[i].IsClicked) {
+					if (ClipboardManager.ClipboardString == null || ClipboardManager.ClipboardString.Length <= 0) continue;
+					inputValues[i].Text = ClipboardManager.ClipboardString;
+				}
 				if (m_applyAllButtons[i].IsClicked) {
 					int index = i;
 					DialogsManager.ShowDialog(
@@ -103,7 +109,7 @@ namespace Game {
 							button => {
 								if (button == MessageDialogButton.Button1) {
 									for (int j = 0; j < 16; j++) {
-										string exp = inputValues[index].Text == null ? string.Empty : inputValues[index].Text;
+										string exp = inputValues[index].Text = inputValues[index].Text;
 										inputValues[j].Text = exp;
 									}
 								}
