@@ -70,11 +70,13 @@ namespace Game {
 						Margin = new Vector2(8, 0),
 
 					};
+					LabelWidget indexLabel = new LabelWidget {Text = x.ToString(), Color = Color.Gray, HorizontalAlignment = WidgetAlignment.Near, VerticalAlignment = WidgetAlignment.Center, Margin = new Vector2(-32, 0)};
 					canvasWidget.Children.Add(rectangleWidget);
 					canvasWidget.Children.Add(textBoxWidget);
 					canvasWidget.Children.Add(copyButton);
 					canvasWidget.Children.Add(pasteButton);
 					canvasWidget.Children.Add(applyAllButton);
+					canvasWidget.Children.Add(indexLabel);
 					inputMatrixGrid.Children.Add(canvasWidget);
 					inputMatrixGrid.SetWidgetCell(canvasWidget, new Point2(0, x));
 					inputValues[x] = textBoxWidget;
