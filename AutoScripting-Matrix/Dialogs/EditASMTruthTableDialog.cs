@@ -18,6 +18,8 @@ namespace Game {
 
 		public BitmapButtonWidget[] m_pasteButtons = new BitmapButtonWidget[16];
 
+		public BitmapButtonWidget[] m_applyAllButtons = new BitmapButtonWidget[16];
+
 		public Action<string[]> callBack = _ => { };
 
 		public ASMTruthTableData m_data;
@@ -45,7 +47,7 @@ namespace Game {
 						NormalSubtexture = copyTexture,
 						HorizontalAlignment = WidgetAlignment.Far,
 						VerticalAlignment = WidgetAlignment.Center,
-						Margin = new Vector2(28, 0),
+						Margin = new Vector2(48, 0),
 
 					};
 					Subtexture pasteTexture = new (ContentManager.Get<Texture2D>("Textures/Icons/Paste"), Vector2.Zero, Vector2.One);
@@ -55,6 +57,16 @@ namespace Game {
 						NormalSubtexture = pasteTexture,
 						HorizontalAlignment = WidgetAlignment.Far,
 						VerticalAlignment = WidgetAlignment.Center,
+						Margin = new Vector2(28, 0),
+
+					};
+					Subtexture applyAllTexture = new (ContentManager.Get<Texture2D>("Textures/Icons/Link"), Vector2.Zero, Vector2.One);
+					BitmapButtonWidget applyAllButton = new() {
+						Size = new Vector2(16),
+						ClickedSubtexture = applyAllTexture,
+						NormalSubtexture = applyAllTexture,
+						HorizontalAlignment = WidgetAlignment.Far,
+						VerticalAlignment = WidgetAlignment.Center,
 						Margin = new Vector2(8, 0),
 
 					};
@@ -62,11 +74,13 @@ namespace Game {
 					canvasWidget.Children.Add(textBoxWidget);
 					canvasWidget.Children.Add(copyButton);
 					canvasWidget.Children.Add(pasteButton);
+					canvasWidget.Children.Add(applyAllButton);
 					inputMatrixGrid.Children.Add(canvasWidget);
 					inputMatrixGrid.SetWidgetCell(canvasWidget, new Point2(0, x));
 					inputValues[x] = textBoxWidget;
 					m_copyButtons[x] = copyButton;
 					m_pasteButtons[x] = pasteButton;
+					m_applyAllButtons[x] = applyAllButton;
 			}
 		}
 
@@ -75,13 +89,34 @@ namespace Game {
 			for (int i = 0; i < 16; i++) {
 				if (m_copyButtons[i].IsClicked) ClipboardManager.ClipboardString = inputValues[i].Text;
 				if (m_pasteButtons[i].IsClicked) inputValues[i].Text = ClipboardManager.ClipboardString;
-			}
-			if (Input.Cancel || cancelButtonWidget.IsClicked) {
-				Dismiss(false);
-			}
-			else if (Input.Ok || okButtonWidget.IsClicked)
-			{
-				Dismiss(true);
+				if (m_applyAllButtons[i].IsClicked) {
+					int index = i;
+					DialogsManager.ShowDialog(
+						this,
+						new MessageDialog(
+							"",
+							"复制粘贴至所有元素表达式？",
+							"确定",
+							"取消",
+							button => {
+								if (button == MessageDialogButton.Button1) {
+									for (int j = 0; j < 16; j++) {
+										string exp = inputValues[index].Text;
+										inputValues[j].Text = exp;
+									}
+								}
+							}
+						)
+					);
+				}
+				if (Input.Cancel
+					|| cancelButtonWidget.IsClicked) {
+					Dismiss(false);
+				}
+				else if (Input.Ok
+					|| okButtonWidget.IsClicked) {
+					Dismiss(true);
+				}
 			}
 		}
 
