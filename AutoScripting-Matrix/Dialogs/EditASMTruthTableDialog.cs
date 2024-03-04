@@ -70,7 +70,7 @@ namespace Game {
 						Margin = new Vector2(8, 0),
 
 					};
-					LabelWidget indexLabel = new LabelWidget {Text = x.ToString(), Color = Color.Gray, HorizontalAlignment = WidgetAlignment.Near, VerticalAlignment = WidgetAlignment.Center, Margin = new Vector2(-32, 0)};
+					LabelWidget indexLabel = new LabelWidget {Text = $"M{(int)(x / 4) + 1}{x % 4 + 1}", Color = Color.Gray, HorizontalAlignment = WidgetAlignment.Near, VerticalAlignment = WidgetAlignment.Center, Margin = new Vector2(-48, 0)};
 					canvasWidget.Children.Add(rectangleWidget);
 					canvasWidget.Children.Add(textBoxWidget);
 					canvasWidget.Children.Add(copyButton);
@@ -89,7 +89,7 @@ namespace Game {
 		public override void Update() {
 			m_lastOutputLabel.Text = "上一输出: " + m_data.LastOutputStatus;
 			for (int i = 0; i < 16; i++) {
-				if (m_copyButtons[i].IsClicked) ClipboardManager.ClipboardString = inputValues[i].Text;
+				if (m_copyButtons[i].IsClicked) ClipboardManager.ClipboardString = inputValues[i].Text == null ? string.Empty : inputValues[i].Text;
 				if (m_pasteButtons[i].IsClicked) inputValues[i].Text = ClipboardManager.ClipboardString;
 				if (m_applyAllButtons[i].IsClicked) {
 					int index = i;
@@ -103,7 +103,7 @@ namespace Game {
 							button => {
 								if (button == MessageDialogButton.Button1) {
 									for (int j = 0; j < 16; j++) {
-										string exp = inputValues[index].Text;
+										string exp = inputValues[index].Text == null ? string.Empty : inputValues[index].Text;
 										inputValues[j].Text = exp;
 									}
 								}
