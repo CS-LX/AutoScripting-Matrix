@@ -4,8 +4,8 @@ namespace Game {
     public class ASMBatteryElectricElement : ASMElectricElement {
         public SubsystemASMBatteryBlockBehavior asmBatteryBlockBehavior;
         public Matrix m_voltage = Matrix.Identity;
-        public ASMBatteryElectricElement(SubsystemASMElectricity subsystemElectricity, CellFace cellFace)
-            : base(subsystemElectricity, cellFace) {
+        public ASMBatteryElectricElement(SubsystemASMElectricity subsystemElectricity, CellFace[] cellFaces)
+            : base(subsystemElectricity, cellFaces) {
             asmBatteryBlockBehavior = subsystemElectricity.Project.FindSubsystem<SubsystemASMBatteryBlockBehavior>(true);
         }
 
