@@ -288,6 +288,28 @@ namespace Game {
                         0
                     );
                     break;
+                case 13://正交
+                    GetInputs(
+                        Rotation,
+                        out Matrix width,
+                        out Matrix height,
+                        out Matrix nearPlane,
+                        out Matrix farPlane,
+                        out _
+                    );
+                    m_voltage_in = Matrix.CreateOrthographic(width.ToFloat(), height.ToFloat(), nearPlane.ToFloat(), farPlane.ToFloat());
+                    break;
+                case 14://透视
+                    GetInputs(
+                        Rotation,
+                        out Matrix fieldOfViewY,
+                        out Matrix aspectRatio,
+                        out Matrix nearPlane2,
+                        out Matrix farPlane2,
+                        out _
+                    );
+                    m_voltage_in = Matrix.CreateOrthographic(fieldOfViewY.ToFloat(), aspectRatio.ToFloat(), nearPlane2.ToFloat(), farPlane2.ToFloat());
+                    break;
             }
             return m_voltage_top != voltage_top || m_voltage_left != voltage_left || m_voltage_right != voltage_right || m_voltage_in != voltage_in;
         }

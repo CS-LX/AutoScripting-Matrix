@@ -22,6 +22,8 @@ namespace Game
             new MatrixSourceInfo("二阶方阵转矩阵", "", "ASM2X2ToMatrix", [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right, ASMElectricConnectorDirection.Bottom, ASMElectricConnectorDirection.Top], [ASMElectricConnectorDirection.In], true),
             new MatrixSourceInfo("四维横向量转矩阵", "", "ASMVector4TToMatrix", [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right, ASMElectricConnectorDirection.Bottom, ASMElectricConnectorDirection.Top], [ASMElectricConnectorDirection.In], true),
             new MatrixSourceInfo("浮点转四维横向量", "", "ASMFloatToVector4T", [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right, ASMElectricConnectorDirection.Bottom, ASMElectricConnectorDirection.Top], [ASMElectricConnectorDirection.In], true),
+            new MatrixSourceInfo("矩阵源: 从正交投影创建", "", "ASMatrixSourceOrthographic", [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right, ASMElectricConnectorDirection.Bottom, ASMElectricConnectorDirection.Top], [ASMElectricConnectorDirection.In], true),
+            new MatrixSourceInfo("矩阵源: 从透视投影创建", "", "ASMatrixSourcePerspective", [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right, ASMElectricConnectorDirection.Bottom, ASMElectricConnectorDirection.Top], [ASMElectricConnectorDirection.In], true),
         ];
 
         public Texture2D[] textures;
