@@ -291,10 +291,10 @@ namespace Game {
                 case 13://正交
                     GetInputs(
                         Rotation,
-                        out Matrix width,
+                        out Matrix farPlane,
                         out Matrix height,
                         out Matrix nearPlane,
-                        out Matrix farPlane,
+                        out Matrix width,
                         out _
                     );
                     m_voltage_in = Matrix.CreateOrthographic(width.ToFloat(), height.ToFloat(), nearPlane.ToFloat(), farPlane.ToFloat());
@@ -302,10 +302,10 @@ namespace Game {
                 case 14://透视
                     GetInputs(
                         Rotation,
-                        out Matrix fieldOfViewY,
+                        out Matrix farPlane2,
                         out Matrix aspectRatio,
                         out Matrix nearPlane2,
-                        out Matrix farPlane2,
+                        out Matrix fieldOfViewY,
                         out _
                     );
                     m_voltage_in = Matrix.CreateOrthographic(fieldOfViewY.ToFloat(), aspectRatio.ToFloat(), nearPlane2.ToFloat(), farPlane2.ToFloat());
