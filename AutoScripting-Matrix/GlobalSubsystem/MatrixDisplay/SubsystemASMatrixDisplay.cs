@@ -68,10 +68,22 @@ namespace Game {
                 //文字
                 for (int i = 0; i < 4; i++) {
                     for (int j = 0; j < 4; j++) {
+                        string displayNum = "";
                         float element = matrixDisplay.Matrix.GetElement(j * 4 + i);
-                        int signOffset = MathUtils.Sign(element) < 0 ? -1 : 0;//如果带负号，则少保留一位小数
-                        int roundLength = MathUtils.Min(matrixDisplay.NumRoundLength + signOffset, 7);
-                        string displayNum = element.ToString("0." + new string('0', roundLength));//保留NumRoundLength位小数
+                        if (float.IsNaN(element)) {
+                            displayNum = "N";
+                        }
+                        else if(float.IsPositiveInfinity(element)) {
+                            displayNum = "+I";
+                        }
+                        else if(float.IsNegativeInfinity(element)) {
+                            displayNum = "-I";
+                        }
+                        else {
+                            int signOffset = MathUtils.Sign(element) < 0 ? -1 : 0;//如果带负号，则少保留一位小数
+                            int roundLength = MathUtils.Min(matrixDisplay.NumRoundLength + signOffset, 7);
+                            displayNum = element.ToString("0." + new string('0', roundLength));//保留NumRoundLength位小数
+                        }
                         float width = matrixDisplay.Width * (i / 4f) + matrixDisplay.Width / 8f;
                         float height = matrixDisplay.Height * ((4 - j) / 4f) - matrixDisplay.Height / 8f;
                         Vector3 displayNumPos = p1 + right * width + up * height;
