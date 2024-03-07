@@ -35,6 +35,8 @@ namespace Game {
 
         public Vector3 m_position;
 
+        public int m_face;
+
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap) {
             base.Load(valuesDictionary, idToEntityMap);
             m_subsystemAsmElectricity = Project.FindSubsystem<SubsystemASMElectricity>(true);
@@ -46,7 +48,9 @@ namespace Game {
             m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(true);
             Point3 coordinates = Entity.FindComponent<ComponentBlockEntity>(true).Coordinates;
             m_position = new Vector3(coordinates);
-            m_simCameraElectricElement = m_subsystemAsmElectricity.GetElectricElement(coordinates.X, coordinates.Y, coordinates.Z, ASMSimCameraLEDBlock.GetMountingFace(Terrain.ExtractData(m_subsystemTerrain.Terrain.GetCellValueFast(coordinates.X, coordinates.Y, coordinates.Z)))) as ASMSimCameraLEDElectricElement;
+            int blockValue = m_subsystemTerrain.Terrain.GetCellValueFast(coordinates.X, coordinates.Y, coordinates.Z);
+            m_face = ASMSimCameraLEDBlock.GetMountingFace(Terrain.ExtractData(blockValue));
+            m_simCameraElectricElement = m_subsystemAsmElectricity.GetElectricElement(coordinates.X, coordinates.Y, coordinates.Z, m_face) as ASMSimCameraLEDElectricElement;
         }
 
         public void Draw(Camera camera, int drawOrder) {
@@ -103,6 +107,17 @@ namespace Game {
 
 
         public void DrawScreen(Camera camera, int drawOrder) {
+            //显示的面的单位向量，满足笛卡尔坐标系，right是x轴，up是y轴
+            Vector3 v = new(m_position.X + 0.5f, m_position.Y + 0.5f, m_position.Z + 0.5f);
+            Vector3 position = v - (0.435f * CellFace.FaceToVector3(m_face)); //0.435f原本是0.4375f，但是会导致闪烁，所以加一些偏移量
+            Vector3 forward = CellFace.FaceToVector3(m_face);
+            Vector3 up = (m_face < 4) ? Vector3.UnitY : Vector3.UnitX;
+            Vector3 right = Vector3.Cross(up, forward);
+            Vector3 p1 = position + (-right - up) / 2;
+            Vector3 p2 = position + right / 2 - up / 2;
+            Vector3 p3 = position + right / 2 + up / 2;
+            Vector3 p4 = position - right / 2 + up / 2;
+#if false
             Vector3 pos = m_position + Vector3.One * 0.5f + Vector3.UnitY;
             Vector3 worldPos1 = pos + new Vector3(+0.5f, +0.5f, 0);
             Vector3 worldPos2 = pos + new Vector3(-0.5f, +0.5f, 0);
@@ -116,6 +131,7 @@ namespace Game {
             Vector2 screenPos21 = new Vector2(screenPos2.X / Window.Size.X, screenPos2.Y / Window.Size.Y);
             Vector2 screenPos31 = new Vector2(screenPos3.X / Window.Size.X, screenPos3.Y / Window.Size.Y);
             Vector2 screenPos41 = new Vector2(screenPos4.X / Window.Size.X, screenPos4.Y / Window.Size.Y);
+#endif
             m_primitivesRenderer.TexturedBatch(
                     m_camera.ViewTexture,
                     useAlphaTest: true,
@@ -126,10 +142,10 @@ namespace Game {
                     SamplerState.PointClamp
                 )
                 .QueueQuad(
-                    worldPos1,
-                    worldPos2,
-                    worldPos3,
-                    worldPos4,
+                    p4,
+                    p3,
+                    p2,
+                    p1,
                     Vector2.Zero,
                     Vector2.UnitX,
                     Vector2.One,
@@ -169,7 +185,8 @@ namespace Game {
         public void FindLed() {
             Point3 coordinates = Entity.FindComponent<ComponentBlockEntity>(true).Coordinates;
             int blockValue = m_subsystemTerrain.Terrain.GetCellValueFast(coordinates.X, coordinates.Y, coordinates.Z);
-            m_simCameraElectricElement = m_subsystemAsmElectricity.GetElectricElement(coordinates.X, coordinates.Y, coordinates.Z, ASMSimCameraLEDBlock.GetMountingFace(Terrain.ExtractData(blockValue))) as ASMSimCameraLEDElectricElement;
+            m_face = ASMSimCameraLEDBlock.GetMountingFace(Terrain.ExtractData(blockValue));
+            m_simCameraElectricElement = m_subsystemAsmElectricity.GetElectricElement(coordinates.X, coordinates.Y, coordinates.Z, m_face) as ASMSimCameraLEDElectricElement;
         }
 
         #region 绘制方法
