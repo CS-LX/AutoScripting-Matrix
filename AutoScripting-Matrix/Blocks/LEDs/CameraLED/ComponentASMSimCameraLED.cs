@@ -132,6 +132,13 @@ namespace Game {
             Vector2 screenPos31 = new Vector2(screenPos3.X / Window.Size.X, screenPos3.Y / Window.Size.Y);
             Vector2 screenPos41 = new Vector2(screenPos4.X / Window.Size.X, screenPos4.Y / Window.Size.Y);
 #endif
+            ASMStaticMethods.CalcUV(m_camera.ViewTexture.Width, m_camera.ViewTexture.Height, out Vector2 uvMin, out Vector2 uvMax);
+            Vector2 uv0 = uvMin;
+            Vector2 uv1 = new Vector2(uvMax.X, uvMin.Y);
+            Vector2 uv2 = uvMax;
+            Vector2 uv3 = new Vector2(uvMin.X, uvMax.Y);
+
+
             m_primitivesRenderer.TexturedBatch(
                     m_camera.ViewTexture,
                     useAlphaTest: true,
@@ -146,10 +153,10 @@ namespace Game {
                     p3,
                     p2,
                     p1,
-                    Vector2.Zero,
-                    Vector2.UnitX,
-                    Vector2.One,
-                    Vector2.UnitY,
+                    uv0,
+                    uv1,
+                    uv2,
+                    uv3,
                     Color.White
                 );
             m_primitivesRenderer.Flush(camera.ViewProjectionMatrix);

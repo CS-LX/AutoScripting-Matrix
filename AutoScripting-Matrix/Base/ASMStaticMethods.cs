@@ -12,8 +12,7 @@ namespace Game {
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static float GetElement(this Matrix m, int index) {
-            if (index is < 0 or > 15)
-                throw new ArgumentOutOfRangeException(nameof(index));
+            if (index is < 0 or > 15) throw new ArgumentOutOfRangeException(nameof(index));
             return index switch {
                 0 => m.M11,
                 1 => m.M12,
@@ -75,13 +74,9 @@ namespace Game {
         /// <param name="index"></param>
         /// <param name="value"></param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public static void SetElement(ref Matrix m, int index, float value)
-        {
-            if (index is < 0 or > 15)
-                throw new ArgumentOutOfRangeException(nameof(index));
-
-            switch (index)
-            {
+        public static void SetElement(ref Matrix m, int index, float value) {
+            if (index is < 0 or > 15) throw new ArgumentOutOfRangeException(nameof(index));
+            switch (index) {
                 case 0:
                     m.M11 = value;
                     break;
@@ -130,8 +125,7 @@ namespace Game {
                 case 15:
                     m.M44 = value;
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(index), index, null);
+                default: throw new ArgumentOutOfRangeException(nameof(index), index, null);
             }
         }
 
@@ -146,7 +140,7 @@ namespace Game {
                 string hex = m.GetElement(i).ToHexString();
                 builder.Append(hex + ",");
             }
-            builder.Remove(builder.Length - 1, 1);//删除末尾分号
+            builder.Remove(builder.Length - 1, 1); //删除末尾分号
             return builder.ToString();
         }
 
@@ -262,7 +256,7 @@ namespace Game {
             }
             return m;
         }
-        
+
 
         /// <summary>
         /// 返回一个矩阵，内部每个元素都为以传入矩阵y对应元素为底，传入矩阵x的对应元素的对数 m[i] = log(x[i], y[i])
@@ -381,9 +375,49 @@ namespace Game {
             return m;
         }
 
-        public static Matrix CreateScaleTranslation(float sx, float sy, float tx, float ty)
-        {
-            return new Matrix(sx, 0f, 0f, 0f, 0f, sy, 0f, 0f, 0f, 0f, 1f, 0f, tx, ty, 0f, 1f);
+        public static Matrix CreateScaleTranslation(float sx, float sy, float tx, float ty) {
+            return new Matrix(
+                sx,
+                0f,
+                0f,
+                0f,
+                0f,
+                sy,
+                0f,
+                0f,
+                0f,
+                0f,
+                1f,
+                0f,
+                tx,
+                ty,
+                0f,
+                1f
+            );
+        }
+
+        /// <summary>
+        /// 根据矩形计算其自适应正方形uv
+        /// </summary>
+        /// <param name="w"></param>
+        /// <param name="h"></param>
+        /// <param name="uvMin"></param>
+        /// <param name="uvMax"></param>
+        public static void CalcUV(float w, float h, out Vector2 uvMin, out Vector2 uvMax) {
+            uvMin = Vector2.Zero;
+            uvMax = Vector2.One;
+            if (w > h) {
+                uvMin.Y = 0f;
+                uvMin.X = 0.5f - 0.5f * h / w;
+                uvMax.Y = 1f;
+                uvMax.X = 0.5f + 0.5f * h / w;
+            }
+            else {
+                uvMin.Y = 0.5f - 0.5f * w / h;
+                uvMin.X = 0f;
+                uvMax.Y = 0.5f + 0.5f * w / h;
+                uvMax.X = 1f;
+            }
         }
     }
 }
