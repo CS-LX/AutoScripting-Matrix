@@ -173,7 +173,10 @@ namespace Game {
                     FindLed();
                     return;
                 }
-                m_camera.SetViewMatrix(m_simCameraElectricElement.GetInputMatrix());
+                Matrix viewMatrix = m_camera.ViewMatrix.Invert();
+                Matrix inputMatrix = m_simCameraElectricElement.GetInputMatrix();
+                Matrix lerpMatrix = ASMStaticMethods.Lerp(viewMatrix, inputMatrix, 0.5f);
+                m_camera.SetViewMatrix(lerpMatrix);
             }
         }
 

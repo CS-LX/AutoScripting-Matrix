@@ -419,5 +419,75 @@ namespace Game {
                 uvMax.X = 1f;
             }
         }
+
+        /// <summary>
+        /// 矩阵插值
+        /// </summary>
+        /// <param name="m1">起始矩阵</param>
+        /// <param name="m2">终止矩阵</param>
+        /// <param name="v">速度</param>
+        /// <returns></returns>
+        public static Matrix Lerp(Matrix m1, Matrix m2, float v) {
+            Matrix result = new Matrix();
+            if (m1.HasNaN()) return m2;
+            if (m2.HasNaN()) return m1;
+            result.M11 = m1.M11 + (m2.M11 - m1.M11) * v;
+            result.M12 = m1.M12 + (m2.M12 - m1.M12) * v;
+            result.M13 = m1.M13 + (m2.M13 - m1.M13) * v;
+            result.M14 = m1.M14 + (m2.M14 - m1.M14) * v;
+            result.M21 = m1.M21 + (m2.M21 - m1.M21) * v;
+            result.M22 = m1.M22 + (m2.M22 - m1.M22) * v;
+            result.M23 = m1.M23 + (m2.M23 - m1.M23) * v;
+            result.M24 = m1.M24 + (m2.M24 - m1.M24) * v;
+            result.M31 = m1.M31 + (m2.M31 - m1.M31) * v;
+            result.M32 = m1.M32 + (m2.M32 - m1.M32) * v;
+            result.M33 = m1.M33 + (m2.M33 - m1.M33) * v;
+            result.M34 = m1.M34 + (m2.M34 - m1.M34) * v;
+            result.M41 = m1.M41 + (m2.M41 - m1.M41) * v;
+            result.M42 = m1.M42 + (m2.M42 - m1.M42) * v;
+            result.M43 = m1.M43 + (m2.M43 - m1.M43) * v;
+            result.M44 = m1.M44 + (m2.M44 - m1.M44) * v;
+            return result;
+        }
+
+        /// <summary>
+        /// 矩阵是否有元素为NaN
+        /// </summary>
+        /// <param name="m"></param>
+        /// <returns></returns>
+        public static bool HasNaN(this Matrix m) {
+            if (float.IsNaN(m.M11)
+                || float.IsNaN(m.M12)
+                || float.IsNaN(m.M13)
+                || float.IsNaN(m.M14)
+                || float.IsNaN(m.M21)
+                || float.IsNaN(m.M22)
+                || float.IsNaN(m.M23)
+                || float.IsNaN(m.M24)
+                || float.IsNaN(m.M31)
+                || float.IsNaN(m.M32)
+                || float.IsNaN(m.M33)
+                || float.IsNaN(m.M34)
+                || float.IsNaN(m.M41)
+                || float.IsNaN(m.M42)
+                || float.IsNaN(m.M43)
+                || float.IsNaN(m.M44))
+                return true;
+            return false;
+        }
+
+        /// <summary>
+        /// 求逆矩阵
+        /// </summary>
+        /// <param name="m"></param>
+        /// <returns></returns>
+        public static Matrix Invert(this Matrix m) => Matrix.Invert(m);
+
+        /// <summary>
+        /// 求转置矩阵
+        /// </summary>
+        /// <param name="m"></param>
+        /// <returns></returns>
+        public static Matrix Transpose(this Matrix m) => Matrix.Transpose(m);
     }
 }
