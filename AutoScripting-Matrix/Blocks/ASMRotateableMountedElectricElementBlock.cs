@@ -83,10 +83,9 @@ namespace Game {
 			m_standaloneBlockMesh2_noRotation.AppendModelMeshPart(model.FindMesh(m_mesh2Name).MeshParts[0], boneAbsoluteTransform, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
 		}
 
-		public override int GetFace(int value)
-		{
-			return (Terrain.ExtractData(value) >> 2) & 7;
-		}
+		public override int GetFace(int value) => GetFace_Static(value);
+
+		public static int GetFace_Static(int value) => (Terrain.ExtractData(value) >> 2) & 7;
 
 		public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData)
 		{

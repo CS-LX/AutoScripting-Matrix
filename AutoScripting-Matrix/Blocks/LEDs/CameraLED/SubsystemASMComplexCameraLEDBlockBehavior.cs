@@ -4,11 +4,11 @@ using GameEntitySystem;
 using TemplatesDatabase;
 
 namespace Game {
-    public class SubsystemSimCameraLEDBlockBehavior : SubsystemBlockBehavior {
+    public class SubsystemASMComplexCameraLEDBlockBehavior : SubsystemBlockBehavior {
 
         public SubsystemBlockEntities m_subsystemBlockEntities;
 
-        public override int[] HandledBlocks => [ASMSimCameraLEDBlock.Index];
+        public override int[] HandledBlocks => [ASMComplexCameraLEDBlock.Index];
 
         public override void Load(ValuesDictionary valuesDictionary) {
             base.Load(valuesDictionary);
@@ -23,7 +23,7 @@ namespace Game {
                 y,
                 z
             );
-            DatabaseObject databaseObject = Project.GameDatabase.Database.FindDatabaseObject("ASMSimCameraLED", Project.GameDatabase.EntityTemplateType, throwIfNotFound: true);
+            DatabaseObject databaseObject = Project.GameDatabase.Database.FindDatabaseObject("ASMComplexCameraLED", Project.GameDatabase.EntityTemplateType, throwIfNotFound: true);
             var valuesDictionary = new ValuesDictionary();
             valuesDictionary.PopulateFromDatabaseObject(databaseObject);
             valuesDictionary.GetValue<ValuesDictionary>("BlockEntity").SetValue("Coordinates", new Point3(x, y, z));
