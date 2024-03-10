@@ -37,6 +37,9 @@ namespace Game {
 
         public int m_face;
 
+        //控制部分
+        public bool m_isAutoClip;
+
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap) {
             base.Load(valuesDictionary, idToEntityMap);
             m_subsystemAsmElectricity = Project.FindSubsystem<SubsystemASMElectricity>(true);
@@ -55,7 +58,8 @@ namespace Game {
 
         public void Draw(Camera camera, int drawOrder) {
             if (m_componentPlayer == null
-                || m_camera == null)
+                || m_camera == null
+                || m_complexCameraElectricElement == null)
                 return;
             DrawView(camera, drawOrder);
             DrawScreen(camera, drawOrder);
@@ -109,18 +113,19 @@ namespace Game {
         public void DrawScreen(Camera camera, int drawOrder) {
             //显示的面的单位向量，满足笛卡尔坐标系，right是x轴，up是y轴
             Vector3 v = new(m_position.X + 0.5f, m_position.Y + 0.5f, m_position.Z + 0.5f);
-            Vector3 p1 = v + new Vector3(-0.5f, 0, -0.5f);
-            Vector3 p2 = v + new Vector3(0.5f, 0, -0.5f);
-            Vector3 p3 = v + new Vector3(0.5f, 0, 0.5f);
-            Vector3 p4 = v + new Vector3(-0.5f,0,  0.5f);
-
+            Vector3 offset1 = new Vector3(-0.5f, 0, -0.5f);
+            Vector3 offset2 = new Vector3(0.5f, 0, -0.5f);
+            Vector3 offset3 = new Vector3(0.5f, 0, 0.5f);
+            Vector3 offset4 = new Vector3(-0.5f, 0, 0.5f);
+            Vector3 p1 = v + Vector3.Transform(offset1, m_complexCameraElectricElement.GetDisplayTransformMatrix());
+            Vector3 p2 = v + Vector3.Transform(offset2, m_complexCameraElectricElement.GetDisplayTransformMatrix());
+            Vector3 p3 = v + Vector3.Transform(offset3, m_complexCameraElectricElement.GetDisplayTransformMatrix());
+            Vector3 p4 = v + Vector3.Transform(offset4, m_complexCameraElectricElement.GetDisplayTransformMatrix());
             ASMStaticMethods.CalcUV(m_camera.ViewTexture.Width, m_camera.ViewTexture.Height, out Vector2 uvMin, out Vector2 uvMax);
-            Vector2 uv0 = uvMin;
-            Vector2 uv1 = new Vector2(uvMax.X, uvMin.Y);
-            Vector2 uv2 = uvMax;
-            Vector2 uv3 = new Vector2(uvMin.X, uvMax.Y);
-
-
+            Vector2 uv0 = m_isAutoClip ? uvMin : Vector2.Zero;
+            Vector2 uv1 = m_isAutoClip ? new Vector2(uvMax.X, uvMin.Y) : Vector2.UnitX;
+            Vector2 uv2 = m_isAutoClip ? uvMax : Vector2.One;
+            Vector2 uv3 = m_isAutoClip ? new Vector2(uvMin.X, uvMax.Y) : Vector2.UnitY;
             m_primitivesRenderer.TexturedBatch(
                     m_camera.ViewTexture,
                     useAlphaTest: true,
@@ -161,6 +166,8 @@ namespace Game {
                 m_camera.SetViewMatrix(lerpMatrix);
                 Matrix projectionMatrix = m_complexCameraElectricElement.GetProjectionMatrix();
                 m_camera.m_projectionMatrix = projectionMatrix;
+
+                m_isAutoClip = m_complexCameraElectricElement.GetControlMatrix().M11 > 0;
             }
         }
 

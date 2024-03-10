@@ -21,6 +21,8 @@ namespace Game
 
 		public Matrix GetDisplayTransformMatrix() => m_voltage_bottom;
 
+		public Matrix GetControlMatrix() => m_voltage_left;//控制矩阵，M11: 是否自适应裁剪画面
+
 		public override bool Simulate() {
 			m_voltage_bottom = m_voltage_in = m_voltage_right = m_voltage_top = m_voltage_left = Matrix.Zero;
 			foreach (ASMElectricConnection connection in Connections) {
