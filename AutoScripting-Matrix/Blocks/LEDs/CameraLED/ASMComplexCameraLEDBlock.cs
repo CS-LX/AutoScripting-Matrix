@@ -56,7 +56,7 @@ namespace Game {
             );
         }
 
-        public override ASMElectricElement CreateElectricElement(SubsystemASMElectricity subsystemElectricity, int value, int x, int y, int z) => new ASMComplexCameraLEDElectricElement(subsystemElectricity, new CellFace(x, y, z, GetFace(value)));
+        public override ASMElectricElement CreateElectricElement(SubsystemASMElectricity subsystemElectricity, int value, int x, int y, int z) => new ASMComplexCameraLEDElectricElement(subsystemElectricity, new CellFace(x, y, z, GetFace(value)), value);
 
         public override ASMElectricConnectorType? GetConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) {
             int face2 = GetFace(value);

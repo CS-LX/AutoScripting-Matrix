@@ -10,9 +10,11 @@ namespace Game
 		public Matrix m_voltage_right;
 		public Matrix m_voltage_in;
 
-		public ASMComplexCameraLEDElectricElement(SubsystemASMElectricity subsystemElectricity, CellFace cellFace)
-			: base(subsystemElectricity, cellFace)
-		{
+		public int m_blockValue;
+
+		public ASMComplexCameraLEDElectricElement(SubsystemASMElectricity subsystemElectricity, CellFace cellFace, int blockValue)
+			: base(subsystemElectricity, cellFace) {
+			m_blockValue = blockValue;
 		}
 
 		public Matrix GetInputMatrix() => m_voltage_top;

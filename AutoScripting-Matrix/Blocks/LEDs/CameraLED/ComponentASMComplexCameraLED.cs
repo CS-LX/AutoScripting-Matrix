@@ -31,6 +31,8 @@ namespace Game {
 
         public ASMComplexPerspectiveCamera m_camera;
 
+        public ComponentBlockEntity m_componentEntity;
+
         public PrimitivesRenderer3D m_primitivesRenderer = new PrimitivesRenderer3D();
 
         public Vector3 m_position;
@@ -49,6 +51,7 @@ namespace Game {
             m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(true);
             m_subsystemModelsRenderer = base.Project.FindSubsystem<SubsystemModelsRenderer>(true);
             m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(true);
+            m_componentEntity = Entity.FindComponent<ComponentBlockEntity>(true);
             Point3 coordinates = Entity.FindComponent<ComponentBlockEntity>(true).Coordinates;
             m_position = new Vector3(coordinates);
             int blockValue = m_subsystemTerrain.Terrain.GetCellValueFast(coordinates.X, coordinates.Y, coordinates.Z);
@@ -156,7 +159,11 @@ namespace Game {
                 m_camera = new ASMComplexPerspectiveCamera(m_componentPlayer.GameWidget, Matrix.Zero);
             }
             else {
-                if (m_complexCameraElectricElement == null) {
+                Point3 coordinates = m_componentEntity.Coordinates;
+                int blockValue = m_subsystemTerrain.Terrain.GetCellValueFast(coordinates.X, coordinates.Y, coordinates.Z);
+                m_face = ASMComplexCameraLEDBlock.GetFace_Static(blockValue);
+                if (m_complexCameraElectricElement == null
+                    || ASMComplexCameraLEDBlock.GetRotation(Terrain.ExtractData(m_complexCameraElectricElement.m_blockValue)) != ASMComplexCameraLEDBlock.GetRotation(Terrain.ExtractData(blockValue))) {
                     FindLed();
                     return;
                 }
@@ -166,7 +173,6 @@ namespace Game {
                 m_camera.SetViewMatrix(lerpMatrix);
                 Matrix projectionMatrix = m_complexCameraElectricElement.GetProjectionMatrix();
                 m_camera.m_projectionMatrix = projectionMatrix;
-
                 m_isAutoClip = m_complexCameraElectricElement.GetControlMatrix().M11 > 0;
             }
         }
@@ -184,7 +190,7 @@ namespace Game {
         }
 
         public void FindLed() {
-            Point3 coordinates = Entity.FindComponent<ComponentBlockEntity>(true).Coordinates;
+            Point3 coordinates = m_componentEntity.Coordinates;
             int blockValue = m_subsystemTerrain.Terrain.GetCellValueFast(coordinates.X, coordinates.Y, coordinates.Z);
             m_face = ASMComplexCameraLEDBlock.GetFace_Static(blockValue);
             m_complexCameraElectricElement = m_subsystemAsmElectricity.GetElectricElement(coordinates.X, coordinates.Y, coordinates.Z, m_face) as ASMComplexCameraLEDElectricElement;
