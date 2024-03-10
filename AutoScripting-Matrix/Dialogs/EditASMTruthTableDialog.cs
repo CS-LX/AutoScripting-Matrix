@@ -26,6 +26,8 @@ namespace Game {
 
 		public LabelWidget m_lastOutputLabel;
 
+		public RectangleWidget[] m_elementsDisplay = new RectangleWidget[16];
+
 		public EditASMTruthTableDialog(ASMTruthTableData m_data, Action<string[]> callBack) {
 			this.callBack = callBack;
 			this.m_data = m_data;
@@ -33,12 +35,32 @@ namespace Game {
 			LoadContents(this, node);
 			cancelButtonWidget = Children.Find<ButtonWidget>("CancelButton");
 			okButtonWidget = Children.Find<ButtonWidget>("OKButton");
-			inputMatrixGrid = Children.Find<GridPanelWidget>("InputMatrix");
 			m_lastOutputLabel = Children.Find<LabelWidget>("LastOutputText");
+			GridPanelWidget elementsDisplay = Children.Find<GridPanelWidget>("ElementsDisplay");
+			inputMatrixGrid = Children.Find<GridPanelWidget>("InputMatrix");
 
+			//背景矩阵显示
+			for (int i = 0; i < 4; i++) {
+				for (int j = 0; j < 4; j++) {
+					int index = i * 4 + j;
+					RectangleWidget rectangleWidget = new RectangleWidget {
+						Size = new Vector2(32),
+						OutlineColor = Color.Transparent,
+						FillColor = new Color(32, 32, 32, 255),
+						HorizontalAlignment = WidgetAlignment.Center,
+						VerticalAlignment = WidgetAlignment.Center,
+						Margin = new Vector2(4, 4)
+					};
+					elementsDisplay.Children.Add(rectangleWidget);
+					elementsDisplay.SetWidgetCell(rectangleWidget, new Point2(j, i));
+					m_elementsDisplay[index] = rectangleWidget;
+				}
+			}
+
+			//表达式输入
 			for (int x = 0; x < 16; x++) {
 					CanvasWidget canvasWidget = new() {Size = new Vector2(360, 32), HorizontalAlignment = WidgetAlignment.Center, VerticalAlignment = WidgetAlignment.Center, Margin = new Vector2(4, 4)};
-					RectangleWidget rectangleWidget = new() {Size=new Vector2(float.MaxValue, 32), FillColor = new Color(0,0,0,0), OutlineColor = new Color(64, 64, 64, 64)};
+					RectangleWidget rectangleWidget = new() {Size=new Vector2(float.MaxValue, 32), FillColor = new Color(0,0,0,64), OutlineColor = new Color(64, 64, 64, 64)};
 					TextBoxWidget textBoxWidget = new(){Text = this.m_data.Expressions[x].ToString(CultureInfo.InvariantCulture), Color = new Color(255, 255, 255), Margin = new Vector2(4, 0), VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Stretch};
 					Subtexture copyTexture = new (ContentManager.Get<Texture2D>("Textures/Icons/Copy"), Vector2.Zero, Vector2.One);
 					BitmapButtonWidget copyButton = new() {
@@ -89,6 +111,8 @@ namespace Game {
 		public override void Update() {
 			m_lastOutputLabel.Text = "上一输出: " + m_data.LastOutputStatus;
 			for (int i = 0; i < 16; i++) {
+				m_elementsDisplay[i].FillColor = inputValues[i].HasFocus ? new Color(64, 64, 0, 255) : new Color(32, 32, 32, 255);
+
 				if (m_copyButtons[i].IsClicked) {
 					if (inputValues[i].Text == null || inputValues[i].Text.Length <= 0) continue;
 					ClipboardManager.ClipboardString = inputValues[i].Text;
@@ -117,14 +141,14 @@ namespace Game {
 						)
 					);
 				}
-				if (Input.Cancel
-					|| cancelButtonWidget.IsClicked) {
-					Dismiss(false);
-				}
-				else if (Input.Ok
-					|| okButtonWidget.IsClicked) {
-					Dismiss(true);
-				}
+			}
+			if (Input.Cancel
+				|| cancelButtonWidget.IsClicked) {
+				Dismiss(false);
+			}
+			else if (Input.Ok
+				|| okButtonWidget.IsClicked) {
+				Dismiss(true);
 			}
 		}
 
