@@ -6,6 +6,7 @@ namespace Game {
         public Matrix m_voltage_left;
         public Matrix m_voltage_right;
         public Matrix m_voltage_in;
+        public Matrix m_voltage_bottom;
         public int m_type;
         public SubsystemPlayers m_subsystemPlayers;
         public SubsystemGameWidgets m_subsystemViews;
@@ -45,6 +46,7 @@ namespace Game {
                     case ASMElectricConnectorDirection.Right: return m_voltage_right;
                     case ASMElectricConnectorDirection.Top: return m_voltage_top;
                     case ASMElectricConnectorDirection.In: return m_voltage_in;
+                    case ASMElectricConnectorDirection.Bottom: return m_voltage_bottom;
                 }
             }
             return m_voltage_top;
@@ -55,6 +57,7 @@ namespace Game {
             Matrix voltage_left = m_voltage_left;
             Matrix voltage_right = m_voltage_right;
             Matrix voltage_in = m_voltage_in;
+            Matrix voltage_bottom = m_voltage_bottom;
             bool hasClockConnection = false;
             bool needClockOutput = false;
             switch (m_type) {
@@ -288,7 +291,7 @@ namespace Game {
                         0
                     );
                     break;
-                case 13://正交
+                case 13: //正交
                     GetInputs(
                         Rotation,
                         out Matrix farPlane,
@@ -299,7 +302,7 @@ namespace Game {
                     );
                     m_voltage_in = Matrix.CreateOrthographic(width.ToFloat(), height.ToFloat(), nearPlane.ToFloat(), farPlane.ToFloat());
                     break;
-                case 14://透视
+                case 14: //透视
                     GetInputs(
                         Rotation,
                         out Matrix farPlane2,
@@ -310,8 +313,26 @@ namespace Game {
                     );
                     m_voltage_in = Matrix.CreateOrthographic(fieldOfViewY.ToFloat(), aspectRatio.ToFloat(), nearPlane2.ToFloat(), farPlane2.ToFloat());
                     break;
+                case 15: //实时钟
+                    GetInputs(Rotation, out _, out _, out _, out _, out Matrix clockControlMatrix);
+                    switch (clockControlMatrix.M11) {
+                        case 0:
+                            m_voltage_top = DateTime.Now.Millisecond.ToCMatrix();
+                            m_voltage_right = DateTime.Now.Second.ToCMatrix();
+                            m_voltage_bottom = DateTime.Now.Minute.ToCMatrix();
+                            m_voltage_left = DateTime.Now.Hour.ToCMatrix();
+                            break;
+                        case 1:
+                            m_voltage_top = ((int)DateTime.Now.DayOfWeek).ToCMatrix();
+                            m_voltage_right = DateTime.Now.Day.ToCMatrix();
+                            m_voltage_bottom = DateTime.Now.Month.ToCMatrix();
+                            m_voltage_left = DateTime.Now.Year.ToCMatrix();
+                            break;
+                    }
+                    SubsystemElectricity.QueueElectricElementForSimulation(this, SubsystemElectricity.CircuitStep + 1);
+                    break;
             }
-            return m_voltage_top != voltage_top || m_voltage_left != voltage_left || m_voltage_right != voltage_right || m_voltage_in != voltage_in;
+            return m_voltage_top != voltage_top || m_voltage_left != voltage_left || m_voltage_right != voltage_right || m_voltage_in != voltage_in || m_voltage_bottom != voltage_bottom;
         }
 
         private Matrix GetPlayerTransform() {

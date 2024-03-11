@@ -216,6 +216,19 @@ namespace Game {
         }
 
         /// <summary>
+        /// 输出一个内部元素全为输入整数的矩阵: m[0...15] = f
+        /// </summary>
+        /// <param name="f"></param>
+        /// <returns></returns>
+        public static Matrix ToCMatrix(this int f) {
+            Matrix m = Matrix.Zero;
+            for (int i = 0; i < 16; i++) {
+                SetElement(ref m, i, f);
+            }
+            return m;
+        }
+
+        /// <summary>
         /// 返回一个矩阵，内部每个元素都为传入矩阵x对应元素的传入矩阵y的对应元素次方：m[i] = pow(x[i], y[i])
         /// </summary>
         /// <param name="x"></param>
