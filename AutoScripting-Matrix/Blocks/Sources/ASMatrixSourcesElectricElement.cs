@@ -315,7 +315,7 @@ namespace Game {
                     break;
                 case 15: //实时钟
                     GetInputs(Rotation, out _, out _, out _, out _, out Matrix clockControlMatrix);
-                    switch (clockControlMatrix.M11) {
+                    switch (MathUtils.Floor(clockControlMatrix.M11)) {
                         case 0:
                             m_voltage_top = DateTime.Now.Millisecond.ToCMatrix();
                             m_voltage_right = DateTime.Now.Second.ToCMatrix();
