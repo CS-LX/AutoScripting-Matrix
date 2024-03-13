@@ -422,6 +422,9 @@
 	  <None Update="Assets\Textures\MatrixSources\ASMatrixSourceRealtimeClock.png">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Assets\Widgets\ASMDispenserWidget.xml">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 	<ItemGroup>
 	  <Reference Include="Engine">

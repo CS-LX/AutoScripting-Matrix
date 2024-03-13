@@ -373,6 +373,12 @@ namespace Game
 			return value;
 		}
 
+		public ASMElectricElement GetElectricElement(CellFace cellFace)
+		{
+			m_electricElementsByCellFace.TryGetValue(cellFace, out ASMElectricElement value);
+			return value;
+		}
+
 		public void QueueElectricElementForSimulation(ASMElectricElement electricElement, int circuitStep)
 		{
 			if (circuitStep == CircuitStep + 1)

@@ -29,6 +29,7 @@ namespace Game
 			ASMMotionDetectorBlock.Index,
 			ASMSimCameraLEDBlock.Index,
 			ASMComplexCameraLEDBlock.Index,
+			ASMDispenserBlock.Index,
 		};
 
 		public override void OnBlockGenerated(int value, int x, int y, int z, bool isLoaded)
