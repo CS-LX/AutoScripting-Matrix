@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Engine;
 
@@ -151,6 +152,42 @@ namespace Game {
         /// <returns></returns>
         public static string ToHexString(this float f) {
             return BitConverter.ToString(BitConverter.GetBytes(f)).Replace("-", "");
+        }
+
+        public static string ToFormatString(this Matrix m) {
+            DefaultInterpolatedStringHandler interpolatedStringHandler = new(18, 16);
+            interpolatedStringHandler.AppendFormatted<float>(m.M11);
+            interpolatedStringHandler.AppendLiteral(",");
+            interpolatedStringHandler.AppendFormatted<float>(m.M12);
+            interpolatedStringHandler.AppendLiteral(",");
+            interpolatedStringHandler.AppendFormatted<float>(m.M13);
+            interpolatedStringHandler.AppendLiteral(",");
+            interpolatedStringHandler.AppendFormatted<float>(m.M14);
+            interpolatedStringHandler.AppendLiteral("\r\n");
+            interpolatedStringHandler.AppendFormatted<float>(m.M21);
+            interpolatedStringHandler.AppendLiteral(",");
+            interpolatedStringHandler.AppendFormatted<float>(m.M22);
+            interpolatedStringHandler.AppendLiteral(",");
+            interpolatedStringHandler.AppendFormatted<float>(m.M23);
+            interpolatedStringHandler.AppendLiteral(",");
+            interpolatedStringHandler.AppendFormatted<float>(m.M24);
+            interpolatedStringHandler.AppendLiteral("\r\n");
+            interpolatedStringHandler.AppendFormatted<float>(m.M31);
+            interpolatedStringHandler.AppendLiteral(",");
+            interpolatedStringHandler.AppendFormatted<float>(m.M32);
+            interpolatedStringHandler.AppendLiteral(",");
+            interpolatedStringHandler.AppendFormatted<float>(m.M33);
+            interpolatedStringHandler.AppendLiteral(",");
+            interpolatedStringHandler.AppendFormatted<float>(m.M34);
+            interpolatedStringHandler.AppendLiteral("\r\n");
+            interpolatedStringHandler.AppendFormatted<float>(m.M41);
+            interpolatedStringHandler.AppendLiteral(",");
+            interpolatedStringHandler.AppendFormatted<float>(m.M42);
+            interpolatedStringHandler.AppendLiteral(",");
+            interpolatedStringHandler.AppendFormatted<float>(m.M43);
+            interpolatedStringHandler.AppendLiteral(",");
+            interpolatedStringHandler.AppendFormatted<float>(m.M44);
+            return interpolatedStringHandler.ToStringAndClear();
         }
 
         /// <summary>

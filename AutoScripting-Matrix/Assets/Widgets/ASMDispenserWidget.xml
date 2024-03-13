@@ -4,7 +4,7 @@
   <LabelWidget CanvasWidget.Position="306, 14" Name="InventoryLabel" Text="[DispenserWidget:2]"  Color="255, 255, 255, 192"/>
   <GridPanelWidget CanvasWidget.Position="12, 52" Name="DispenserGrid" ColumnsCount="4" RowsCount="3"/>
   <GridPanelWidget CanvasWidget.Position="306, 52" Name="InventoryGrid" ColumnsCount="4" RowsCount="4"/>
-  <CanvasWidget CanvasWidget.Position="12, 272" Size="288, 140" >
+  <CanvasWidget CanvasWidget.Position="12, 248" Size="288, 140" >
     <StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
       <BevelledButtonWidget Name="LastMatrixButton" Text="上一次输入" Style="{Styles/ButtonStyle_160x60}" />
       <CheckboxWidget Name="AcceptsDropsBox" Text="[DispenserWidget:5]" />
