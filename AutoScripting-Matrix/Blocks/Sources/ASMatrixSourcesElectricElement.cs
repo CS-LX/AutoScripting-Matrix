@@ -11,6 +11,7 @@ namespace Game {
         public SubsystemPlayers m_subsystemPlayers;
         public SubsystemGameWidgets m_subsystemViews;
         public static Random s_random = new Random();
+        public SubsystemTimeOfDay m_subsystemTimeOfDay;
 
         public bool m_clockAllowed;
 
@@ -18,6 +19,7 @@ namespace Game {
             m_type = ASMatrixSourcesBlock.GetType(Terrain.ExtractData(value));
             m_subsystemPlayers = SubsystemElectricity.Project.FindSubsystem<SubsystemPlayers>(true);
             m_subsystemViews = SubsystemElectricity.Project.FindSubsystem<SubsystemGameWidgets>(true);
+            m_subsystemTimeOfDay = SubsystemElectricity.Project.FindSubsystem<SubsystemTimeOfDay>(true);
             switch (m_type) {
                 //玩家变换
                 case 1:
@@ -316,7 +318,7 @@ namespace Game {
                 case 15: //实时钟
                     GetInputs(Rotation, out _, out _, out _, out _, out Matrix clockControlMatrix);
                     switch (MathUtils.Floor(clockControlMatrix.M11)) {
-                        case 0:
+                        default:
                             m_voltage_top = DateTime.Now.Millisecond.ToCMatrix();
                             m_voltage_right = DateTime.Now.Second.ToCMatrix();
                             m_voltage_bottom = DateTime.Now.Minute.ToCMatrix();
@@ -327,6 +329,12 @@ namespace Game {
                             m_voltage_right = DateTime.Now.Day.ToCMatrix();
                             m_voltage_bottom = DateTime.Now.Month.ToCMatrix();
                             m_voltage_left = DateTime.Now.Year.ToCMatrix();
+                            break;
+                        case 2:
+                            m_voltage_top = ((GetClockValue() & 0xF) / 15f).ToCMatrix();
+                            m_voltage_right = (((GetClockValue() >> 4) & 0xF) / 15f).ToCMatrix();
+                            m_voltage_bottom = (((GetClockValue() >> 8) & 0xF) / 15f).ToCMatrix();
+                            m_voltage_left = (((GetClockValue() >> 12) & 0xF) / 15f).ToCMatrix();
                             break;
                     }
                     SubsystemElectricity.QueueElectricElementForSimulation(this, SubsystemElectricity.CircuitStep + 1);
@@ -386,6 +394,11 @@ namespace Game {
                     }
                 }
             }
+        }
+
+        public int GetClockValue()
+        {
+            return (int)(m_subsystemTimeOfDay.Day * 4096.0);
         }
     }
 }
