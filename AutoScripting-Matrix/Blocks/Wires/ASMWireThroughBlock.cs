@@ -18,7 +18,7 @@ namespace Game {
             texture = ContentManager.Get<Texture2D>("Textures/ASMWireThroughBlocks");
         }
 
-        public override string GetCategory(int value) => "[智械]矩阵";
+        public override string GetCategory(int value) => SubsystemASMManager.CategoryName;
 
         public override string GetDescription(int value) => Infos[GetType(Terrain.ExtractData(value))].Description;
 

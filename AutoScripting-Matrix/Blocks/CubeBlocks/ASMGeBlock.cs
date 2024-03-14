@@ -12,7 +12,7 @@ namespace Game {
             texture = ContentManager.Get<Texture2D>("Textures/ASMGeBlock");
         }
 
-        public override string GetCategory(int value) => "[智械]矩阵";
+        public override string GetCategory(int value) => SubsystemASMManager.CategoryName;
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => "矩阵变体锗块";
 

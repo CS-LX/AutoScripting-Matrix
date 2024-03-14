@@ -163,7 +163,7 @@ namespace Game {
 			}
 		}
 
-		public override string GetCategory(int value) => "[智械]矩阵";
+		public override string GetCategory(int value) => SubsystemASMManager.CategoryName;
 
 		public override BlockDebrisParticleSystem CreateDebrisParticleSystem(SubsystemTerrain subsystemTerrain, Vector3 position, int value, float strength)
 		{
