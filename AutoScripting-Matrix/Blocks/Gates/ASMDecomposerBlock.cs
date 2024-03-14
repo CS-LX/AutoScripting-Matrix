@@ -9,14 +9,14 @@ namespace Game
         public const int Index = 613;
 
         public readonly ASMDecomposerInfo[] Infos = [
-            new ASMDecomposerInfo("矩阵TO解构器", "", "ASMatrixToTO", [ASMElectricConnectorDirection.Bottom], [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right]),
-            new ASMDecomposerInfo("矩阵TRS解构器", "", "ASMatrixToTRS", [ASMElectricConnectorDirection.Bottom], [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right, ASMElectricConnectorDirection.Top]),
-            new ASMDecomposerInfo("矩阵RUF(XYZ)解构器", "", "ASMatrixToRUF", [ASMElectricConnectorDirection.Bottom], [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right, ASMElectricConnectorDirection.Top]),
-            new ASMDecomposerInfo("矩阵转二阶方阵", "", "ASMatrixTo2X2", [ASMElectricConnectorDirection.In], [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right, ASMElectricConnectorDirection.Top, ASMElectricConnectorDirection.Bottom]),
+            new ASMDecomposerInfo("矩阵TO解构器", "将输入矩阵提取其位移矩阵与取向矩阵，并在左端输出位移矩阵（T），右端输出取向矩阵（O）。", "ASMatrixToTO", [ASMElectricConnectorDirection.Bottom], [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right]),
+            new ASMDecomposerInfo("矩阵TRS解构器", "将输入矩阵提取其位移、旋转（欧拉角）与缩放，并在左端输出位移（三维向量），上端输出旋转（弧度制欧拉角），右端输出缩放（三维向量）。", "ASMatrixToTRS", [ASMElectricConnectorDirection.Bottom], [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right, ASMElectricConnectorDirection.Top]),
+            new ASMDecomposerInfo("矩阵RUF(XYZ)解构器", "将经过输入矩阵变换后的的X单位向量，Y单位向量，Z单位向量分别输出至左端，上端，右端。", "ASMatrixToRUF", [ASMElectricConnectorDirection.Bottom], [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right, ASMElectricConnectorDirection.Top]),
+            new ASMDecomposerInfo("矩阵转二阶方阵", "详见\"https://github.com/CS-LX/AutoScripting-Matrix/blob/main/README.md\"", "ASMatrixTo2X2", [ASMElectricConnectorDirection.In], [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right, ASMElectricConnectorDirection.Top, ASMElectricConnectorDirection.Bottom]),
             new ASMDecomposerInfo("矩阵转四维纵向量", "", "ASMatrixToVector4", [ASMElectricConnectorDirection.In], [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right, ASMElectricConnectorDirection.Top, ASMElectricConnectorDirection.Bottom], false),
             new ASMDecomposerInfo("四维纵向量转浮点", "", "ASMVector4ToFloat", [ASMElectricConnectorDirection.In], [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right, ASMElectricConnectorDirection.Top, ASMElectricConnectorDirection.Bottom], false),
-            new ASMDecomposerInfo("矩阵转四维横向量", "", "ASMatrixToVector4T", [ASMElectricConnectorDirection.In], [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right, ASMElectricConnectorDirection.Top, ASMElectricConnectorDirection.Bottom]),
-            new ASMDecomposerInfo("四维横向量转浮点", "", "ASMVector4TToFloat", [ASMElectricConnectorDirection.In], [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right, ASMElectricConnectorDirection.Top, ASMElectricConnectorDirection.Bottom]),
+            new ASMDecomposerInfo("矩阵转四维横向量", "详见\"https://github.com/CS-LX/AutoScripting-Matrix/blob/main/README.md\"", "ASMatrixToVector4T", [ASMElectricConnectorDirection.In], [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right, ASMElectricConnectorDirection.Top, ASMElectricConnectorDirection.Bottom]),
+            new ASMDecomposerInfo("四维横向量转浮点", "解构输入四维向量(x, y, z, w)。x：前端输出；y：右端输出；z：后端输出；w：左端输出。各出端口都为浮点。", "ASMVector4TToFloat", [ASMElectricConnectorDirection.In], [ASMElectricConnectorDirection.Left, ASMElectricConnectorDirection.Right, ASMElectricConnectorDirection.Top, ASMElectricConnectorDirection.Bottom]),
         ];
 
         public Texture2D[] textures;

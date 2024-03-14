@@ -39,6 +39,8 @@ namespace Game
 
 		public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => "矩阵按钮";
 
+		public override string GetDescription(int value) => "每当按下按钮即输出一个持续约0.10秒的玩家拟定好的矩阵，之后恢复输出零矩阵。初始放置时默认数据为单位阵，破坏后不会丢失数据。";
+
 		public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult)
 		{
 			BlockPlacementData result = default(BlockPlacementData);

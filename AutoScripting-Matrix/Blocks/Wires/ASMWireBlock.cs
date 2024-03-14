@@ -192,6 +192,8 @@ namespace Game
 			return SubsystemPalette.GetName(subsystemTerrain, paintColor, "矩阵导线");
 		}
 
+		public override string GetDescription(int value) => "传输矩阵数据，导线交汇处计算为加法。不同颜色导线不会互相连接。";
+
 		public int? GetPaintColor(int value)
 		{
 			return GetColor(Terrain.ExtractData(value));

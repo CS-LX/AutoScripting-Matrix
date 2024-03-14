@@ -9,17 +9,17 @@ namespace Game
         public const int Index = 605;
 
         public readonly CalcGateInfo[] Infos = [
-            new CalcGateInfo("矩阵加法器", "", "ASMAdder", true),
-            new CalcGateInfo("矩阵减法器", "", "ASMSubtracter", true),
-            new CalcGateInfo("矩阵乘法器", "", "ASMMultiplier", true),
-            new CalcGateInfo("矩阵除法器", "", "ASMDivider", true),
-            new CalcGateInfo("矩阵乘方器", "", "ASMPower", true),
-            new CalcGateInfo("矩阵除余器", "", "ASMRemainder", true),
-            new CalcGateInfo("矩阵对数器", "", "ASMLogarithmer", true),
-            new CalcGateInfo("矩阵乘法器", "", "ASMMultiplier", false),
-            new CalcGateInfo("矩阵除法器", "", "ASMDivider", false),
-            new CalcGateInfo("矩阵取小器", "", "ASMMinimumer", true),
-            new CalcGateInfo("矩阵取大器", "", "ASMMaximumer", true),
+            new CalcGateInfo("矩阵加法器", "ML代替左端输入矩阵各元素，MR代替右端输入矩阵各元素。\r\n输出 ML + MR", "ASMAdder", true),
+            new CalcGateInfo("矩阵减法器", "ML代替左端输入矩阵各元素，MR代替右端输入矩阵各元素。\r\n输出 ML - MR", "ASMSubtracter", true),
+            new CalcGateInfo("矩阵乘法器", "ML代替左端输入矩阵各元素，MR代替右端输入矩阵各元素。\r\n输出 ML * MR", "ASMMultiplier", true),
+            new CalcGateInfo("矩阵除法器", "ML代替左端输入矩阵各元素，MR代替右端输入矩阵各元素。\r\n输出 ML / MR", "ASMDivider", true),
+            new CalcGateInfo("矩阵乘方器", "ML代替左端输入矩阵各元素，MR代替右端输入矩阵各元素。\r\n输出 ML ^ MR", "ASMPower", true),
+            new CalcGateInfo("矩阵除余器", "ML代替左端输入矩阵各元素，MR代替右端输入矩阵各元素。\r\n输出 ML % MR", "ASMRemainder", true),
+            new CalcGateInfo("矩阵对数器", "ML代替左端输入矩阵各元素，MR代替右端输入矩阵各元素。\r\n输出 ln(ML) / ln(MR)", "ASMLogarithmer", true),
+            new CalcGateInfo("矩阵乘法器", "按照矩阵乘法法则，将输入矩阵相乘。", "ASMMultiplier", false),
+            new CalcGateInfo("矩阵除法器", "按照矩阵乘法法则，将左端输入矩阵乘右端输入矩阵的逆矩阵。", "ASMDivider", false),
+            new CalcGateInfo("矩阵取小器", "ML代替左端输入矩阵各元素，MR代替右端输入矩阵各元素。\r\n输出 min(ML, MR)", "ASMMinimumer", true),
+            new CalcGateInfo("矩阵取大器", "ML代替左端输入矩阵各元素，MR代替右端输入矩阵各元素。\r\n输出 max(ML, MR)", "ASMMaximumer", true),
         ];
 
         public Texture2D[] textures;

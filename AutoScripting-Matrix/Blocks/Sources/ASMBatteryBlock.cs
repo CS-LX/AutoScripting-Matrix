@@ -56,5 +56,7 @@ namespace Game {
         }
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => "矩阵源";
+
+        public override string GetDescription(int value) => "输出玩家拟定好的矩阵，初始放置时默认数据为单位阵，破坏后不会丢失数据。";
     }
 }
