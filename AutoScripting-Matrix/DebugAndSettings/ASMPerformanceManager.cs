@@ -11,6 +11,7 @@ namespace Game {
         }
 
         public static void Draw(ComponentGui gui) {
+            if(!(bool)ASMSettingsManager.Get("DisplayUpperLeft")) return;
             Ray3 ray = new Ray3(gui.m_componentPlayer.GameWidget.ActiveCamera.ViewPosition, gui.m_componentPlayer.GameWidget.ActiveCamera.ViewDirection);
             var scale = new Vector2(MathUtils.Round(MathUtils.Clamp(ScreensManager.RootWidget.GlobalScale, 1.0f, 4.0f)));
             SubsystemASMElectricity asmElectricity = gui.Project.FindSubsystem<SubsystemASMElectricity>();
