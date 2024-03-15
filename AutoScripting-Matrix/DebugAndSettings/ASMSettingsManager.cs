@@ -4,7 +4,9 @@ using SerializableKeyValuePair = Game.ASMSerializableDictionary<string, object>.
 
 namespace Game {
     public static class ASMSettingsManager {
-        public static string SettingsPath = ModsManager.ExtPath + "/ASMSettings.xml";
+        public static string ExtPath => VersionsManager.Platform == Platform.Ios || VersionsManager.Platform == Platform.Android ? "config:" : "app:";
+
+        public static string SettingsPath = ExtPath + "/ASMSettings.xml";
 
         public static ASMSerializableDictionary<string, object> Settings;
 
