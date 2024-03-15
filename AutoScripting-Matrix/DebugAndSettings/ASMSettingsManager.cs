@@ -10,7 +10,10 @@ namespace Game {
 
         public static ASMSerializableDictionary<string, object> Settings;
 
-        public static SerializableKeyValuePair[] SettingsItems = [new SerializableKeyValuePair("DisplayUpperLeft", false)];
+        public static SerializableKeyValuePair[] SettingsItems = [
+            new SerializableKeyValuePair("DisplayUpperLeft", false),
+            new SerializableKeyValuePair("DisplayBackRect", true)
+        ];
 
         public static void Init() {
             if (Storage.FileExists(SettingsPath)) {//已有settings

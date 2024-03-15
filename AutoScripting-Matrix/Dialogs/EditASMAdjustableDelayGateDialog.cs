@@ -3,7 +3,7 @@ using System.Xml.Linq;
 
 namespace Game
 {
-	public class EditASMAdjustableDelayGateDialog : Dialog
+	public class EditASMAdjustableDelayGateDialog : ASMDialog
 	{
 		public Action<int> m_handler;
 
@@ -27,10 +27,8 @@ namespace Game
 
 		public int m_lastDelay;
 
-		public EditASMAdjustableDelayGateDialog(ASMDelayData delay, Action<int> handler)
+		public EditASMAdjustableDelayGateDialog(ASMDelayData delay, Action<int> handler) : base("Dialogs/EditASMAdjustableDelayGateDialog")
 		{
-			XElement node = ContentManager.Get<XElement>("Dialogs/EditASMAdjustableDelayGateDialog");
-			LoadContents(this, node);
 			m_delaySlider = Children.Find<SliderWidget>("EditAdjustableDelayGateDialog.DelaySlider");
 			m_plusButton = Children.Find<ButtonWidget>("EditAdjustableDelayGateDialog.PlusButton");
 			m_plus10Button = Children.Find<ButtonWidget>("EditAdjustableDelayGateDialog.Plus10Button");

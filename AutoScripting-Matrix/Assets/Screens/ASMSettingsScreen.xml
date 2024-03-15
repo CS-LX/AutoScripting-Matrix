@@ -18,6 +18,11 @@
             <BevelledButtonWidget Name="DisplayUpperLeft" Style="{Styles/ButtonStyle_310x60}" VerticalAlignment="Center" Margin="20, 0" />
           </UniformSpacingPanelWidget>
 
+          <UniformSpacingPanelWidget Direction="Horizontal" Margin="0, 3">
+            <LabelWidget Text="对话框显示背景矩形"  HorizontalAlignment="Far" VerticalAlignment="Center" Margin="20, 0" />
+            <BevelledButtonWidget Name="DisplayBackRect" Style="{Styles/ButtonStyle_310x60}" VerticalAlignment="Center" Margin="20, 0" />
+          </UniformSpacingPanelWidget>
+
         </StackPanelWidget>
       </ScrollPanelWidget>
     </CanvasWidget>

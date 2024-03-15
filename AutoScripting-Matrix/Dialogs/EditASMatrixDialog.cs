@@ -3,7 +3,7 @@ using System.Xml.Linq;
 using Engine;
 
 namespace Game {
-    public class EditASMatrixDialog : Dialog {
+    public class EditASMatrixDialog : ASMDialog {
 
 		public ButtonWidget cancelButtonWidget;
 
@@ -17,11 +17,9 @@ namespace Game {
 
 		public Matrix dataMatrix;
 
-		public EditASMatrixDialog(Matrix dataMatrix, Action<Matrix> callBack) {
+		public EditASMatrixDialog(Matrix dataMatrix, Action<Matrix> callBack) : base("Dialogs/EditASMatrixDialog") {
 			this.callBack = callBack;
 			this.dataMatrix = dataMatrix;
-			XElement node = ContentManager.Get<XElement>("Dialogs/EditASMatrixDialog");
-			LoadContents(this, node);
 			cancelButtonWidget = Children.Find<ButtonWidget>("CancelButton");
 			okButtonWidget = Children.Find<ButtonWidget>("OKButton");
 			inputMatrixGrid = Children.Find<GridPanelWidget>("InputMatrix");

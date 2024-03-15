@@ -2,7 +2,7 @@ using Engine;
 using System.Xml.Linq;
 
 namespace Game {
-    public class EditASMWireThroughBlockDialog : Dialog {
+    public class EditASMWireThroughBlockDialog : ASMDialog {
         public ButtonWidget m_okButton;
 
         public ButtonWidget m_cancelButton;
@@ -19,10 +19,8 @@ namespace Game {
 
         public Action<int> m_callback;
 
-        public EditASMWireThroughBlockDialog(int type, Action<int> callback) {
+        public EditASMWireThroughBlockDialog(int type, Action<int> callback) : base("Dialogs/EditASMWireThroughBlockDialog") {
             m_callback = callback;
-            XElement node = ContentManager.Get<XElement>("Dialogs/EditASMWireThroughBlockDialog");
-            LoadContents(this, node);
             m_okButton = Children.Find<ButtonWidget>("EditAdjustableDelayGateDialog.OK");
             m_cancelButton = Children.Find<ButtonWidget>("EditAdjustableDelayGateDialog.Cancel");
             m_leftButton = Children.Find<ButtonWidget>("LeftButton");

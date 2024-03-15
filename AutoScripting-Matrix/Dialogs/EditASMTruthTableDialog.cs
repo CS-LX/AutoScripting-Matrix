@@ -4,7 +4,7 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class EditASMTruthTableDialog : Dialog {
+    public class EditASMTruthTableDialog : ASMDialog {
 
 		public ButtonWidget cancelButtonWidget;
 
@@ -28,11 +28,9 @@ namespace Game {
 
 		public RectangleWidget[] m_elementsDisplay = new RectangleWidget[16];
 
-		public EditASMTruthTableDialog(ASMTruthTableData m_data, Action<string[]> callBack) {
+		public EditASMTruthTableDialog(ASMTruthTableData m_data, Action<string[]> callBack) : base("Dialogs/EditASMTruthTableDialog") {
 			this.callBack = callBack;
 			this.m_data = m_data;
-			XElement node = ContentManager.Get<XElement>("Dialogs/EditASMTruthTableDialog");
-			LoadContents(this, node);
 			cancelButtonWidget = Children.Find<ButtonWidget>("CancelButton");
 			okButtonWidget = Children.Find<ButtonWidget>("OKButton");
 			m_lastOutputLabel = Children.Find<LabelWidget>("LastOutputText");
