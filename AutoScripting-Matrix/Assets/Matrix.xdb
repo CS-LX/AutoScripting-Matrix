@@ -49,6 +49,9 @@
 		<MemberSubsystemTemplate Name="ASMWireThroughBlockBehavior" Guid="16594046-0009-4319-9fd0-31a23479ebe6" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
 			<Parameter Name="Class" Guid="16594046-0009-47de-99f0-abed8ef8395b" Value="Game.SubsystemASMWireThroughBlockBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
+		<MemberSubsystemTemplate Name="ASMSettingsSetterBehavior" Guid="16594046-0010-4319-9fd0-31a23479ebe6" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
+			<Parameter Name="Class" Guid="16594046-0010-47de-99f0-abed8ef8395b" Value="Game.SubsystemASMSettingsSetterBehavior" Type="string"/>
+		</MemberSubsystemTemplate>
 	</ProjectTemplate>
 
 	<Folder Name="Entities" Guid="5fcdf35f-7001-442c-883e-e0502b15d291">
