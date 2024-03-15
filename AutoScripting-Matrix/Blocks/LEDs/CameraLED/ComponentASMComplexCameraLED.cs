@@ -64,6 +64,7 @@ namespace Game {
                 || m_camera == null
                 || m_complexCameraElectricElement == null)
                 return;
+            if (!CheckVisible()) return;
             DrawView(camera, drawOrder);
             DrawScreen(camera, drawOrder);
         }
@@ -194,6 +195,13 @@ namespace Game {
             int blockValue = m_subsystemTerrain.Terrain.GetCellValueFast(coordinates.X, coordinates.Y, coordinates.Z);
             m_face = ASMComplexCameraLEDBlock.GetFace_Static(blockValue);
             m_complexCameraElectricElement = m_subsystemAsmElectricity.GetElectricElement(coordinates.X, coordinates.Y, coordinates.Z, m_face) as ASMComplexCameraLEDElectricElement;
+        }
+
+        private bool CheckVisible() {
+            if (m_componentPlayer == null) return false;
+            Vector3 playerPos = m_componentPlayer.ComponentBody.Position;
+            float length = (playerPos - m_position).Length() - 16;
+            return length < m_subsystemTerrain.m_subsystemsky.VisibilityRange;
         }
 
         #region 绘制方法
