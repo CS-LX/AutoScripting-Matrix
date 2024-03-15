@@ -190,6 +190,18 @@ namespace Game {
             return interpolatedStringHandler.ToStringAndClear();
         }
 
+        public static string ToFormatTable(this Matrix m, int decimalPlaces) {
+            string table = $"";
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 4; j++) {
+                    int index = i * 4 + j;
+                    table += m.GetElement(index).ToString($"F{decimalPlaces}").PadLeft(10);
+                }
+                table += "\n";
+            }
+            return table;
+        }
+
         /// <summary>
         /// 将十六进制字符串转为浮点数
         /// </summary>

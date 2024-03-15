@@ -61,7 +61,7 @@ namespace Game {
                 value = Terrain.ReplaceData(value, data);
                 m_subsystemTerrain.ChangeCell(m_componentBlockEntity.Coordinates.X, m_componentBlockEntity.Coordinates.Y, m_componentBlockEntity.Coordinates.Z, value);
             }
-            if(m_lastMatrixButton.IsClicked) DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new MessageDialog("上一次输入电压", m_element?.m_voltage.ToFormatString(), "确定", null, null));
+            if(m_lastMatrixButton.IsClicked) DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new MessageDialog("上一次输入电压", m_element?.m_voltage.ToFormatTable(2), "确定", null, null));
             m_acceptsDropsBox.IsChecked = ASMDispenserBlock.GetAcceptsDrops(data);
             if (!m_componentDispenser.IsAddedToProject) {
                 ParentWidget.Children.Remove(this);

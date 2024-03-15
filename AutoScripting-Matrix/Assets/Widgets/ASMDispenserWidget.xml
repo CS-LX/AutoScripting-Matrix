@@ -1,6 +1,6 @@
 <DispenserWidget xmlns="runtime-namespace:Game">
   <BevelledRectangleWidget Size="614, 382" BevelSize="3" />
-  <LabelWidget CanvasWidget.Position="12, 14" Name="DispenserLabel" Text="[DispenserWidget:1]"  Color="255, 255, 255, 192"/>
+  <LabelWidget CanvasWidget.Position="12, 14" Name="DispenserLabel" Text="矩阵发射器"  Color="255, 255, 255, 192"/>
   <LabelWidget CanvasWidget.Position="306, 14" Name="InventoryLabel" Text="[DispenserWidget:2]"  Color="255, 255, 255, 192"/>
   <GridPanelWidget CanvasWidget.Position="12, 52" Name="DispenserGrid" ColumnsCount="4" RowsCount="3"/>
   <GridPanelWidget CanvasWidget.Position="306, 52" Name="InventoryGrid" ColumnsCount="4" RowsCount="4"/>
