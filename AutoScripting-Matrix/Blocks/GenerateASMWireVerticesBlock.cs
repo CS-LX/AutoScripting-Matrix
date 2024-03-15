@@ -167,7 +167,7 @@ namespace Game {
 
 		public override BlockDebrisParticleSystem CreateDebrisParticleSystem(SubsystemTerrain subsystemTerrain, Vector3 position, int value, float strength)
 		{
-			return new BlockDebrisParticleSystem(subsystemTerrain, position, strength, DestructionDebrisScale, Color.White, 0, ContentManager.Get<Texture2D>("Textures/ASMGeBlock")){TextureSlotsCount = 1};
+			return new ASMBlockDebrisParticleSystem(subsystemTerrain, position, strength, DestructionDebrisScale, Color.White, 0, ContentManager.Get<Texture2D>("Textures/ASMGeBlock"), 1);
 		}
     }
 }

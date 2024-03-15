@@ -96,5 +96,16 @@ namespace Game {
         public int GetConnectionMask(int value) {
             return int.MaxValue;
         }
+
+        public override BlockDebrisParticleSystem CreateDebrisParticleSystem(SubsystemTerrain subsystemTerrain, Vector3 position, int value, float strength) {
+            return new ASMBlockDebrisParticleSystem(
+                subsystemTerrain,
+                position,
+                strength,
+                DestructionDebrisScale,
+                Color.White,
+                42
+            );
+        }
     }
 }

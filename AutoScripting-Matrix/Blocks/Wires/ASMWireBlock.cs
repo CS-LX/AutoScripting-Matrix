@@ -1,6 +1,7 @@
 using Engine;
 using Engine.Graphics;
 using System.Collections.Generic;
+using Engine.Media;
 
 
 namespace Game
@@ -225,6 +226,15 @@ namespace Game
 			num &= -64;
 			num |= bitmask & 0x3F;
 			return Terrain.ReplaceData(Terrain.ReplaceContents(value, Index), num);
+		}
+
+		public override BlockDebrisParticleSystem CreateDebrisParticleSystem(SubsystemTerrain subsystemTerrain, Vector3 position, int value, float strength)
+		{
+			int? paintColor = GetPaintColor(value);
+			Color color2 = paintColor.HasValue ? (SubsystemPalette.GetColor(subsystemTerrain, paintColor)) : (1.25f * WireColor);
+			Image whiteImage = new Image(1, 1);
+			whiteImage.SetPixel(0, 0, Color.White);
+			return new ASMBlockDebrisParticleSystem(subsystemTerrain, position, strength, DestructionDebrisScale, color2, 0, Texture2D.Load(whiteImage), 1);
 		}
 
 		public static int? GetColor(int data)

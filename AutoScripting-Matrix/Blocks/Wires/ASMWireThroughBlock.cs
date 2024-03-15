@@ -5,17 +5,35 @@ namespace Game {
     public class ASMWireThroughBlock : GenerateASMWireVerticesBlock, IASMElectricWireElementBlock, IASMElectricElementBlock {
         public const int Index = 614;
 
-        public Texture2D texture;
+        public Texture2D m_texture;
 
         public WireTroughtInfo[] Infos = [
-            new WireTroughtInfo("变体矩阵锗穿线快", "", 0, 21, true),
-            new WireTroughtInfo("矩阵锗穿线快", "", 14, 35, true),
-            new WireTroughtInfo("矩阵铁穿线快", "", 1, 22, true),
+            new WireTroughtInfo(
+                "变体矩阵锗穿线快",
+                "",
+                0,
+                21,
+                true
+            ),
+            new WireTroughtInfo(
+                "矩阵锗穿线快",
+                "",
+                14,
+                35,
+                true
+            ),
+            new WireTroughtInfo(
+                "矩阵铁穿线快",
+                "",
+                1,
+                22,
+                true
+            ),
         ];
 
         public override void Initialize() {
             base.Initialize();
-            texture = ContentManager.Get<Texture2D>("Textures/ASMWireThroughBlocks");
+            m_texture = ContentManager.Get<Texture2D>("Textures/ASMWireThroughBlocks");
         }
 
         public override string GetCategory(int value) => SubsystemASMManager.CategoryName;
@@ -34,23 +52,20 @@ namespace Game {
         public override int GetFaceTextureSlot(int face, int value) {
             int type = GetType(Terrain.ExtractData(value));
             int wiredFace = GetWiredFace(Terrain.ExtractData(value));
-            if (wiredFace == face || CellFace.OppositeFace(wiredFace) == face)
-            {
+            if (wiredFace == face
+                || CellFace.OppositeFace(wiredFace) == face) {
                 return Infos[type].WiredSlot;
             }
             return Infos[type].UnwiredSlot;
         }
 
-        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult)
-        {
+        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
             Vector3 forward = Matrix.CreateFromQuaternion(componentMiner.ComponentCreature.ComponentCreatureModel.EyeRotation).Forward;
             float num = float.NegativeInfinity;
             int wiredFace = 0;
-            for (int i = 0; i < 6; i++)
-            {
+            for (int i = 0; i < 6; i++) {
                 float num2 = Vector3.Dot(CellFace.FaceToVector3(i), forward);
-                if (num2 > num)
-                {
+                if (num2 > num) {
                     num = num2;
                     wiredFace = i;
                 }
@@ -61,22 +76,37 @@ namespace Game {
             return result;
         }
 
-        public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z)
-        {
-            generator.GenerateCubeVertices(this, value, x, y, z, Color.White, geometry.GetGeometry(texture).OpaqueSubsetsByFace);
+        public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z) {
+            generator.GenerateCubeVertices(
+                this,
+                value,
+                x,
+                y,
+                z,
+                Color.White,
+                geometry.GetGeometry(m_texture).OpaqueSubsetsByFace
+            );
         }
 
-        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData)
-        {
-            BlocksManager.DrawCubeBlock(primitivesRenderer, value, new Vector3(size), ref matrix, color, color, environmentData, texture);
+        public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
+            BlocksManager.DrawCubeBlock(
+                primitivesRenderer,
+                value,
+                new Vector3(size),
+                ref matrix,
+                color,
+                color,
+                environmentData,
+                m_texture
+            );
         }
 
         public override int GetTextureSlotCount(int value) => 6;
 
         public int GetConnectedWireFacesMask(int value, int face) {
             int wiredFace = GetWiredFace(Terrain.ExtractData(value));
-            if (wiredFace == face || CellFace.OppositeFace(wiredFace) == face)
-            {
+            if (wiredFace == face
+                || CellFace.OppositeFace(wiredFace) == face) {
                 return (1 << wiredFace) | (1 << CellFace.OppositeFace(wiredFace));
             }
             return 0;
@@ -87,8 +117,8 @@ namespace Game {
         public ASMElectricConnectorType? GetConnectorType(SubsystemTerrain terrain, int value, int face, int connectorFace, int x, int y, int z) {
             {
                 int wiredFace = GetWiredFace(Terrain.ExtractData(value));
-                if ((face == wiredFace || face == CellFace.OppositeFace(wiredFace)) && connectorFace == CellFace.OppositeFace(face))
-                {
+                if ((face == wiredFace || face == CellFace.OppositeFace(wiredFace))
+                    && connectorFace == CellFace.OppositeFace(face)) {
                     return ASMElectricConnectorType.InputOutput;
                 }
                 return null;
@@ -103,8 +133,7 @@ namespace Game {
 
         public int GetConnectionMask(int value) => int.MaxValue;
 
-        public static int GetWiredFace(int data)
-        {
+        public static int GetWiredFace(int data) {
             if ((data & 3) == 0) {
                 return 0;
             }
@@ -121,17 +150,27 @@ namespace Game {
 
         public static int SetWiredFaceAndType(int data, int wiredFace, int type) {
             data &= -4;
-            switch (wiredFace)
-            {
+            switch (wiredFace) {
                 case 0:
-                case 2:
-                    return (data) | ((type & 0b1111) << 3);
+                case 2: return (data) | ((type & 0b1111) << 3);
                 case 1:
-                case 3:
-                    return data | 1 | ((type & 0b1111) << 3);
-                default:
-                    return data | 2 | ((type & 0b1111) << 3);
+                case 3: return data | 1 | ((type & 0b1111) << 3);
+                default: return data | 2 | ((type & 0b1111) << 3);
             }
+        }
+
+        public override BlockDebrisParticleSystem CreateDebrisParticleSystem(SubsystemTerrain subsystemTerrain, Vector3 position, int value, float strength) {
+            int type = GetType(Terrain.ExtractData(value));
+            return new ASMBlockDebrisParticleSystem(
+                subsystemTerrain,
+                position,
+                strength,
+                DestructionDebrisScale,
+                Color.White,
+                Infos[type].UnwiredSlot,
+                m_texture,
+                GetTextureSlotCount(value)
+            );
         }
 
         public struct WireTroughtInfo(string name, string description, int wiredSlot, int unwiredSlot, bool isDisplay) {
