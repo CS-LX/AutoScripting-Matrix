@@ -7,27 +7,69 @@ namespace Game {
 
         public Texture2D m_texture;
 
-        public WireTroughtInfo[] Infos = [
+        public static WireTroughtInfo[] Infos = [
             new WireTroughtInfo(
-                "变体矩阵锗穿线快",
+                "变体矩阵锗穿线块",
                 "",
                 0,
                 21,
                 true
             ),
             new WireTroughtInfo(
-                "矩阵锗穿线快",
+                "矩阵锗穿线块",
                 "",
                 14,
                 35,
                 true
             ),
             new WireTroughtInfo(
-                "矩阵铁穿线快",
+                "矩阵铁穿线块",
                 "",
                 1,
                 22,
                 true
+            ),
+            new WireTroughtInfo(
+                "矩阵石砖穿线块",
+                "",
+                2,
+                23,
+                false
+            ),
+            new WireTroughtInfo(
+                "矩阵砖穿线块",
+                "",
+                6,
+                27,
+                false
+            ),
+            new WireTroughtInfo(
+                "矩阵圆石穿线块",
+                "",
+                7,
+                28,
+                false
+            ),
+            new WireTroughtInfo(
+                "矩阵石穿线块",
+                "",
+                8,
+                29,
+                false
+            ),
+            new WireTroughtInfo(
+                "矩阵木穿线块",
+                "",
+                12,
+                33,
+                false
+            ),
+            new WireTroughtInfo(
+                "矩阵孔雀石穿线块",
+                "",
+                13,
+                34,
+                false
             ),
         ];
 
