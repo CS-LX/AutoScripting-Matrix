@@ -116,11 +116,7 @@ $$
 
 ### 向量
 
-对于只有一行或者一列的矩阵（其余元素全为0），我们可以把它看作向量。
-
-例如： $\mathbf{M}=\begin{bmatrix}x & y & z & w\end{bmatrix}$ 只有一行，可以看作横向量 $\vec{v} = (x, y, z, w)$
-
-例如： $\mathbf{N}=\begin{bmatrix}x \\\\\\ y \\\\\\ z \\\\\\ w\end{bmatrix}$ 只有一列，可以看作列向量 $\vec{v} = \begin{bmatrix}x \\\\\\ y \\\\\\ z \\\\\\ w\end{bmatrix})$
+对于只有一行或者一列的矩阵（其余元素全为0），我们可以把它看作行向量或列向量。
 
 > **注意：在本mod中，向量统一使用行向量！**
 
