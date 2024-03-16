@@ -238,21 +238,21 @@ $$
 
 - 向上方向：表示相机的上方向向量，用于确定相机的方向。通常情况下，up向量应该垂直于相机的观察方向向量，确保相机的朝向是正确的。在这个元件种，up向量会被重新计算，以确保它与相机的观察方向向量和右方向向量垂直。
   
-  #### 二阶方阵转矩阵
+#### 二阶方阵转矩阵
   
-  将四个输入端输入的二阶方阵转为四阶方阵。
+将四个输入端输入的二阶方阵转为四阶方阵。
+
+$$
+上端\begin{bmatrix}T _ {11} & T _ {12} \\\\\\ T _ {21} & T _ {22}\end{bmatrix}右端\begin{bmatrix}R _ {11} & R _ {12} \\\\\\ R _ {21} & R _ {22}\end{bmatrix}下端\begin{bmatrix}B _ {11} & B _ {12} \\\\\\ B _ {21} & B _ {22}\end{bmatrix}左端\begin{bmatrix}L _ {11} & L _ {12} \\\\\\ L _ {21} & L _ {22}\end{bmatrix}→输出\begin{bmatrix}T _ {11} & T _ {12} & R _ {11} & R _ {12} \\\\\\ T _ {21} & T _ {22} & R _ {21} & R _ {22} \\\\\\ B _ {11} & B _ {12} & L _ {11} & L _ {12} \\\\\\ B _ {21} & B _ {22} & L _ {21} & L _ {22} \end{bmatrix}
+$$
   
-  $$
-  上端\begin{bmatrix}T _ {11} & T _ {12} \\\\\\ T _ {21} & T _ {22}\end{bmatrix}右端\begin{bmatrix}R _ {11} & R _ {12} \\\\\\ R _ {21} & R _ {22}\end{bmatrix}下端\begin{bmatrix}B _ {11} & B _ {12} \\\\\\ B _ {21} & B _ {22}\end{bmatrix}左端\begin{bmatrix}L _ {11} & L _ {12} \\\\\\ L _ {21} & L _ {22}\end{bmatrix}→输出\begin{bmatrix}T _ {11} & T _ {12} & R _ {11} & R _ {12} \\\\\\ T _ {21} & T _ {22} & R _ {21} & R _ {22} \\\\\\ B _ {11} & B _ {12} & L _ {11} & L _ {12} \\\\\\ B _ {21} & B _ {22} & L _ {21} & L _ {22} \end{bmatrix}
-  $$
+#### 四维横向量转矩阵
   
-  #### 四维横向量转矩阵
+将四个输入端输入的横向量并成四阶方阵。
   
-  将四个输入端输入的横向量并成四阶方阵。
-  
-  $$
-  上端\begin{pmatrix}T _ {11} & T _ {12} & T _ {13} & T _ {14}\end{pmatrix}右端\begin{pmatrix}R _ {11} & R _ {12} & R _ {13} & R _ {14}\end{pmatrix}下端\begin{pmatrix}B _ {11} & B _ {12} & B _ {13} & B _ {14}\end{pmatrix}左端\begin{pmatrix}L _ {11} & L _ {12} & L _ {13} & L _ {14}\end{pmatrix}→输出\begin{bmatrix}T _ {11} & T _ {12} & T _ {13} & T _ {14} \\\\\\ R _ {11} & R _ {12} & R _ {13} & R _ {14} \\\\\\ B _ {11} & B _ {12} & B _ {13} & B _ {14} \\\\\\ L _ {11} & L _ {12} & L _ {13} & L _ {14} \end{bmatrix}
-  $$
+$$
+上端\begin{pmatrix}T _ {11} & T _ {12} & T _ {13} & T _ {14}\end{pmatrix}右端\begin{pmatrix}R _ {11} & R _ {12} & R _ {13} & R _ {14}\end{pmatrix}下端\begin{pmatrix}B _ {11} & B _ {12} & B _ {13} & B _ {14}\end{pmatrix}左端\begin{pmatrix}L _ {11} & L _ {12} & L _ {13} & L _ {14}\end{pmatrix}→输出\begin{bmatrix}T _ {11} & T _ {12} & T _ {13} & T _ {14} \\\\\\ R _ {11} & R _ {12} & R _ {13} & R _ {14} \\\\\\ B _ {11} & B _ {12} & B _ {13} & B _ {14} \\\\\\ L _ {11} & L _ {12} & L _ {13} & L _ {14} \end{bmatrix}
+$$
 
 #### 矩阵源-实时钟
 
