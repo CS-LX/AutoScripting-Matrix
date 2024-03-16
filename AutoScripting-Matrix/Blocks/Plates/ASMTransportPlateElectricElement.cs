@@ -55,7 +55,7 @@ namespace Game {
                 transform.Decompose(out Vector3 _, out Quaternion rotation, out Vector3 position);
                 m_collideBody.Position = position;
                 m_collideBody.Rotation = rotation;
-                SubsystemElectricity.SubsystemAudio.PlaySound("Audio/Throw", 1f, 0f, m_collideBody.Position, 2.5f, autoDelay: true);
+                SubsystemElectricity.SubsystemAudio.PlaySound("Audio/Throw", (float)ASMSettingsManager.Get("TPPlateVolume"), 0f, m_collideBody.Position, 2.5f, autoDelay: true);
             }
         }
     }
