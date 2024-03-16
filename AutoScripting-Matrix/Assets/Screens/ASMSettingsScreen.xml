@@ -1,10 +1,10 @@
 <ASMSettingsScreen xmlns="runtime-namespace:Game">
 
-  <PanoramaWidget />
+  <ASMatrixWaveWidget />
 
   <StackPanelWidget Direction="Horizontal">
 
-    <CanvasWidget Style="{Widgets/TopBarContents}" >
+    <CanvasWidget Style="{Widgets/ASMTopBarContents}" >
       <LabelWidget Name="TopBar.Label" Text="设置矩阵电路系统" />
     </CanvasWidget>
 

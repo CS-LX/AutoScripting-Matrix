@@ -431,6 +431,12 @@
 	  <None Update="Assets\Screens\ASMSettingsScreen.xml">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Assets\Textures\Gui\ASMatrix.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Assets\Widgets\ASMTopBarContents.xml">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 	<ItemGroup>
 	  <Reference Include="Engine">
