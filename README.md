@@ -173,7 +173,7 @@ $$
 矩阵乘法如下式所示：
 
 $$
-\begin{bmatrix}a & b \\\\\\c & d\end{bmatrix}\begin{bmatrix}e & f \\\\\\g & h\end{bmatrix}=\begin{bmatrix}ae + bg & af + bh \\\\\\ce + dg & cf + dh\end{bmatrix}
+\begin{bmatrix}a & b \\\\\\ c & d\end{bmatrix}\begin{bmatrix}e & f \\\\\\ g & h\end{bmatrix}=\begin{bmatrix}ae + bg & af + bh \\\\\\ ce + dg & cf + dh\end{bmatrix}
 $$
 
 以此可以类推到 $4 \times 4$ 的TRS矩阵的乘法表达式。 ~~（太过庞大，这里就不展示了）~~
@@ -244,7 +244,7 @@ $$
 以点对点乘法作例子：
 
 $$
-\begin{bmatrix}a & b \\\\\\c & d\end{bmatrix}\times\begin{bmatrix}e & f \\\\\\g & h\end{bmatrix}=\begin{bmatrix}a \times e & b \times f \\\\\\c \times g & d \times h\end{bmatrix}
+\begin{bmatrix}a & b \\\\\\ c & d\end{bmatrix}\times\begin{bmatrix}e & f \\\\\\ g & h\end{bmatrix}=\begin{bmatrix}a \times e & b \times f \\\\\\ c \times g & d \times h\end{bmatrix}
 $$
 
 本mod提供了大量点对点运算板，玩家们可以用它们实现快速的数据处理。
