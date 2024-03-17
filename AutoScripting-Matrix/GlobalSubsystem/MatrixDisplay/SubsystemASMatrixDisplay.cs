@@ -1,5 +1,6 @@
 using Engine;
 using Engine.Graphics;
+using Engine.Media;
 using GameEntitySystem;
 using TemplatesDatabase;
 
@@ -9,23 +10,27 @@ namespace Game {
         public PrimitivesRenderer3D m_primitivesRenderer = new PrimitivesRenderer3D();
         public FlatBatch3D m_geometryBatch;
         public FontBatch3D m_numbersBatch;
+        public FontBatch3D m_debugNumbersBatch;
 
         public Dictionary<ASMatrixDisplayData, bool> m_displayMatrices = new();
 
-        public ASMatrixDisplayData Add(bool flag) {
+        public ASMatrixDisplayData Add(bool visible) {
             ASMatrixDisplayData displayData = new();
-            m_displayMatrices.Add(displayData, flag);
+            m_displayMatrices.Add(displayData, visible);
             return displayData;
         }
+
+        public void SetVisible(ASMatrixDisplayData displayData, bool visible) => m_displayMatrices[displayData] = visible;
 
         public bool Remove(ASMatrixDisplayData data) => m_displayMatrices.Remove(data);
 
         public void Draw(Camera camera, int drawOrder) {
             foreach (var displayMatrix in m_displayMatrices) {
+                if (!displayMatrix.Value) continue;
                 ASMatrixDisplayData matrixDisplay = displayMatrix.Key;
                 CellFace cellFace = matrixDisplay.DisplayPoint;
                 //显示的面的单位向量，满足笛卡尔坐标系，right是x轴，up是y轴
-                Vector3 v = new(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f);
+                Vector3 v = (cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f) + matrixDisplay.Offset3;
                 Vector3 position = v - (0.435f * CellFace.FaceToVector3(cellFace.Face));//0.435f原本是0.4375f，但是会导致闪烁，所以加一些偏移量
                 Vector3 forward = CellFace.FaceToVector3(cellFace.Face);
                 Vector3 up = (cellFace.Face < 4) ? Vector3.UnitY : Vector3.UnitX;
@@ -89,7 +94,8 @@ namespace Game {
                         Vector3 displayNumPos = p1 + right * width + up * height;
 
                         float offsetScale = 0.005f * matrixDisplay.FontScale;
-                        m_numbersBatch.QueueText(displayNum, displayNumPos, right * offsetScale, -up * offsetScale, matrixDisplay.FontColor, TextAnchor.HorizontalCenter | TextAnchor.VerticalCenter, Vector2.Zero);
+                        if (matrixDisplay.UseDebugFont) m_debugNumbersBatch.QueueText(displayNum, displayNumPos, right * offsetScale, -up * offsetScale, matrixDisplay.FontColor, TextAnchor.HorizontalCenter | TextAnchor.VerticalCenter, Vector2.Zero);
+                        else m_numbersBatch.QueueText(displayNum, displayNumPos, right * offsetScale, -up * offsetScale, matrixDisplay.FontColor, TextAnchor.HorizontalCenter | TextAnchor.VerticalCenter, Vector2.Zero);
                     }
                 }
             }
@@ -100,6 +106,7 @@ namespace Game {
             base.Load(valuesDictionary);
             m_geometryBatch = m_primitivesRenderer.FlatBatch();
             m_numbersBatch = m_primitivesRenderer.FontBatch(LabelWidget.BitmapFont, 1, DepthStencilState.DepthRead, RasterizerState.CullNoneScissor, BlendState.AlphaBlend, SamplerState.LinearClamp);
+            m_debugNumbersBatch = m_primitivesRenderer.FontBatch(BitmapFont.DebugFont, 1, DepthStencilState.DepthRead, RasterizerState.CullNoneScissor, BlendState.AlphaBlend, SamplerState.LinearClamp);
         }
     }
 }

@@ -91,6 +91,27 @@ namespace Game {
             }
         }
 
+        public static Vector2[] Vector3ToVector2(Vector3[] points, int face) {
+            switch (face) {
+                case 0:
+                case 2: return points.Select(p => new Vector2(p.X, p.Y)).ToArray();
+                case 1:
+                case 3: return points.Select(p => new Vector2(p.Y, p.Z)).ToArray();
+                default: return points.Select(p => new Vector2(p.X, p.Z)).ToArray();
+            }
+        }
+
+        public static Vector2 Vector3ToVector2(Vector3 p, int face) {
+            switch (face) {
+                case 0: return new Vector2(-p.X, -p.Y);
+                case 2: return new Vector2(p.X, p.Y);
+                case 1: return new Vector2(-p.Y, -p.Z);
+                case 3: return new Vector2(p.Y, p.Z);
+                case 4: return new Vector2(p.X, p.Z);
+                default: return new Vector2(-p.X, -p.Z);
+            }
+        }
+
         public static bool CheckRectangle(Point2[] points, out Point2 min, out int w, out int h) {
             w = h = 0;
             min = points[0];
@@ -117,5 +138,14 @@ namespace Game {
             return true;
         }
 
+        public static int[] NormalToFaces(Vector3 normal, float threshold) {
+            List<int> faces = new();
+            for (int i = 0; i < 6; i++) {
+                if (faces.Count >= 4) return faces.ToArray();
+                Vector3 faceNormal = CellFace.FaceToVector3(i);
+                if(MathUtils.Abs(Vector3.Dot(faceNormal, normal)) < threshold) faces.Add(i);
+            }
+            return faces.ToArray();
+        }
     }
 }

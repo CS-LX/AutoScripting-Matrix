@@ -75,6 +75,13 @@
 			</MemberComponentTemplate>
 		</EntityTemplate>
 		<EntityTemplate Name="Player" Guid="4be6c1c5-d65d-4537-8a8b-a391969e6dc2">
+			<MemberComponentTemplate Name="ASMDisplayMatrix" Guid="16594046-0000-457c-a4c6-d51add890770" InheritanceParent="16594046-0000-4461-903d-5b766344b6ba"/>
 		</EntityTemplate>
+	</Folder>
+
+	<Folder Name="Rendering" Guid="dec469ce-9b77-465f-a2a8-36d2640424db">
+		<ComponentTemplate Name="ASMDisplayMatrix" Guid="16594046-0000-4461-903d-5b766344b6ba" InheritanceParent="b05700ed-7e4e-4679-98f5-b597f421496b">
+			<Parameter Name="Class" Guid="16594046-0000-401e-b048-644a1a19fa85" Value="Game.ComponentASMDisplayMatrix" Type="string"/>
+		</ComponentTemplate>
 	</Folder>
 </Mod>
