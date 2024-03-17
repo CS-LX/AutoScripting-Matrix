@@ -18,6 +18,7 @@ namespace Game {
         public Color FontColor = Color.White;
         public ASMatrixDisplayType DisplayType;
         public bool UseDebugFont = false;
+        public bool TopMost = false;
     }
 
     [Flags]

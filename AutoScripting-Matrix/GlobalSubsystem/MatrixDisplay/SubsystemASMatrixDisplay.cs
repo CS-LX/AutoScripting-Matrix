@@ -12,6 +12,10 @@ namespace Game {
         public FontBatch3D m_numbersBatch;
         public FontBatch3D m_debugNumbersBatch;
 
+        public FlatBatch3D m_geometryBatch_topMost;
+        public FontBatch3D m_numbersBatch_topMost;
+        public FontBatch3D m_debugNumbersBatch_topMost;
+
         public Dictionary<ASMatrixDisplayData, bool> m_displayMatrices = new();
 
         public ASMatrixDisplayData Add(bool visible) {
@@ -28,6 +32,11 @@ namespace Game {
             foreach (var displayMatrix in m_displayMatrices) {
                 if (!displayMatrix.Value) continue;
                 ASMatrixDisplayData matrixDisplay = displayMatrix.Key;
+
+                FlatBatch3D geometryBatch = matrixDisplay.TopMost ? m_geometryBatch_topMost : m_geometryBatch;
+                FontBatch3D numbersBatch = matrixDisplay.TopMost ? m_numbersBatch_topMost : m_numbersBatch;
+                FontBatch3D debugNumbersBatch = matrixDisplay.TopMost ? m_debugNumbersBatch_topMost : m_debugNumbersBatch;
+
                 CellFace cellFace = matrixDisplay.DisplayPoint;
                 //显示的面的单位向量，满足笛卡尔坐标系，right是x轴，up是y轴
                 Vector3 v = (cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f) + matrixDisplay.Offset3;
@@ -46,7 +55,7 @@ namespace Game {
                 if ((matrixDisplay.DisplayType & ASMatrixDisplayType.RowLines) == ASMatrixDisplayType.RowLines) {
                     for (int i = 0; i <= 4; i++) {
                         float height = matrixDisplay.Height * (i / 4f);
-                        m_geometryBatch.QueueQuad(
+                        geometryBatch.QueueQuad(
                             p1 + up * (height - matrixDisplay.RowLinesWidth / 2),
                             p2 + up * (height - matrixDisplay.RowLinesWidth / 2),
                             p2 + up * (height + matrixDisplay.RowLinesWidth / 2),
@@ -60,7 +69,7 @@ namespace Game {
                 if ((matrixDisplay.DisplayType & ASMatrixDisplayType.ColumnLines) == ASMatrixDisplayType.ColumnLines) {
                     for (int i = 0; i <= 4; i++) {
                         float width = matrixDisplay.Width * (i / 4f);
-                        m_geometryBatch.QueueQuad(
+                        geometryBatch.QueueQuad(
                             p1 + right * (width - matrixDisplay.ColumnLinesWidth / 2),
                             p1 + right * (width + matrixDisplay.ColumnLinesWidth / 2),
                             p4 + right * (width + matrixDisplay.ColumnLinesWidth / 2),
@@ -94,8 +103,8 @@ namespace Game {
                         Vector3 displayNumPos = p1 + right * width + up * height;
 
                         float offsetScale = 0.005f * matrixDisplay.FontScale;
-                        if (matrixDisplay.UseDebugFont) m_debugNumbersBatch.QueueText(displayNum, displayNumPos, right * offsetScale, -up * offsetScale, matrixDisplay.FontColor, TextAnchor.HorizontalCenter | TextAnchor.VerticalCenter, Vector2.Zero);
-                        else m_numbersBatch.QueueText(displayNum, displayNumPos, right * offsetScale, -up * offsetScale, matrixDisplay.FontColor, TextAnchor.HorizontalCenter | TextAnchor.VerticalCenter, Vector2.Zero);
+                        if (matrixDisplay.UseDebugFont) debugNumbersBatch.QueueText(displayNum, displayNumPos, right * offsetScale, -up * offsetScale, matrixDisplay.FontColor, TextAnchor.HorizontalCenter | TextAnchor.VerticalCenter, Vector2.Zero);
+                        else numbersBatch.QueueText(displayNum, displayNumPos, right * offsetScale, -up * offsetScale, matrixDisplay.FontColor, TextAnchor.HorizontalCenter | TextAnchor.VerticalCenter, Vector2.Zero);
                     }
                 }
             }
@@ -107,6 +116,10 @@ namespace Game {
             m_geometryBatch = m_primitivesRenderer.FlatBatch();
             m_numbersBatch = m_primitivesRenderer.FontBatch(LabelWidget.BitmapFont, 1, DepthStencilState.DepthRead, RasterizerState.CullNoneScissor, BlendState.AlphaBlend, SamplerState.LinearClamp);
             m_debugNumbersBatch = m_primitivesRenderer.FontBatch(BitmapFont.DebugFont, 1, DepthStencilState.DepthRead, RasterizerState.CullNoneScissor, BlendState.AlphaBlend, SamplerState.LinearClamp);
+
+            m_geometryBatch_topMost = m_primitivesRenderer.FlatBatch(0, DepthStencilState.None);
+            m_numbersBatch_topMost = m_primitivesRenderer.FontBatch(LabelWidget.BitmapFont, 0, DepthStencilState.None, RasterizerState.CullNoneScissor, BlendState.AlphaBlend, SamplerState.LinearClamp);
+            m_debugNumbersBatch_topMost = m_primitivesRenderer.FontBatch(BitmapFont.DebugFont, 0, DepthStencilState.None, RasterizerState.CullNoneScissor, BlendState.AlphaBlend, SamplerState.LinearClamp);
         }
     }
 }

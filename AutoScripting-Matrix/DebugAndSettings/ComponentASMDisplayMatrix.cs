@@ -98,6 +98,7 @@ namespace Game {
                             m_displays[i].UseDebugFont = true;
                             m_displays[i].FontScale = 0.7f;
                             m_displays[i].RowLinesWidth = m_displays[i].ColumnLinesWidth = 0.006f;
+                            m_displays[i].TopMost = true;
                             m_displays[i].RowLinesColor = m_displays[i].ColumnLinesColor = Color.White * (connectorType.Value == ASMElectricConnectorType.Output ? SubsystemASMManager.OutputColor : SubsystemASMManager.InputColor);
 
                             //获取电压
