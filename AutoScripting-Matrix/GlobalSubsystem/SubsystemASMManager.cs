@@ -9,6 +9,9 @@ namespace Game {
     public class SubsystemASMManager : Subsystem, IUpdateable {
         public static string CategoryName => "[智械] 矩阵";
 
+        public static Color InputColor => new Color(137, 255, 128);
+        public static Color OutputColor => new Color(255, 253, 107);
+
         public SubsystemPlayers m_subsystemPlayers;
 
         public bool m_isCreativeMode;

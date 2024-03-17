@@ -71,8 +71,22 @@ namespace Game {
                         int[] faces = ASMUtils.NormalToFaces(forward, 0.1f);
                         //显示矩阵
                         for (int i = 0; i < 4; i++) {
+                            //获取端口
+                            ASMElectricConnectorType? connectorType = mountedBlock.GetConnectorType(
+                                m_subsystemTerrain,
+                                blockValue,
+                                blockFace,
+                                faces[i],
+                                cellFace.X,
+                                cellFace.Y,
+                                cellFace.Z
+                            );
+                            if (connectorType == null) continue;
+                            ASMElectricConnection? connection = element.Connections.Find(connection => connection.ConnectorFace == faces[i]);
+
+
                             Vector2 offset = Vector2.One * (0.5f - 1f / 5);
-                            Vector3 offset3 = CellFace.FaceToVector3(faces[i]) * 2 / 5f;
+                            Vector3 offset3 = CellFace.FaceToVector3(faces[i]) * 0.5f;
 
                             m_subsystemASMatrixDisplay.SetVisible(m_displays[i], true);
                             m_displays[i].DisplayPoint = new CellFace(cellFace.X, cellFace.Y, cellFace.Z, blockFace);
@@ -84,9 +98,11 @@ namespace Game {
                             m_displays[i].UseDebugFont = true;
                             m_displays[i].FontScale = 0.7f;
                             m_displays[i].RowLinesWidth = m_displays[i].ColumnLinesWidth = 0.006f;
-                            m_displays[i].RowLinesColor = m_displays[i].ColumnLinesColor = Color.LightGray;
+                            m_displays[i].RowLinesColor = m_displays[i].ColumnLinesColor = Color.White * (connectorType.Value == ASMElectricConnectorType.Output ? SubsystemASMManager.OutputColor : SubsystemASMManager.InputColor);
 
-                            m_displays[i].Matrix = element.GetOutputVoltage(faces[i]);
+                            //获取电压
+                            Matrix? voltage = connectorType == ASMElectricConnectorType.Output ? element.GetOutputVoltage(faces[i]) : connection?.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+                            m_displays[i].Matrix = voltage.HasValue ? voltage.Value : Matrix.Zero;
                         }
                     }
                     break;
