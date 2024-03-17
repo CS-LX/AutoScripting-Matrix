@@ -3,7 +3,7 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<RootNamespace>ClassLibrary1AutoScripting_Matrix</RootNamespace>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
+		<Nullable>disable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
 	  <None Update="modinfo.json">

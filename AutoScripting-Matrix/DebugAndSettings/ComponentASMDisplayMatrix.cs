@@ -82,7 +82,7 @@ namespace Game {
                                 cellFace.Z
                             );
                             if (connectorType == null) continue;
-                            ASMElectricConnection? connection = element.Connections.Find(connection => connection.ConnectorFace == faces[i]);
+                            ASMElectricConnection connection = element.Connections.Find(connection => connection.ConnectorFace == faces[i]);
 
 
                             Vector2 offset = Vector2.One * (0.5f - 1f / 5);
