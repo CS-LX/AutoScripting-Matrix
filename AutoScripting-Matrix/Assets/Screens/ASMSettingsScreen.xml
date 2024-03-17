@@ -36,6 +36,11 @@
             <BevelledButtonWidget Name="DisplayConnectorMatrix.DisplayIn" Style="{Styles/ButtonStyle_310x60}" VerticalAlignment="Center" Margin="20, 0" />
           </UniformSpacingPanelWidget>
 
+          <UniformSpacingPanelWidget Direction="Horizontal" Margin="0, 3">
+            <LabelWidget Text="边框厚度"  HorizontalAlignment="Far" VerticalAlignment="Center" Margin="20, 0" />
+            <SliderWidget Name="DisplayConnectorMatrix.Thickness" Size="Infinity, 60" VerticalAlignment="Center" Margin="20, 0" />
+          </UniformSpacingPanelWidget>
+
           <CanvasWidget Size="0, 40" />
           <LabelWidget Text="方块设置"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20, 0" Color="255, 255, 170"/>
 

@@ -105,7 +105,7 @@ namespace Game {
                             m_displays[i].Offset3 = offset3;
                             m_displays[i].UseDebugFont = true;
                             m_displays[i].FontScale = 0.7f;
-                            m_displays[i].RowLinesWidth = m_displays[i].ColumnLinesWidth = 0.006f;
+                            m_displays[i].RowLinesWidth = m_displays[i].ColumnLinesWidth = 0.006f * float.Parse(ASMSettingsManager.Get("DisplayConnectorMatrix.Thickness").ToString());
                             m_displays[i].TopMost = true;
                             m_displays[i].RowLinesColor = m_displays[i].ColumnLinesColor = Color.White * (connectorType.Value == ASMElectricConnectorType.Output ? SubsystemASMManager.OutputColor : SubsystemASMManager.InputColor);
 
@@ -134,7 +134,7 @@ namespace Game {
                                 m_singleDisplay.Width = 2f / 5;
                                 m_singleDisplay.UseDebugFont = true;
                                 m_singleDisplay.FontScale = 0.7f;
-                                m_singleDisplay.RowLinesWidth = m_singleDisplay.ColumnLinesWidth = 0.006f;
+                                m_singleDisplay.RowLinesWidth = m_singleDisplay.ColumnLinesWidth = 0.006f * float.Parse(ASMSettingsManager.Get("DisplayConnectorMatrix.Thickness").ToString());
                                 m_singleDisplay.TopMost = true;
                                 m_singleDisplay.Offset = new Vector2(4 / 5f, -1 / 5f);
                                 m_singleDisplay.DisplayType = ASMatrixDisplayType.RowLines | ASMatrixDisplayType.ColumnLines;

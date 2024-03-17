@@ -16,6 +16,7 @@ namespace Game {
 
             new SerializableKeyValuePair("DisplayConnectorMatrix", false),
             new SerializableKeyValuePair("DisplayConnectorMatrix.DisplayIn", false),
+            new SerializableKeyValuePair("DisplayConnectorMatrix.Thickness", 1),
 
             new SerializableKeyValuePair("TPPlateVolume", 1),
         ];
