@@ -5,7 +5,10 @@ namespace Game {
     public class ASMSettingsScreen  : Screen {
         public ButtonWidget m_displayUpperLeft;
         public ButtonWidget m_displayBackRect;
+
         public ButtonWidget m_displayConnectorMatrix;
+        public ButtonWidget m_displayConnectorMatrix_DisplayIn;
+
         public SliderWidget m_tpPlateVolume;
         float m_lastTPPlateVolume;
         public ASMSettingsScreen()
@@ -15,23 +18,19 @@ namespace Game {
             m_displayUpperLeft = Children.Find<BevelledButtonWidget>("DisplayUpperLeft");
             m_displayBackRect = Children.Find<BevelledButtonWidget>("DisplayBackRect");
             m_displayConnectorMatrix = Children.Find<BevelledButtonWidget>("DisplayConnectorMatrix");
+            m_displayConnectorMatrix_DisplayIn = Children.Find<BevelledButtonWidget>("DisplayConnectorMatrix.DisplayIn");
             m_tpPlateVolume = Children.Find<SliderWidget>("TPPlateVolume");
             m_tpPlateVolume.Value = float.Parse(ASMSettingsManager.Get("TPPlateVolume").ToString());
         }
 
         public override void Update() {
             //显示左上角调试信息
-            bool displayUpperLeft = (bool)ASMSettingsManager.Get("DisplayUpperLeft");
-            m_displayUpperLeft.Text = displayUpperLeft ? "是" : "否";
-            if(m_displayUpperLeft.IsClicked) ASMSettingsManager.Set("DisplayUpperLeft", !displayUpperLeft);
+            BoolDescriptor("DisplayUpperLeft", m_displayUpperLeft);
             //元件端口显示输出
-            bool displayConnectorMatrix = (bool)ASMSettingsManager.Get("DisplayConnectorMatrix");
-            m_displayConnectorMatrix.Text = displayConnectorMatrix ? "是" : "否";
-            if(m_displayConnectorMatrix.IsClicked) ASMSettingsManager.Set("DisplayConnectorMatrix", !displayConnectorMatrix);
+            BoolDescriptor("DisplayConnectorMatrix", m_displayConnectorMatrix);
+            BoolDescriptor("DisplayConnectorMatrix.DisplayIn", m_displayConnectorMatrix_DisplayIn);
             //显示背景矩形
-            bool displayBackRect = (bool)ASMSettingsManager.Get("DisplayBackRect");
-            m_displayBackRect.Text = displayBackRect ? "是" : "否";
-            if(m_displayBackRect.IsClicked) ASMSettingsManager.Set("DisplayBackRect", !displayBackRect);
+            BoolDescriptor("DisplayBackRect", m_displayBackRect);
             //转移板音量
             if (m_lastTPPlateVolume != m_tpPlateVolume.Value) {
                 m_lastTPPlateVolume = m_tpPlateVolume.Value;
@@ -43,6 +42,12 @@ namespace Game {
                 ASMSettingsManager.Save();
                 ScreensManager.SwitchScreen(ScreensManager.PreviousScreen);
             }
+        }
+
+        private void BoolDescriptor(string settingName, ButtonWidget button) {
+            bool flag = (bool)ASMSettingsManager.Get(settingName);
+            button.Text = flag ? "是" : "否";
+            if(button.IsClicked) ASMSettingsManager.Set(settingName, !flag);
         }
     }
 }

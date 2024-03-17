@@ -19,16 +19,25 @@
           </UniformSpacingPanelWidget>
 
           <UniformSpacingPanelWidget Direction="Horizontal" Margin="0, 3">
-            <LabelWidget Text="元件端口显示输出"  HorizontalAlignment="Far" VerticalAlignment="Center" Margin="20, 0" />
-            <BevelledButtonWidget Name="DisplayConnectorMatrix" Style="{Styles/ButtonStyle_310x60}" VerticalAlignment="Center" Margin="20, 0" />
-          </UniformSpacingPanelWidget>
-
-          <UniformSpacingPanelWidget Direction="Horizontal" Margin="0, 3">
             <LabelWidget Text="对话框显示背景矩形"  HorizontalAlignment="Far" VerticalAlignment="Center" Margin="20, 0" />
             <BevelledButtonWidget Name="DisplayBackRect" Style="{Styles/ButtonStyle_310x60}" VerticalAlignment="Center" Margin="20, 0" />
           </UniformSpacingPanelWidget>
 
-          <CanvasWidget Size="0, 20" />
+          <CanvasWidget Size="0, 40" />
+          <LabelWidget Text="端口矩阵显示设置"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20, 0" Color="255, 255, 170"/>
+
+          <UniformSpacingPanelWidget Direction="Horizontal" Margin="0, 3">
+            <LabelWidget Text="显示元件端口矩阵"  HorizontalAlignment="Far" VerticalAlignment="Center" Margin="20, 0" />
+            <BevelledButtonWidget Name="DisplayConnectorMatrix" Style="{Styles/ButtonStyle_310x60}" VerticalAlignment="Center" Margin="20, 0" />
+          </UniformSpacingPanelWidget>
+
+          <UniformSpacingPanelWidget Direction="Horizontal" Margin="0, 3">
+            <LabelWidget Text="显示底面端口"  HorizontalAlignment="Far" VerticalAlignment="Center" Margin="20, 0" />
+            <BevelledButtonWidget Name="DisplayConnectorMatrix.DisplayIn" Style="{Styles/ButtonStyle_310x60}" VerticalAlignment="Center" Margin="20, 0" />
+          </UniformSpacingPanelWidget>
+
+          <CanvasWidget Size="0, 40" />
+          <LabelWidget Text="方块设置"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20, 0" Color="255, 255, 170"/>
 
           <UniformSpacingPanelWidget Direction="Horizontal" Margin="0, 3">
             <LabelWidget Text="转移/变换板音量"  HorizontalAlignment="Far" VerticalAlignment="Center" Margin="20, 0" />

@@ -3,11 +3,11 @@
   <StackPanelWidget Direction="Vertical" >
     <BevelledButtonWidget Name="TopBar.Back" Size="60, 60" Text="[TopBarContents:1]">
       <CanvasWidget Name="BevelledButton.Canvas" Margin="0, 0" />
-      <BevelledRectangleWidget Name="BevelledButton.Rectangle" CenterColor="252, 231, 105" BevelColor="252, 231, 105" />
+      <BevelledRectangleWidget Name="BevelledButton.Rectangle" CenterColor="255, 235, 125" BevelColor="255, 235, 125" />
       <RectangleWidget Name="BevelledButton.Image" Size="32, 32" Subtexture="{Textures/Atlas/ArrowLeft}" OutlineColor="0, 0, 0, 0" FillColor="255, 255, 255" IsVisible="true" HorizontalAlignment="Center" VerticalAlignment="Center"/>
     </BevelledButtonWidget>
     <CanvasWidget Size="0, 4" />
-    <BevelledRectangleWidget Size="60, Infinity" TextureScale="0.5" CenterColor="252, 231, 105" BevelColor="252, 231, 105" BevelSize="2" />
+    <BevelledRectangleWidget Size="60, Infinity" TextureScale="0.5" CenterColor="255, 235, 125" BevelColor="255, 235, 125" BevelSize="2" />
   </StackPanelWidget>
 
   <StackPanelWidget Direction="Vertical" IsHitTestVisible="false" >

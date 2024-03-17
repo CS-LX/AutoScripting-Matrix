@@ -111,33 +111,35 @@ namespace Game {
                         }
                         //绘制背面
                         //获取端口
-                        int backFace = ASMUtils.GetOppositeFace(blockFace);
-                        ASMElectricConnectorType? backConnectorType = mountedBlock.GetConnectorType(
-                            m_subsystemTerrain,
-                            blockValue,
-                            blockFace,
-                            backFace,
-                            cellFace.X,
-                            cellFace.Y,
-                            cellFace.Z
-                        );
-                        if (backConnectorType != null) {
-                            ASMElectricConnection backConnection = element.Connections.Find(connection => connection.ConnectorFace == backFace);
-                            m_subsystemASMatrixDisplay.SetVisible(m_singleDisplay, true);
-                            m_singleDisplay.DisplayPoint = new CellFace(cellFace.X, cellFace.Y, cellFace.Z, blockFace);
-                            m_singleDisplay.Height = 2f / 5;
-                            m_singleDisplay.Width = 2f / 5;
-                            m_singleDisplay.UseDebugFont = true;
-                            m_singleDisplay.FontScale = 0.7f;
-                            m_singleDisplay.RowLinesWidth = m_singleDisplay.ColumnLinesWidth = 0.006f;
-                            m_singleDisplay.TopMost = true;
-                            m_singleDisplay.Offset = new Vector2(4 / 5f, -1 / 5f);
-                            m_singleDisplay.DisplayType = ASMatrixDisplayType.RowLines | ASMatrixDisplayType.ColumnLines;
-                            m_singleDisplay.RowLinesColor = m_singleDisplay.ColumnLinesColor = Color.White * (backConnectorType.Value == ASMElectricConnectorType.Output ? SubsystemASMManager.OutputColor : SubsystemASMManager.InputColor);
+                        if ((bool)ASMSettingsManager.Get("DisplayConnectorMatrix.DisplayIn")) {
+                            int backFace = ASMUtils.GetOppositeFace(blockFace);
+                            ASMElectricConnectorType? backConnectorType = mountedBlock.GetConnectorType(
+                                m_subsystemTerrain,
+                                blockValue,
+                                blockFace,
+                                backFace,
+                                cellFace.X,
+                                cellFace.Y,
+                                cellFace.Z
+                            );
+                            if (backConnectorType != null) {
+                                ASMElectricConnection backConnection = element.Connections.Find(connection => connection.ConnectorFace == backFace);
+                                m_subsystemASMatrixDisplay.SetVisible(m_singleDisplay, true);
+                                m_singleDisplay.DisplayPoint = new CellFace(cellFace.X, cellFace.Y, cellFace.Z, blockFace);
+                                m_singleDisplay.Height = 2f / 5;
+                                m_singleDisplay.Width = 2f / 5;
+                                m_singleDisplay.UseDebugFont = true;
+                                m_singleDisplay.FontScale = 0.7f;
+                                m_singleDisplay.RowLinesWidth = m_singleDisplay.ColumnLinesWidth = 0.006f;
+                                m_singleDisplay.TopMost = true;
+                                m_singleDisplay.Offset = new Vector2(4 / 5f, -1 / 5f);
+                                m_singleDisplay.DisplayType = ASMatrixDisplayType.RowLines | ASMatrixDisplayType.ColumnLines;
+                                m_singleDisplay.RowLinesColor = m_singleDisplay.ColumnLinesColor = Color.White * (backConnectorType.Value == ASMElectricConnectorType.Output ? SubsystemASMManager.OutputColor : SubsystemASMManager.InputColor);
 
-                            //获取电压
-                            Matrix? voltage = backConnectorType == ASMElectricConnectorType.Output ? element.GetOutputVoltage(backFace) : backConnection?.NeighborElectricElement.GetOutputVoltage(backConnection.NeighborConnectorFace);
-                            m_singleDisplay.Matrix = voltage.HasValue ? voltage.Value : Matrix.Zero;
+                                //获取电压
+                                Matrix? voltage = backConnectorType == ASMElectricConnectorType.Output ? element.GetOutputVoltage(backFace) : backConnection?.NeighborElectricElement.GetOutputVoltage(backConnection.NeighborConnectorFace);
+                                m_singleDisplay.Matrix = voltage.HasValue ? voltage.Value : Matrix.Zero;
+                            }
                         }
 
                     }
