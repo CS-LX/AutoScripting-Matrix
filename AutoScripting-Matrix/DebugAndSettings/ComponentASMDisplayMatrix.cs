@@ -122,5 +122,12 @@ namespace Game {
                 m_displays[i] = asMatrixDisplayData;
             }
         }
+
+        public override void Save(ValuesDictionary valuesDictionary, EntityToIdMap entityToIdMap) {
+            base.Save(valuesDictionary, entityToIdMap);
+            for (int i = 0; i < 4; i++) {
+                m_subsystemASMatrixDisplay.Remove(m_displays[i]);
+            }
+        }
     }
 }
