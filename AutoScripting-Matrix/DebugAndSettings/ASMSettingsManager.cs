@@ -55,10 +55,15 @@ namespace Game {
         }
 
         public static void Save() {
-            using (Stream stream = Storage.OpenFile(SettingsPath, OpenFileMode.CreateOrOpen)) {
-                XmlSerializer serializer = new (typeof(ASMSerializableDictionary<string, object>));
-                serializer.Serialize(stream, Settings);
-            }
+            Task.Run(
+                () => {
+                    using (Stream stream = Storage.OpenFile(SettingsPath, OpenFileMode.CreateOrOpen)) {
+                        XmlSerializer serializer = new(typeof(ASMSerializableDictionary<string, object>));
+                        serializer.Serialize(stream, Settings);
+                    }
+                    Log.Information($"[智械-矩阵:设置管理器] 保存设置。");
+                }
+            );
         }
 
         public static object Get(string key) => Settings[key];
