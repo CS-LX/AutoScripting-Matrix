@@ -22,6 +22,8 @@ namespace Game {
 
         public ASMatrixDisplayData m_singleDisplay;
 
+        public float Thickness => 0.006f * float.Parse(ASMSettingsManager.Get("DisplayConnectorMatrix.Thickness").ToString());
+
         public void Draw(Camera camera, int drawOrder) {
             HideDisplayMatrix();
             if ((bool)ASMSettingsManager.Get("DisplayConnectorMatrix")
@@ -105,7 +107,7 @@ namespace Game {
                             m_displays[i].Offset3 = offset3;
                             m_displays[i].UseDebugFont = true;
                             m_displays[i].FontScale = 0.7f;
-                            m_displays[i].RowLinesWidth = m_displays[i].ColumnLinesWidth = 0.006f * float.Parse(ASMSettingsManager.Get("DisplayConnectorMatrix.Thickness").ToString());
+                            m_displays[i].RowLinesWidth = m_displays[i].ColumnLinesWidth = Thickness;
                             m_displays[i].TopMost = true;
                             m_displays[i].RowLinesColor = m_displays[i].ColumnLinesColor = Color.White * (connectorType.Value == ASMElectricConnectorType.Output ? SubsystemASMManager.OutputColor : SubsystemASMManager.InputColor);
 
@@ -134,7 +136,7 @@ namespace Game {
                                 m_singleDisplay.Width = 2f / 5;
                                 m_singleDisplay.UseDebugFont = true;
                                 m_singleDisplay.FontScale = 0.7f;
-                                m_singleDisplay.RowLinesWidth = m_singleDisplay.ColumnLinesWidth = 0.006f * float.Parse(ASMSettingsManager.Get("DisplayConnectorMatrix.Thickness").ToString());
+                                m_singleDisplay.RowLinesWidth = m_singleDisplay.ColumnLinesWidth = Thickness;
                                 m_singleDisplay.TopMost = true;
                                 m_singleDisplay.Offset = new Vector2(4 / 5f, -1 / 5f);
                                 m_singleDisplay.DisplayType = ASMatrixDisplayType.RowLines | ASMatrixDisplayType.ColumnLines;
@@ -146,6 +148,31 @@ namespace Game {
                             }
                         }
 
+                    }
+                    break;
+                case ASMWireBlock or ASMBatteryBlock or ASMWireThroughBlock:
+                    Color color = Color.LightGray;
+                    switch (block) {
+                        case { } b when b is ASMBatteryBlock or ASMWireThroughBlock:
+                            color = SubsystemASMManager.OutputColor;
+                            break;
+                        case { } b when b is ASMWireBlock: color = Color.LightGray;
+                            break;
+                    }
+
+                    if (m_m_subsystemASMElectricity.m_electricElementsByCellFace.TryGetValue(cellFace, out ASMElectricElement element2)) {
+                        m_subsystemASMatrixDisplay.SetVisible(m_singleDisplay, true);
+                        m_singleDisplay.DisplayPoint = cellFace;
+                        m_singleDisplay.Height = 2f / 5;
+                        m_singleDisplay.Width = 2f / 5;
+                        m_singleDisplay.UseDebugFont = true;
+                        m_singleDisplay.FontScale = 0.7f;
+                        m_singleDisplay.RowLinesWidth = m_singleDisplay.ColumnLinesWidth = Thickness;
+                        m_singleDisplay.TopMost = true;
+                        m_singleDisplay.Offset = Vector2.One * (0.5f - 1f / 5);
+                        m_singleDisplay.DisplayType = ASMatrixDisplayType.RowLines | ASMatrixDisplayType.ColumnLines;
+                        m_singleDisplay.RowLinesColor = m_singleDisplay.ColumnLinesColor = color;
+                        m_singleDisplay.Matrix = element2.GetOutputVoltage(blockFace);
                     }
                     break;
             }
