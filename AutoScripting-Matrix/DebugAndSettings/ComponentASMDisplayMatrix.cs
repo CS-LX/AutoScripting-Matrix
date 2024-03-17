@@ -23,6 +23,7 @@ namespace Game {
         public ASMatrixDisplayData m_singleDisplay;
 
         public void Draw(Camera camera, int drawOrder) {
+            HideDisplayMatrix();
             if ((bool)ASMSettingsManager.Get("DisplayConnectorMatrix")
                 && camera.GameWidget.PlayerData == m_componentPlayer.PlayerData
                 && drawOrder == DrawOrders[0]
@@ -41,11 +42,14 @@ namespace Game {
 
         public void Update(float dt) { }
 
-        public void DisplayMatrix(CellFace cellFace) {
+        public void HideDisplayMatrix() {
             foreach (var displayData in m_displays) {
                 m_subsystemASMatrixDisplay.SetVisible(displayData, false);
             }
             m_subsystemASMatrixDisplay.SetVisible(m_singleDisplay, false);
+        }
+
+        public void DisplayMatrix(CellFace cellFace) {
             
             int blockValue = m_subsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
             int blockContents = Terrain.ExtractContents(blockValue);
