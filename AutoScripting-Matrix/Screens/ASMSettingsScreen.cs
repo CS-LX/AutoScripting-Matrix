@@ -14,7 +14,7 @@ namespace Game {
             m_displayUpperLeft = Children.Find<BevelledButtonWidget>("DisplayUpperLeft");
             m_displayBackRect = Children.Find<BevelledButtonWidget>("DisplayBackRect");
             m_tpPlateVolume = Children.Find<SliderWidget>("TPPlateVolume");
-            m_tpPlateVolume.Value = (float)ASMSettingsManager.Get("TPPlateVolume");
+            m_tpPlateVolume.Value = float.Parse(ASMSettingsManager.Get("TPPlateVolume").ToString());
         }
 
         public override void Update() {
