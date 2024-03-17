@@ -23,7 +23,6 @@ namespace Game {
 
         public override void SaveSettings(XElement xElement) {
             base.SaveSettings(xElement);
-            ASMSettingsManager.Save();
         }
     }
 }

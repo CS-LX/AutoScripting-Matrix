@@ -12,6 +12,7 @@ namespace Game {
 
         public static SerializableKeyValuePair[] SettingsItems = [
             new SerializableKeyValuePair("DisplayUpperLeft", false),
+            new SerializableKeyValuePair("DisplayConnectorMatrix", false),
             new SerializableKeyValuePair("DisplayBackRect", true),
             new SerializableKeyValuePair("TPPlateVolume", 1),
         ];
