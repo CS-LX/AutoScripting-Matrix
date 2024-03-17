@@ -6,7 +6,7 @@ using TemplatesDatabase;
 
 namespace Game {
     public class SubsystemASMatrixDisplay : Subsystem, IDrawable {
-        public int[] DrawOrders => [110];
+        public int[] DrawOrders => [110, 2000];
         public PrimitivesRenderer3D m_primitivesRenderer = new PrimitivesRenderer3D();
         public FlatBatch3D m_geometryBatch;
         public FontBatch3D m_numbersBatch;
@@ -32,6 +32,9 @@ namespace Game {
             foreach (var displayMatrix in m_displayMatrices) {
                 if (!displayMatrix.Value) continue;
                 ASMatrixDisplayData matrixDisplay = displayMatrix.Key;
+
+                if (matrixDisplay.TopMost && drawOrder != DrawOrders[1]) continue;
+                if (!matrixDisplay.TopMost && drawOrder == DrawOrders[1]) continue;
 
                 FlatBatch3D geometryBatch = matrixDisplay.TopMost ? m_geometryBatch_topMost : m_geometryBatch;
                 FontBatch3D numbersBatch = matrixDisplay.TopMost ? m_numbersBatch_topMost : m_numbersBatch;
