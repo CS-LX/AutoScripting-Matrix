@@ -147,5 +147,17 @@ namespace Game {
             }
             return faces.ToArray();
         }
+
+        public static int GetOppositeFace(int face) {
+            return face switch {
+                0 => 2,
+                1 => 3,
+                2 => 0,
+                3 => 2,
+                4 => 5,
+                5 => 4,
+                _ => 0
+            };
+        }
     }
 }

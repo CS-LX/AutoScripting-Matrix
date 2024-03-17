@@ -20,6 +20,8 @@ namespace Game {
 
         public ASMatrixDisplayData[] m_displays = new ASMatrixDisplayData[4];
 
+        public ASMatrixDisplayData m_singleDisplay;
+
         public void Draw(Camera camera, int drawOrder) {
             if ((bool)ASMSettingsManager.Get("DisplayConnectorMatrix")
                 && camera.GameWidget.PlayerData == m_componentPlayer.PlayerData
@@ -43,6 +45,7 @@ namespace Game {
             foreach (var displayData in m_displays) {
                 m_subsystemASMatrixDisplay.SetVisible(displayData, false);
             }
+            m_subsystemASMatrixDisplay.SetVisible(m_singleDisplay, false);
             
             int blockValue = m_subsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
             int blockContents = Terrain.ExtractContents(blockValue);
@@ -70,6 +73,7 @@ namespace Game {
                         //处理面
                         int[] faces = ASMUtils.NormalToFaces(forward, 0.1f);
                         //显示矩阵
+                        //绘制四面
                         for (int i = 0; i < 4; i++) {
                             //获取端口
                             ASMElectricConnectorType? connectorType = mountedBlock.GetConnectorType(
@@ -105,6 +109,37 @@ namespace Game {
                             Matrix? voltage = connectorType == ASMElectricConnectorType.Output ? element.GetOutputVoltage(faces[i]) : connection?.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
                             m_displays[i].Matrix = voltage.HasValue ? voltage.Value : Matrix.Zero;
                         }
+                        //绘制背面
+                        //获取端口
+                        int backFace = ASMUtils.GetOppositeFace(blockFace);
+                        ASMElectricConnectorType? backConnectorType = mountedBlock.GetConnectorType(
+                            m_subsystemTerrain,
+                            blockValue,
+                            blockFace,
+                            backFace,
+                            cellFace.X,
+                            cellFace.Y,
+                            cellFace.Z
+                        );
+                        if (backConnectorType != null) {
+                            ASMElectricConnection backConnection = element.Connections.Find(connection => connection.ConnectorFace == backFace);
+                            m_subsystemASMatrixDisplay.SetVisible(m_singleDisplay, true);
+                            m_singleDisplay.DisplayPoint = new CellFace(cellFace.X, cellFace.Y, cellFace.Z, blockFace);
+                            m_singleDisplay.Height = 2f / 5;
+                            m_singleDisplay.Width = 2f / 5;
+                            m_singleDisplay.UseDebugFont = true;
+                            m_singleDisplay.FontScale = 0.7f;
+                            m_singleDisplay.RowLinesWidth = m_singleDisplay.ColumnLinesWidth = 0.006f;
+                            m_singleDisplay.TopMost = true;
+                            m_singleDisplay.Offset = new Vector2(4 / 5f, -1 / 5f);
+                            m_singleDisplay.DisplayType = ASMatrixDisplayType.RowLines | ASMatrixDisplayType.ColumnLines;
+                            m_singleDisplay.RowLinesColor = m_singleDisplay.ColumnLinesColor = Color.White * (backConnectorType.Value == ASMElectricConnectorType.Output ? SubsystemASMManager.OutputColor : SubsystemASMManager.InputColor);
+
+                            //获取电压
+                            Matrix? voltage = backConnectorType == ASMElectricConnectorType.Output ? element.GetOutputVoltage(backFace) : backConnection?.NeighborElectricElement.GetOutputVoltage(backConnection.NeighborConnectorFace);
+                            m_singleDisplay.Matrix = voltage.HasValue ? voltage.Value : Matrix.Zero;
+                        }
+
                     }
                     break;
             }
@@ -121,6 +156,7 @@ namespace Game {
                 ASMatrixDisplayData asMatrixDisplayData = m_subsystemASMatrixDisplay.Add(false);
                 m_displays[i] = asMatrixDisplayData;
             }
+            m_singleDisplay = m_subsystemASMatrixDisplay.Add(false);
         }
 
         public override void Save(ValuesDictionary valuesDictionary, EntityToIdMap entityToIdMap) {
@@ -128,6 +164,7 @@ namespace Game {
             for (int i = 0; i < 4; i++) {
                 m_subsystemASMatrixDisplay.Remove(m_displays[i]);
             }
+            m_subsystemASMatrixDisplay.Remove(m_singleDisplay);
         }
     }
 }
