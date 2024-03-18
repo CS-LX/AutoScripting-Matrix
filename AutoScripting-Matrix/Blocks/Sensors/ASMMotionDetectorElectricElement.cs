@@ -64,7 +64,7 @@ namespace Game {
             m_subsystemBodies.FindBodiesInArea(m_corner1, m_corner2, m_bodies);
             for (int i = 0; i < m_bodies.Count; i++) {
                 ComponentBody componentBody = m_bodies.Array[i];
-                if (!(componentBody.Velocity.LengthSquared() < 0.0625f)) {
+                if (componentBody.Velocity.LengthSquared() > 0.0625f && Vector3.Distance(componentBody.Position, m_center) < 8f) {
                     num = componentBody.Matrix;
                 }
             }
@@ -78,13 +78,13 @@ namespace Game {
                 }
             }
             foreach (Projectile projectile in m_subsystemProjectiles.Projectiles) {
-                if (!(projectile.Velocity.LengthSquared() < 0.0625f)) {
+                if (projectile.Velocity.LengthSquared() >= 0.0625f && Vector3.Distance(projectile.Position, m_center) < 8f) {
                     num = Matrix.CreateFromAxisAngle(Vector3.Normalize(projectile.Rotation), projectile.Rotation.Length());
                     num.Translation = projectile.Position;
                 }
             }
             foreach (Pickable pickable in m_subsystemPickables.Pickables) {
-                if (!(pickable.Velocity.LengthSquared() < 0.0625f)) {
+                if (pickable.Velocity.LengthSquared() >= 0.0625f && Vector3.Distance(pickable.Position, m_center) < 8f) {
                     num = Matrix.CreateTranslation(pickable.Position);
                 }
             }
