@@ -61,6 +61,8 @@ namespace Game {
             return "简单摄像机LED";
         }
 
+        public override string GetDescription(int value) => "创建一个摄像机，并且将摄像机捕捉到的画面显示出来。\r\n摄像机视角矩阵（摄像机方位、旋转）为输入矩阵。";
+
         public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
             int data = SetMountingFace(Terrain.ExtractData(value), raycastResult.CellFace.Face);
             int value2 = Terrain.ReplaceData(value, data);

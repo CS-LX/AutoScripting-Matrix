@@ -19,6 +19,8 @@ namespace Game {
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => "复杂摄像机LED";
 
+        public override string GetDescription(int value) => "创建一个摄像机，并且将摄像机捕捉到的画面显示出来。\r\n详见https://github.com/CS-LX/AutoScripting-Matrix";
+
         public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z) {
             int num = Terrain.ExtractData(value) & 0x1F;
             generator.GenerateMeshVertices(

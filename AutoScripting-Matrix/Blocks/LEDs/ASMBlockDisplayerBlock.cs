@@ -62,7 +62,7 @@ namespace Game {
 			return null;
 		}
 
-		public override string GetDescription(int value) => "方块展示板，可以通过矩阵控制展示方块的形状。\n"
+		public override string GetDescription(int value) => "显示一个方块，可以通过矩阵控制展示方块的形状。\n"
 			+ "它有两个输入端(左端: 控制矩阵; 右端: 变换矩阵。\n"
 			+ "\n"
 			+ "控制矩阵M11: 方块ID(有小数则向下取整); \n"

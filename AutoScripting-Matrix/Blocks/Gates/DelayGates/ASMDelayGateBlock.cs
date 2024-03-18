@@ -8,8 +8,8 @@ namespace Game {
         public Texture2D[] m_textures;
 
         public readonly ASMDelayGateInfo[] Infos = [
-            new ASMDelayGateInfo("矩阵延迟门", "", "ASMDelayGate"),
-            new ASMDelayGateInfo("矩阵可调延迟门", "", "ASMAdjustableDelayGate")
+            new ASMDelayGateInfo("矩阵延迟门", "与原版延迟门功能几乎一样。", "ASMDelayGate"),
+            new ASMDelayGateInfo("矩阵可调延迟门", "与原版延迟门功能几乎一样，但延迟上限增大至655.35秒。", "ASMAdjustableDelayGate")
         ];
 
         public ASMDelayGateBlock() : base("Models/ASMDelayGate", "ASMDelayGate", 0.375f) { }

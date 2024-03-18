@@ -94,6 +94,8 @@ namespace Game {
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => "矩阵移动传感器";
 
+        public override string GetDescription(int value) => "检测距离自己位置约8方块内的实体、移动方块、投掷物及掉落物，并输出对应变换矩阵。";
+
         public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
             BlocksManager.DrawMeshBlock(
                 primitivesRenderer,

@@ -24,6 +24,8 @@ namespace Game {
 
 		public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => "矩阵可拓展数码LED";
 
+		public override string GetDescription(int value) => "一个更加人性化的矩阵显示器，将矩阵通过4x4表格与16个数字显示，更加符合人们的阅读习惯，并且可拓展。\r\n详见https://github.com/CS-LX/AutoScripting-Matrix";
+
 		public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z)
 		{
 			int num = Terrain.ExtractData(value) & 0x1F;
