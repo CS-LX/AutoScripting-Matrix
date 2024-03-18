@@ -152,6 +152,7 @@ namespace Game {
                     break;
                 case ASMWireBlock or ASMBatteryBlock or ASMWireThroughBlock:
                     Color color = Color.LightGray;
+                    Vector3 offset33 = block is not ASMWireBlock ? CellFace.FaceToVector3(cellFace.Face) : Vector3.Zero;
                     switch (block) {
                         case { } b when b is ASMBatteryBlock or ASMWireThroughBlock:
                             color = SubsystemASMManager.OutputColor;
@@ -170,6 +171,7 @@ namespace Game {
                         m_singleDisplay.RowLinesWidth = m_singleDisplay.ColumnLinesWidth = Thickness;
                         m_singleDisplay.TopMost = true;
                         m_singleDisplay.Offset = Vector2.One * (0.5f - 1f / 5);
+                        m_singleDisplay.Offset3 = offset33;
                         m_singleDisplay.DisplayType = ASMatrixDisplayType.RowLines | ASMatrixDisplayType.ColumnLines;
                         m_singleDisplay.RowLinesColor = m_singleDisplay.ColumnLinesColor = color;
                         m_singleDisplay.Matrix = element2.GetOutputVoltage(blockFace);
