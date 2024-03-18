@@ -28,7 +28,7 @@ namespace Game {
 				for (int y = 0; y < 4; y++) {
 					int index = x * 4 + y;
 					CanvasWidget canvasWidget = new() {Size = new Vector2(60, 40), HorizontalAlignment = WidgetAlignment.Center, VerticalAlignment = WidgetAlignment.Center, Margin = new Vector2(4, 4)};
-					RectangleWidget rectangleWidget = new() {Size=new Vector2(float.MaxValue, 40), FillColor = new Color(0,0,0,0), OutlineColor = new Color(64, 64, 64, 64)};
+					RectangleWidget rectangleWidget = new() {Size=new Vector2(float.MaxValue, 40), FillColor = new Color(0,0,0,64), OutlineColor = new Color(64, 64, 64, 64)};
 					TextBoxWidget textBoxWidget = new(){Text = dataMatrix.GetElement(index).ToString(CultureInfo.InvariantCulture), Color = new Color(255, 255, 255), Margin = new Vector2(4, 0), VerticalAlignment=WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Stretch};
 					canvasWidget.Children.Add(rectangleWidget);
 					canvasWidget.Children.Add(textBoxWidget);
