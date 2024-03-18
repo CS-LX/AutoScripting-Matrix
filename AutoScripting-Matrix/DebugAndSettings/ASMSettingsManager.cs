@@ -1,3 +1,5 @@
+using System.Text;
+using System.Xml;
 using System.Xml.Serialization;
 using Engine;
 using SerializableKeyValuePair = Game.ASMSerializableDictionary<string, object>.SerializableKeyValuePair;
@@ -57,9 +59,15 @@ namespace Game {
         public static void Save() {
             Task.Run(
                 () => {
-                    using (Stream stream = Storage.OpenFile(SettingsPath, OpenFileMode.CreateOrOpen)) {
-                        XmlSerializer serializer = new(typeof(ASMSerializableDictionary<string, object>));
-                        serializer.Serialize(stream, Settings);
+                    XmlWriterSettings settings = new XmlWriterSettings();
+                    settings.Encoding = Encoding.UTF8; // 指定编码格式
+                    settings.Indent = true; // 自动缩进
+                    settings.Async = true;
+                    using (Stream stream = Storage.OpenFile(SettingsPath, OpenFileMode.Create)) {
+                        using (XmlWriter writer = XmlWriter.Create(stream, settings)) {
+                            XmlSerializer serializer = new(typeof(ASMSerializableDictionary<string, object>));
+                            serializer.Serialize(writer, Settings);
+                        }
                     }
                     Log.Information($"[智械-矩阵:设置管理器] 保存设置。");
                 }
