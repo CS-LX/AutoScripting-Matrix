@@ -138,6 +138,7 @@ namespace Game {
                                 m_singleDisplay.FontScale = 0.7f;
                                 m_singleDisplay.RowLinesWidth = m_singleDisplay.ColumnLinesWidth = Thickness;
                                 m_singleDisplay.TopMost = true;
+                                m_singleDisplay.Offset3 = Vector3.Zero;
                                 m_singleDisplay.Offset = new Vector2(4 / 5f, -1 / 5f);
                                 m_singleDisplay.DisplayType = ASMatrixDisplayType.RowLines | ASMatrixDisplayType.ColumnLines;
                                 m_singleDisplay.RowLinesColor = m_singleDisplay.ColumnLinesColor = Color.White * (backConnectorType.Value == ASMElectricConnectorType.Output ? SubsystemASMManager.OutputColor : SubsystemASMManager.InputColor);
