@@ -4,7 +4,7 @@
 
   <StackPanelWidget Direction="Horizontal">
 
-    <CanvasWidget Style="{Widgets/ASMTopBarContents}" >
+    <CanvasWidget Name="TopBar" Style="{Widgets/ASMTopBarContents}" >
       <LabelWidget Name="TopBar.Label" Text="设置矩阵电路系统" />
     </CanvasWidget>
 

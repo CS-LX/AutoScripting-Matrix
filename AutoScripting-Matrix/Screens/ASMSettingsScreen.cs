@@ -55,5 +55,21 @@ namespace Game {
                 ASMSettingsManager.Set(settingName, slider.Value);
             }
         }
+
+        public override void Enter(object[] parameters) {
+            base.Enter(parameters);
+            Color topBarColor = SubsystemASMManager.ThemeColor;
+            CanvasWidget topBar = Children.Find<CanvasWidget>("TopBar");
+            topBar.Children.Find<BevelledRectangleWidget>("BackRectangle").CenterColor = topBarColor;
+            topBar.Children.Find<BevelledRectangleWidget>("BackRectangle").BevelColor = topBarColor;
+            topBar.Children.Find<BevelledRectangleWidget>("TopBarBevelledButton.Rectangle").CenterColor = topBarColor;
+            topBar.Children.Find<BevelledRectangleWidget>("TopBarBevelledButton.Rectangle").BevelColor = topBarColor;
+        }
+
+        public bool IsEvening()
+        {
+            DateTime now = DateTime.Now;
+            return now.Hour >= 18 || now.Hour < 7;
+        }
     }
 }

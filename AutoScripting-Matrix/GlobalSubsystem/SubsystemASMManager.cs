@@ -12,6 +12,8 @@ namespace Game {
         public static Color InputColor => new Color(137, 255, 128);
         public static Color OutputColor => new Color(255, 253, 107);
 
+        public static Color ThemeColor => IsEvening() ? new Color(120, 140, 140) : new Color(255, 235, 125);
+
         public SubsystemPlayers m_subsystemPlayers;
 
         public bool m_isCreativeMode;
@@ -41,6 +43,12 @@ namespace Game {
             catch (Exception e) {
                 Log.Error(e);
             }
+        }
+
+        public static bool IsEvening()
+        {
+            DateTime now = DateTime.Now;
+            return now.Hour >= 18 || now.Hour < 7;
         }
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;

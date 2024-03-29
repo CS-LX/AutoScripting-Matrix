@@ -7,7 +7,13 @@ namespace Game
 	{
 		public float m_timeOffset;
 
-		public Texture2D Texture
+		public Texture2D TextureDay
+		{
+			get;
+			set;
+		}
+
+		public Texture2D TextureNight
 		{
 			get;
 			set;
@@ -15,7 +21,8 @@ namespace Game
 
 		public ASMatrixWaveWidget()
 		{
-			Texture = ContentManager.Get<Texture2D>("Textures/Gui/ASMatrix");
+			TextureDay = ContentManager.Get<Texture2D>("Textures/Gui/ASMatrix");
+			TextureNight = ContentManager.Get<Texture2D>("Textures/Gui/ASMatrix_Night");
 			m_timeOffset = new Random().Float(0f, 1000f);
 		}
 
@@ -23,12 +30,12 @@ namespace Game
 		{
 			Vector2 zero = Vector2.Zero;
 			Vector2 actualSize = ActualSize;
-			TexturedBatch2D texturedBatch2D = dc.PrimitivesRenderer2D.TexturedBatch(Texture, useAlphaTest: false, 0, DepthStencilState.DepthWrite, null, BlendState.AlphaBlend, SamplerState.LinearWrap);
+			TexturedBatch2D texturedBatch2D = dc.PrimitivesRenderer2D.TexturedBatch(SubsystemASMManager.IsEvening() ? TextureNight : TextureDay, useAlphaTest: false, 0, DepthStencilState.DepthWrite, null, BlendState.AlphaBlend, SamplerState.LinearWrap);
 			int count = texturedBatch2D.TriangleVertices.Count;
 			zero = Vector2.Zero;
-			Vector2 texCoord = new Vector2(ActualSize.X / Texture.Width, 0f);
-			Vector2 texCoord2 = new Vector2(ActualSize.X / Texture.Width, ActualSize.Y / Texture.Height);
-			Vector2 texCoord3 = new Vector2(0f, ActualSize.Y / Texture.Height);
+			Vector2 texCoord = new Vector2(ActualSize.X / TextureDay.Width, 0f);
+			Vector2 texCoord2 = new Vector2(ActualSize.X / TextureDay.Width, ActualSize.Y / TextureDay.Height);
+			Vector2 texCoord3 = new Vector2(0f, ActualSize.Y / TextureDay.Height);
 			texturedBatch2D.QueueQuad(zero, actualSize, 1f, Vector2.Zero, texCoord2, GlobalColorTransform);
 			texturedBatch2D.TransformTriangles(GlobalTransform, count);
 		}
