@@ -42,6 +42,8 @@ namespace Game {
         //控制部分
         public bool m_isAutoClip;
 
+        public int m_screenUVSubdivision;//屏幕uv细分，小于等于0，则不用屏幕纹理。大于0，则用屏幕纹理
+
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap) {
             base.Load(valuesDictionary, idToEntityMap);
             m_subsystemAsmElectricity = Project.FindSubsystem<SubsystemASMElectricity>(true);
@@ -117,39 +119,84 @@ namespace Game {
         public void DrawScreen(Camera camera, int drawOrder) {
             //显示的面的单位向量，满足笛卡尔坐标系，right是x轴，up是y轴
             Vector3 v = new(m_position.X + 0.5f, m_position.Y + 0.5f, m_position.Z + 0.5f);
-            Vector3 offset1 = new Vector3(-0.5f, 0, -0.5f);
-            Vector3 offset2 = new Vector3(0.5f, 0, -0.5f);
-            Vector3 offset3 = new Vector3(0.5f, 0, 0.5f);
-            Vector3 offset4 = new Vector3(-0.5f, 0, 0.5f);
-            Vector3 p1 = v + Vector3.Transform(offset1, m_complexCameraElectricElement.GetDisplayTransformMatrix());
-            Vector3 p2 = v + Vector3.Transform(offset2, m_complexCameraElectricElement.GetDisplayTransformMatrix());
-            Vector3 p3 = v + Vector3.Transform(offset3, m_complexCameraElectricElement.GetDisplayTransformMatrix());
-            Vector3 p4 = v + Vector3.Transform(offset4, m_complexCameraElectricElement.GetDisplayTransformMatrix());
-            ASMStaticMethods.CalcUV(m_camera.ViewTexture.Width, m_camera.ViewTexture.Height, out Vector2 uvMin, out Vector2 uvMax);
-            Vector2 uv0 = m_isAutoClip ? uvMin : Vector2.Zero;
-            Vector2 uv1 = m_isAutoClip ? new Vector2(uvMax.X, uvMin.Y) : Vector2.UnitX;
-            Vector2 uv2 = m_isAutoClip ? uvMax : Vector2.One;
-            Vector2 uv3 = m_isAutoClip ? new Vector2(uvMin.X, uvMax.Y) : Vector2.UnitY;
-            m_primitivesRenderer.TexturedBatch(
-                    m_camera.ViewTexture,
-                    useAlphaTest: true,
-                    0,
-                    null,
-                    RasterizerState.CullCounterClockwiseScissor,
-                    null,
-                    SamplerState.PointClamp
-                )
-                .QueueQuad(
-                    p1,
-                    p2,
-                    p3,
-                    p4,
-                    uv0,
-                    uv1,
-                    uv2,
-                    uv3,
-                    Color.White
-                );
+            if (m_screenUVSubdivision <= 0) {
+                Vector3 offset1 = new Vector3(-0.5f, 0, -0.5f);
+                Vector3 offset2 = new Vector3(0.5f, 0, -0.5f);
+                Vector3 offset3 = new Vector3(0.5f, 0, 0.5f);
+                Vector3 offset4 = new Vector3(-0.5f, 0, 0.5f);
+                Vector3 p1 = v + Vector3.Transform(offset1, m_complexCameraElectricElement.GetDisplayTransformMatrix());
+                Vector3 p2 = v + Vector3.Transform(offset2, m_complexCameraElectricElement.GetDisplayTransformMatrix());
+                Vector3 p3 = v + Vector3.Transform(offset3, m_complexCameraElectricElement.GetDisplayTransformMatrix());
+                Vector3 p4 = v + Vector3.Transform(offset4, m_complexCameraElectricElement.GetDisplayTransformMatrix());
+                ASMStaticMethods.CalcUV(m_camera.ViewTexture.Width, m_camera.ViewTexture.Height, out Vector2 uvMin, out Vector2 uvMax);
+                Vector2 uv0 = m_isAutoClip ? uvMin : Vector2.Zero;
+                Vector2 uv1 = m_isAutoClip ? new Vector2(uvMax.X, uvMin.Y) : Vector2.UnitX;
+                Vector2 uv2 = m_isAutoClip ? uvMax : Vector2.One;
+                Vector2 uv3 = m_isAutoClip ? new Vector2(uvMin.X, uvMax.Y) : Vector2.UnitY;
+                m_primitivesRenderer.TexturedBatch(
+                        m_camera.ViewTexture,
+                        useAlphaTest: true,
+                        0,
+                        null,
+                        RasterizerState.CullCounterClockwiseScissor,
+                        null,
+                        SamplerState.PointClamp
+                    )
+                    .QueueQuad(
+                        p1,
+                        p2,
+                        p3,
+                        p4,
+                        uv0,
+                        uv1,
+                        uv2,
+                        uv3,
+                        Color.White
+                    );
+            }
+            else {
+                for (int i = 0; i < m_screenUVSubdivision; i++) {
+                    for (int j = 0; j < m_screenUVSubdivision; j++) {
+                        float length = 1 / (float)m_screenUVSubdivision;
+                        Vector3 wp1 = v + Vector3.Transform(new Vector3(length * i - 0.5f, 0, length * j - 0.5f), m_complexCameraElectricElement.GetDisplayTransformMatrix());
+                        Vector3 wp2 = v + Vector3.Transform(new Vector3(length * (i + 1) - 0.5f, 0, length * j - 0.5f), m_complexCameraElectricElement.GetDisplayTransformMatrix());
+                        Vector3 wp3 = v + Vector3.Transform(new Vector3(length * (i + 1) - 0.5f, 0, length * (j + 1) - 0.5f), m_complexCameraElectricElement.GetDisplayTransformMatrix());
+                        Vector3 wp4 = v + Vector3.Transform(new Vector3(length * i - 0.5f, 0, length * (j + 1) - 0.5f), m_complexCameraElectricElement.GetDisplayTransformMatrix());
+                        Vector3 sp1 = camera.WorldToScreen(wp1, Matrix.Identity);
+                        Vector3 sp2 = camera.WorldToScreen(wp2, Matrix.Identity);
+                        Vector3 sp3 = camera.WorldToScreen(wp3, Matrix.Identity);
+                        Vector3 sp4 = camera.WorldToScreen(wp4, Matrix.Identity);
+                        Vector2 sp11 = new Vector2(sp1.X, sp1.Y);
+                        Vector2 sp21 = new Vector2(sp2.X, sp2.Y);
+                        Vector2 sp31 = new Vector2(sp3.X, sp3.Y);
+                        Vector2 sp41 = new Vector2(sp4.X, sp4.Y);
+                        sp11 = new Vector2(sp11.X / camera.ViewportSize.X, sp11.Y / camera.ViewportSize.Y);
+                        sp21 = new Vector2(sp21.X / camera.ViewportSize.X, sp21.Y / camera.ViewportSize.Y);
+                        sp31 = new Vector2(sp31.X / camera.ViewportSize.X, sp31.Y / camera.ViewportSize.Y);
+                        sp41 = new Vector2(sp41.X / camera.ViewportSize.X, sp41.Y / camera.ViewportSize.Y);
+                        m_primitivesRenderer.TexturedBatch(
+                                m_camera.ViewTexture,
+                                useAlphaTest: true,
+                                0,
+                                null,
+                                RasterizerState.CullNone,
+                                null,
+                                SamplerState.LinearWrap
+                            )
+                            .QueueQuad(
+                                wp1,
+                                wp2,
+                                wp3,
+                                wp4,
+                                sp11,
+                                sp21,
+                                sp31,
+                                sp41,
+                                Color.White
+                            );
+                    }
+                }
+            }
             m_primitivesRenderer.Flush(camera.ViewProjectionMatrix);
         }
 
@@ -174,7 +221,9 @@ namespace Game {
                 m_camera.SetViewMatrix(lerpMatrix);
                 Matrix projectionMatrix = m_complexCameraElectricElement.GetProjectionMatrix();
                 m_camera.m_projectionMatrix = projectionMatrix;
+                //控制部分
                 m_isAutoClip = m_complexCameraElectricElement.GetControlMatrix().M11 > 0;
+                m_screenUVSubdivision = (int)MathUtils.Floor(m_complexCameraElectricElement.GetControlMatrix().M12);
             }
         }
 
