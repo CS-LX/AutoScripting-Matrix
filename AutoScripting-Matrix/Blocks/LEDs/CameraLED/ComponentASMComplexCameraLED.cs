@@ -19,6 +19,8 @@ namespace Game {
 
         public SubsystemDrawing m_subsystemDrawing;
 
+        public SubsystemSky m_subsystemSky;
+
         public SubsystemASMCamerasGameWidgets m_subsystemCameraGameWidgets;
 
         public ComponentPlayer m_componentPlayer;
@@ -50,6 +52,7 @@ namespace Game {
             m_subsystemGameWidgets = Project.FindSubsystem<SubsystemGameWidgets>(true);
             m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(true);
             m_subsystemDrawing = Project.FindSubsystem<SubsystemDrawing>(true);
+            m_subsystemSky = Project.FindSubsystem<SubsystemSky>(true);
             m_subsystemCameraGameWidgets = base.Project.FindSubsystem<SubsystemASMCamerasGameWidgets>(true);
             m_componentEntity = Entity.FindComponent<ComponentBlockEntity>(true);
             Point3 coordinates = Entity.FindComponent<ComponentBlockEntity>(true).Coordinates;
@@ -86,6 +89,14 @@ namespace Game {
             if ((m_lastTranslation.XZ - translation.XZ).Length() > 16) {
                 m_lastTranslation = translation;
                 m_subsystemTerrain.TerrainUpdater.SetUpdateLocation(m_camera.GameWidget.PlayerData.PlayerIndex, translation.XZ, MathUtils.Min(m_subsystemTerrain.m_subsystemsky.VisibilityRange, 64f), 64f);
+            }
+
+            //去雾
+            foreach (TerrainChunk terrainChunk in m_subsystemTerrain.Terrain.AllocatedChunks) {
+                if (Vector2.DistanceSquared(m_camera.ViewPosition.XZ, terrainChunk.Center) <= MathUtils.Sqr(m_subsystemSky.VisibilityRange)
+                    && terrainChunk.State == TerrainChunkState.Valid) {
+                    terrainChunk.FogEnds[0] = float.MaxValue;
+                }
             }
 
             RenderTarget2D lastRenderTarget = Display.RenderTarget;
