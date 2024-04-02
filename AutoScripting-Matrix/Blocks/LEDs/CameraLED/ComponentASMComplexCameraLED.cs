@@ -21,10 +21,6 @@ namespace Game {
 
         public SubsystemTerrain m_subsystemTerrain;
 
-        public SubsystemModelsRenderer m_subsystemModelsRenderer;
-
-        public SubsystemGameInfo m_subsystemGameInfo;
-
         public SubsystemDrawing m_subsystemDrawing;
 
         public SubsystemASMCamerasGameWidgets m_subsystemCameraGameWidgets;
@@ -43,6 +39,8 @@ namespace Game {
 
         public GameWidget m_gameWidget;
 
+        public Vector3 m_lastTranslation;
+
         public int m_face;
 
         //控制部分
@@ -57,9 +55,7 @@ namespace Game {
             m_subsystemPlayers = Project.FindSubsystem<SubsystemPlayers>(true);
             m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(true);
             m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(true);
-            m_subsystemModelsRenderer = base.Project.FindSubsystem<SubsystemModelsRenderer>(true);
             m_subsystemDrawing = Project.FindSubsystem<SubsystemDrawing>(true);
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(true);
             m_subsystemCameraGameWidgets = base.Project.FindSubsystem<SubsystemASMCamerasGameWidgets>(true);
             m_componentEntity = Entity.FindComponent<ComponentBlockEntity>(true);
             Point3 coordinates = Entity.FindComponent<ComponentBlockEntity>(true).Coordinates;
@@ -92,8 +88,10 @@ namespace Game {
         public void DrawView() {
             m_camera.PrepareForDrawing();
             m_camera.m_projectionMatrix = m_complexCameraElectricElement.GetProjectionMatrix();
-            if (m_subsystemTime.PeriodicGameTimeEvent(1, 0)) {
-                m_subsystemTerrain.TerrainUpdater.SetUpdateLocation(m_camera.GameWidget.PlayerData.PlayerIndex, m_complexCameraElectricElement.GetInputMatrix().Translation.XZ, MathUtils.Min(m_subsystemTerrain.m_subsystemsky.VisibilityRange, 64f), 64f);
+            Vector3 translation = m_complexCameraElectricElement.GetInputMatrix().Translation;
+            if ((m_lastTranslation.XZ - translation.XZ).Length() > 16) {
+                m_lastTranslation = translation;
+                m_subsystemTerrain.TerrainUpdater.SetUpdateLocation(m_camera.GameWidget.PlayerData.PlayerIndex, translation.XZ, MathUtils.Min(m_subsystemTerrain.m_subsystemsky.VisibilityRange, 64f), 64f);
             }
 
             RenderTarget2D lastRenderTarget = Display.RenderTarget;
@@ -248,7 +246,7 @@ namespace Game {
             while (m_subsystemTerrain.TerrainUpdater.m_pendingLocations.ContainsKey(index)) {
                 index = new Random().Int(4, int.MaxValue);
             }
-            m_gameWidget = new GameWidget(new PlayerData(Project) { PlayerIndex = index }, 3);
+            m_gameWidget = new GameWidget(new PlayerData(Project) { PlayerIndex = index }, 0);
             m_subsystemGameWidgets.m_gameWidgets.Add(m_gameWidget);
             m_subsystemCameraGameWidgets.m_gameWidgets.Add(m_gameWidget);
             m_camera = new ASMComplexPerspectiveCamera(m_gameWidget, m_complexCameraElectricElement.GetProjectionMatrix());
