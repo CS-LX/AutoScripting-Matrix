@@ -7,17 +7,13 @@ namespace Game {
     public class ComponentASMComplexCameraLED : Component, IDrawable, IUpdateable {
         public int[] DrawOrders => [202, 1101];
 
-        public UpdateOrder UpdateOrder => UpdateOrder.CreatureModels;
+        public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
         public SubsystemASMElectricity m_subsystemAsmElectricity;
-
-        public SubsystemPlayers m_subsystemPlayers;
 
         public SubsystemGameWidgets m_subsystemGameWidgets;
 
         public ASMComplexCameraLEDElectricElement? m_complexCameraElectricElement;
-
-        public SubsystemTime m_subsystemTime;
 
         public SubsystemTerrain m_subsystemTerrain;
 
@@ -52,8 +48,6 @@ namespace Game {
             base.Load(valuesDictionary, idToEntityMap);
             m_subsystemAsmElectricity = Project.FindSubsystem<SubsystemASMElectricity>(true);
             m_subsystemGameWidgets = Project.FindSubsystem<SubsystemGameWidgets>(true);
-            m_subsystemPlayers = Project.FindSubsystem<SubsystemPlayers>(true);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(true);
             m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(true);
             m_subsystemDrawing = Project.FindSubsystem<SubsystemDrawing>(true);
             m_subsystemCameraGameWidgets = base.Project.FindSubsystem<SubsystemASMCamerasGameWidgets>(true);
