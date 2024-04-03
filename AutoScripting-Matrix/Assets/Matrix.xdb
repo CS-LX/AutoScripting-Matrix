@@ -55,6 +55,9 @@
 		<MemberSubsystemTemplate Name="ASMSettingsSetterBehavior" Guid="16594046-0010-4319-9fd0-31a23479ebe6" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
 			<Parameter Name="Class" Guid="16594046-0010-47de-99f0-abed8ef8395b" Value="Game.SubsystemASMSettingsSetterBehavior" Type="string"/>
 		</MemberSubsystemTemplate>
+		<MemberSubsystemTemplate Name="ASMPortalBlockBehavior" Guid="16594046-0011-4319-9fd0-31a23479ebe6" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
+			<Parameter Name="Class" Guid="16594046-0011-47de-99f0-abed8ef8395b" Value="Game.SubsystemASMPortalBlockBehavior" Type="string"/>
+		</MemberSubsystemTemplate>
 	</ProjectTemplate>
 
 	<Folder Name="Entities" Guid="5fcdf35f-7001-442c-883e-e0502b15d291">
@@ -75,6 +78,12 @@
 			<MemberComponentTemplate Name="ASMDispenser" Description="A dispenser that dispenses items" Guid="16594046-0002-4ebc-9d00-32b68eaa13e0" InheritanceParent="81a44c6a-c30a-4f53-8d64-0c30aabab8f9">
 				<Parameter Name="SlotsCount" Guid="16594046-0002-4303-a3c3-ff804b0f0088" Value="12" Type="int"/>
 				<Parameter Name="Class" Guid="16594046-0002-45dd-91cb-d92a2a3b35d1" Value="Game.ComponentASMDispenser" Type="string"/>
+			</MemberComponentTemplate>
+		</EntityTemplate>
+		<EntityTemplate Name="ASMPortal" Guid="16594046-0003-4b83-bdf1-e723a1ae09ce">
+			<MemberComponentTemplate Name="BlockEntity" Guid="16594046-0003-4ab6-b221-9952bf79b399" InheritanceParent="09a85cba-d94e-41b8-9497-f20ed942c17e"/>
+			<MemberComponentTemplate Name="ASMPortal" Guid="16594046-0003-4ebc-9d00-32b68eaa13e0" InheritanceParent="81a44c6a-c30a-4f53-8d64-0c30aabab8f9">
+				<Parameter Name="Class" Guid="16594046-0003-45dd-91cb-d92a2a3b35d1" Value="Game.ComponentASMPortal" Type="string"/>
 			</MemberComponentTemplate>
 		</EntityTemplate>
 		<EntityTemplate Name="Player" Guid="4be6c1c5-d65d-4537-8a8b-a391969e6dc2">

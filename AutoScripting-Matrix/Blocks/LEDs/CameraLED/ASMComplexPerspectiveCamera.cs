@@ -16,6 +16,7 @@ namespace Game {
 		public override Matrix ProjectionMatrix => m_projectionMatrix;
 
 		public void SetViewMatrix(Matrix viewMatrix) {
+			m_viewMatrix = null;
 			SetupPerspectiveCamera(viewMatrix.Translation, viewMatrix.Forward, viewMatrix.Up);
 		}
 
