@@ -10,8 +10,9 @@ namespace Game {
             m_primitivesRenderer = new PrimitivesRenderer2D();
         }
 
-        public static void Draw(ComponentGui gui) {
+        public static void Draw(ComponentGui gui, Camera camera) {
             if(!(bool)ASMSettingsManager.Get("DisplayUpperLeft")) return;
+            if(camera is ASMComplexPerspectiveCamera) return;//防止摄像机板画面出现调试信息
             Ray3 ray = new Ray3(gui.m_componentPlayer.GameWidget.ActiveCamera.ViewPosition, gui.m_componentPlayer.GameWidget.ActiveCamera.ViewDirection);
             var scale = new Vector2(MathUtils.Round(MathUtils.Clamp(ScreensManager.RootWidget.GlobalScale, 1.0f, 4.0f)));
             SubsystemASMElectricity asmElectricity = gui.Project.FindSubsystem<SubsystemASMElectricity>();
