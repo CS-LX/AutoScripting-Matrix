@@ -7,6 +7,8 @@ namespace Game {
         public ASMComplexPerspectiveCamera m_camera;
         public GameWidget m_gameWidget;
         public Matrix m_transformMatrix;
+        public Matrix TransformMatrix => m_transformMatrix;
+        public Matrix TransformMatrixWithoutScale => ASMStaticMethods.RemoveScale(m_transformMatrix);
         public Vector3 m_lastViewTranslation;
         public ComponentASMPortal m_controller;
         public ComponentPlayer m_player;
@@ -19,8 +21,12 @@ namespace Game {
         readonly SubsystemGameWidgets m_subsystemGameWidgets;
         readonly SubsystemSky m_subsystemSky;
         readonly SubsystemDrawing m_subsystemDrawing;
+        readonly SubsystemBodies m_subsystemBodies;
 
         public ASMPortal LinkedPortal;
+
+        //传送所需
+        public Dictionary<ComponentBody, Vector3> m_needTeleportBodies = new Dictionary<ComponentBody, Vector3>();
 
         public ASMPortal(ASMComplexPerspectiveCamera camera, GameWidget gameWidget, Matrix transformMatrix, int screenUVSubdivision, Project project, ComponentASMPortal controller, ComponentPlayer player) {
             m_camera = camera;
@@ -35,6 +41,7 @@ namespace Game {
             m_subsystemGameWidgets = project.FindSubsystem<SubsystemGameWidgets>(true);
             m_subsystemSky = project.FindSubsystem<SubsystemSky>(true);
             m_subsystemDrawing = project.FindSubsystem<SubsystemDrawing>(true);
+            m_subsystemBodies = project.FindSubsystem<SubsystemBodies>(true);
         }
 
         public void LinkPortal(ASMPortal portal) {
@@ -123,12 +130,30 @@ namespace Game {
             if(LinkedPortal == null) return;
 
             Matrix playerView = m_player.GameWidget.ActiveCamera.ViewMatrix.Invert();
-            Matrix portal1Trans = ASMStaticMethods.RemoveScale(m_transformMatrix);
-            Matrix portal2Trans = ASMStaticMethods.RemoveScale(LinkedPortal.m_transformMatrix);
+            Matrix portal1Trans = TransformMatrixWithoutScale;
+            Matrix portal2Trans = LinkedPortal.TransformMatrixWithoutScale;
 
+            //绘制画面所需
             Matrix playerCamToPortal2 = playerView * portal2Trans.Invert();
             Matrix viewMatrix1 = playerCamToPortal2 * portal1Trans;
             m_camera.SetViewMatrix(viewMatrix1);
+
+            //传送玩家所需
+            CalcBoundaries(out Vector3 p1, out Vector3 p2, out Vector3 p3, out Vector3 p4);//传送门屏幕的四个边界点
+            Vector3 right = (p2 - p1).Normalize();
+            Vector3 forward = (p4 - p1).Normalize();
+            Vector3 up = Vector3.Cross(right, forward).Normalize();//传送门屏幕的坐标系
+            DynamicArray<ComponentBody> foundBodies = new DynamicArray<ComponentBody>();
+            m_subsystemBodies.FindBodiesInArea((p1 - up).XZ, (p3 + up).XZ, foundBodies);
+            foreach (var foundBody in foundBodies) {
+                Vector3 bodyPosition = foundBody.Position + foundBody.BoundingBox.Size().Y / 2 * Vector3.UnitY;
+                if (!m_needTeleportBodies.ContainsKey(foundBody) && IsInPortalField(p1, p2, p3, p4, bodyPosition)) m_needTeleportBodies.Add(foundBody, bodyPosition);//待传送的实体里不包含检测到的实体，则作为新实体加入
+            }
+            foreach (var needTeleportBody in m_needTeleportBodies.Keys) {
+                Vector3 bodyPosition = needTeleportBody.Position + needTeleportBody.BoundingBox.Size().Y / 2 * Vector3.UnitY;
+                if (!foundBodies.Contains(needTeleportBody) || !IsInPortalField(p1, p2, p3, p4, bodyPosition)) m_needTeleportBodies.Remove(needTeleportBody);//待传送的实体内包含多余的实体，则删除
+            }
+            Console.WriteLine(m_needTeleportBodies.Count);
         }
 
         public void Dispose() {
@@ -144,6 +169,25 @@ namespace Game {
         public bool IsInPlayerFrustum(Camera camera, Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4) {
             BoundingFrustum frustum = camera.ViewFrustum;
             return frustum.Intersection(p1) || frustum.Intersection(p2) || frustum.Intersection(p3) || frustum.Intersection(p4);
+        }
+
+        public void CalcBoundaries(out Vector3 p1, out Vector3 p2, out Vector3 p3, out Vector3 p4) {
+            p1 = Vector3.Transform(new Vector3(-0.5f, 0, -0.5f), m_transformMatrix);
+            p2 = Vector3.Transform(new Vector3(0.5f, 0, -0.5f), m_transformMatrix);
+            p3 = Vector3.Transform(new Vector3(0.5f, 0, 0.5f), m_transformMatrix);
+            p4 = Vector3.Transform(new Vector3(-0.5f, 0, 0.5f), m_transformMatrix);
+        }
+
+        public bool IsInPortalField(Vector3 a, Vector3 b, Vector3 c, Vector3 d, Vector3 p) {
+            Vector3 normal = Vector3.Cross(b - a, d - a);
+            float distance = Vector3.Dot(p - a, normal) / normal.Length();
+            if (float.IsNaN(distance)) return false;
+            Vector3 projP = p - normal * distance;
+            float factor1 = Vector3.Dot(normal, Vector3.Cross(b - projP, c - projP));
+            float factor2 = Vector3.Dot(normal, Vector3.Cross(c - projP, d - projP));
+            float factor3 = Vector3.Dot(normal, Vector3.Cross(d - projP, a - projP));
+            float factor4 = Vector3.Dot(normal, Vector3.Cross(a - projP, b - projP));
+            return MathUtils.Sign(factor1) == MathUtils.Sign(factor2) && MathUtils.Sign(factor3) == MathUtils.Sign(factor4) && MathUtils.Sign(factor2) == MathUtils.Sign(factor3);
         }
     }
 }
