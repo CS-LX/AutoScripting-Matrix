@@ -551,5 +551,10 @@ namespace Game {
         /// <param name="m"></param>
         /// <returns></returns>
         public static Matrix Transpose(this Matrix m) => Matrix.Transpose(m);
+
+        public static Matrix RemoveScale(Matrix m) {
+            m.Decompose(out Vector3 scale, out Quaternion rotation, out Vector3 translation);
+            return Matrix.CreateFromQuaternion(rotation) * Matrix.CreateTranslation(translation);
+        }
     }
 }

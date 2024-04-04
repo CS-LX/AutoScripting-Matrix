@@ -123,8 +123,8 @@ namespace Game {
             if(LinkedPortal == null) return;
 
             Matrix playerView = m_player.GameWidget.ActiveCamera.ViewMatrix.Invert();
-            Matrix portal1Trans = m_transformMatrix;
-            Matrix portal2Trans = LinkedPortal.m_transformMatrix;
+            Matrix portal1Trans = ASMStaticMethods.RemoveScale(m_transformMatrix);
+            Matrix portal2Trans = ASMStaticMethods.RemoveScale(LinkedPortal.m_transformMatrix);
 
             Matrix playerCamToPortal2 = playerView * portal2Trans.Invert();
             Matrix viewMatrix1 = playerCamToPortal2 * portal1Trans;
