@@ -75,6 +75,7 @@ namespace Game {
                 || camera == LinkedPortal.m_camera)
                 return;
             //传送门1
+            int n = 0;
             for (int i = 0; i < m_screenUVSubdivision; i++) {
                 for (int j = 0; j < m_screenUVSubdivision; j++) {
                     float length = 1 / (float)m_screenUVSubdivision;
@@ -82,6 +83,7 @@ namespace Game {
                     Vector3 wp2 = Vector3.Transform(new Vector3(length * (i + 1) - 0.5f, 0, length * j - 0.5f), m_transformMatrix);
                     Vector3 wp3 = Vector3.Transform(new Vector3(length * (i + 1) - 0.5f, 0, length * (j + 1) - 0.5f), m_transformMatrix);
                     Vector3 wp4 = Vector3.Transform(new Vector3(length * i - 0.5f, 0, length * (j + 1) - 0.5f), m_transformMatrix);
+                    if (!IsInPlayerFrustum(camera, wp1, wp2, wp3, wp4)) continue;
                     Vector3 sp1 = camera.WorldToScreen(wp1, Matrix.Identity);
                     Vector3 sp2 = camera.WorldToScreen(wp2, Matrix.Identity);
                     Vector3 sp3 = camera.WorldToScreen(wp3, Matrix.Identity);
@@ -138,6 +140,11 @@ namespace Game {
             m_gameWidget = null;
             Utilities.Dispose(ref m_camera.ViewTexture);
             m_gameWidget = null;
+        }
+
+        public bool IsInPlayerFrustum(Camera camera, Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4) {
+            BoundingFrustum frustum = camera.ViewFrustum;
+            return frustum.Intersection(p1) || frustum.Intersection(p2) || frustum.Intersection(p3) || frustum.Intersection(p4);
         }
     }
 }
