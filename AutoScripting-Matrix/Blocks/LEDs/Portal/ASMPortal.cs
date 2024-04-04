@@ -75,7 +75,6 @@ namespace Game {
                 || camera == LinkedPortal.m_camera)
                 return;
             //传送门1
-            int n = 0;
             for (int i = 0; i < m_screenUVSubdivision; i++) {
                 for (int j = 0; j < m_screenUVSubdivision; j++) {
                     float length = 1 / (float)m_screenUVSubdivision;

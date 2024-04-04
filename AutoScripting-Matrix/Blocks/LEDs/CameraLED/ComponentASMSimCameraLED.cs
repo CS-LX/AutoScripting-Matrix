@@ -113,6 +113,7 @@ namespace Game {
             Vector3 p2 = position + right / 2 - up / 2;
             Vector3 p3 = position + right / 2 + up / 2;
             Vector3 p4 = position - right / 2 + up / 2;
+            if(!IsInPlayerFrustum(camera, p1, p2, p3, p4)) return;
             ASMStaticMethods.CalcUV(m_camera.ViewTexture.Width, m_camera.ViewTexture.Height, out Vector2 uvMin, out Vector2 uvMax);
             Vector2 uv0 = uvMin;
             Vector2 uv1 = new Vector2(uvMax.X, uvMin.Y);
@@ -188,6 +189,11 @@ namespace Game {
             Vector3 playerPos = m_componentPlayer.ComponentBody.Position;
             float length = (playerPos - m_position).Length() - 16;
             return length < m_subsystemTerrain.m_subsystemsky.VisibilityRange;
+        }
+
+        public bool IsInPlayerFrustum(Camera camera, Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4) {
+            BoundingFrustum frustum = camera.ViewFrustum;
+            return frustum.Intersection(p1) || frustum.Intersection(p2) || frustum.Intersection(p3) || frustum.Intersection(p4);
         }
 
         public void AddCamera() {

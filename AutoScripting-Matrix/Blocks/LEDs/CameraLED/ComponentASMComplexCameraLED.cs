@@ -123,6 +123,7 @@ namespace Game {
                 Vector3 p2 = v + Vector3.Transform(offset2, m_complexCameraElectricElement.GetDisplayTransformMatrix());
                 Vector3 p3 = v + Vector3.Transform(offset3, m_complexCameraElectricElement.GetDisplayTransformMatrix());
                 Vector3 p4 = v + Vector3.Transform(offset4, m_complexCameraElectricElement.GetDisplayTransformMatrix());
+                if(!IsInPlayerFrustum(camera, p1, p2, p3, p4)) return;
                 ASMStaticMethods.CalcUV(m_camera.ViewTexture.Width, m_camera.ViewTexture.Height, out Vector2 uvMin, out Vector2 uvMax);
                 Vector2 uv0 = m_isAutoClip ? uvMin : Vector2.Zero;
                 Vector2 uv1 = m_isAutoClip ? new Vector2(uvMax.X, uvMin.Y) : Vector2.UnitX;
@@ -157,6 +158,7 @@ namespace Game {
                         Vector3 wp2 = v + Vector3.Transform(new Vector3(length * (i + 1) - 0.5f, 0, length * j - 0.5f), m_complexCameraElectricElement.GetDisplayTransformMatrix());
                         Vector3 wp3 = v + Vector3.Transform(new Vector3(length * (i + 1) - 0.5f, 0, length * (j + 1) - 0.5f), m_complexCameraElectricElement.GetDisplayTransformMatrix());
                         Vector3 wp4 = v + Vector3.Transform(new Vector3(length * i - 0.5f, 0, length * (j + 1) - 0.5f), m_complexCameraElectricElement.GetDisplayTransformMatrix());
+                        if(!IsInPlayerFrustum(camera, wp1, wp2, wp3, wp4)) continue;
                         Vector3 sp1 = camera.WorldToScreen(wp1, Matrix.Identity);
                         Vector3 sp2 = camera.WorldToScreen(wp2, Matrix.Identity);
                         Vector3 sp3 = camera.WorldToScreen(wp3, Matrix.Identity);
@@ -266,6 +268,11 @@ namespace Game {
             Vector3 playerPos = m_componentPlayer.ComponentBody.Position;
             float length = (playerPos - m_position).Length() - 16;
             return length < m_subsystemTerrain.m_subsystemsky.VisibilityRange;
+        }
+
+        public bool IsInPlayerFrustum(Camera camera, Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4) {
+            BoundingFrustum frustum = camera.ViewFrustum;
+            return frustum.Intersection(p1) || frustum.Intersection(p2) || frustum.Intersection(p3) || frustum.Intersection(p4);
         }
     }
 }
