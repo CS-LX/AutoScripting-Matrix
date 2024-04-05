@@ -164,7 +164,12 @@ namespace Game {
                     int portalSide = Math.Sign(Vector3.Dot(offsetFromPortal, up));//当前帧实体所在传送门的哪一边
                     int oldPortalSide = Math.Sign(Vector3.Dot(oldOffsetFromPortal, up));//上一帧在传送门的哪一边
                     if (portalSide != oldPortalSide) {//玩家穿过了传送门, 执行传送逻辑
-                        needTeleportBody.Velocity = Vector3.Zero;
+                        Matrix bodyToPortal1 = needTeleportBody.Matrix * portal1Trans.Invert();
+                        Matrix bodyMatrix2 = bodyToPortal1 * portal2Trans;
+                        bodyMatrix2.Decompose(out _, out Quaternion rotation, out Vector3 position);
+                        needTeleportBody.Position = position;
+                        needTeleportBody.Rotation = rotation;
+                        needTeleportBody.Velocity = Vector3.Transform(needTeleportBody.Velocity, (portal1Trans.Invert() * portal2Trans).OrientationMatrix);
                     }
                     m_needTeleportBodies[needTeleportBody] = bodyPosition;
                 }
