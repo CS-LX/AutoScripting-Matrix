@@ -22,11 +22,13 @@ namespace Game {
         readonly SubsystemSky m_subsystemSky;
         readonly SubsystemDrawing m_subsystemDrawing;
         readonly SubsystemBodies m_subsystemBodies;
+        readonly SubsystemProjectiles m_subsystemProjectiles;
 
         public ASMPortal LinkedPortal;
 
         //传送所需
         public Dictionary<ComponentBody, Vector3> m_needTeleportBodies = new Dictionary<ComponentBody, Vector3>();
+        public Dictionary<Projectile, Vector3> m_needTeleportProjectiles = new Dictionary<Projectile, Vector3>();
 
         public ASMPortal(ASMComplexPerspectiveCamera camera, GameWidget gameWidget, Matrix transformMatrix, int screenUVSubdivision, Project project, ComponentASMPortal controller, ComponentPlayer player) {
             m_camera = camera;
@@ -42,6 +44,7 @@ namespace Game {
             m_subsystemSky = project.FindSubsystem<SubsystemSky>(true);
             m_subsystemDrawing = project.FindSubsystem<SubsystemDrawing>(true);
             m_subsystemBodies = project.FindSubsystem<SubsystemBodies>(true);
+            m_subsystemProjectiles = project.FindSubsystem<SubsystemProjectiles>(true);
         }
 
         public void LinkPortal(ASMPortal portal) {
@@ -145,6 +148,9 @@ namespace Game {
             Vector3 up = Vector3.Cross(right, forward).Normalize();//传送门屏幕的坐标系
             DynamicArray<ComponentBody> foundBodies = new DynamicArray<ComponentBody>();
             m_subsystemBodies.FindBodiesInArea((p1 - up).XZ, (p3 + up).XZ, foundBodies);
+            List<Projectile> foundProjectiles = FindProjectiles();
+
+            //实体
             foreach (var foundBody in foundBodies) {
                 Vector3 bodyPosition = foundBody.Position + foundBody.BoundingBox.Size().Y / 2 * Vector3.UnitY;
                 if (!m_needTeleportBodies.ContainsKey(foundBody) && IsInPortalField(p1, p2, p3, p4, bodyPosition)) m_needTeleportBodies.Add(foundBody, bodyPosition);//待传送的实体里不包含检测到的实体，则作为新实体加入
@@ -172,6 +178,38 @@ namespace Game {
                         needTeleportBody.Velocity = Vector3.Transform(needTeleportBody.Velocity, (portal1Trans.Invert() * portal2Trans).OrientationMatrix);
                     }
                     m_needTeleportBodies[needTeleportBody] = bodyPosition;
+                }
+            }
+
+            //投掷物
+            foreach (var foundProjectile in foundProjectiles) {
+                if (!m_needTeleportProjectiles.ContainsKey(foundProjectile)) m_needTeleportProjectiles.Add(foundProjectile, foundProjectile.Position);//待传送的实体里不包含检测到的实体，则作为新实体加入
+            }
+            for (int i = 0; i < m_needTeleportProjectiles.Keys.Count; i++) {
+                Projectile needTeleportProjectile = m_needTeleportProjectiles.Keys.ToList()[i];
+                if (!foundProjectiles.Contains(needTeleportProjectile)) {
+                    m_needTeleportProjectiles.Remove(needTeleportProjectile);
+                    continue;
+                }
+                //传送逻辑
+                Vector3 projectilePosition = needTeleportProjectile.Position;
+                Vector3 oldProjectilePosition = m_needTeleportProjectiles[needTeleportProjectile];
+                if (oldProjectilePosition != projectilePosition) {
+                    Vector3 offsetFromPortal = projectilePosition - portalCenter;
+                    Vector3 oldOffsetFromPortal = oldProjectilePosition - portalCenter;
+                    int portalSide = Math.Sign(Vector3.Dot(offsetFromPortal, up));//当前帧实体所在传送门的哪一边
+                    int oldPortalSide = Math.Sign(Vector3.Dot(oldOffsetFromPortal, up));//上一帧在传送门的哪一边
+                    if (portalSide != oldPortalSide) {//玩家穿过了传送门, 执行传送逻辑
+                        Matrix projectileMatrix = Matrix.CreateFromYawPitchRoll(needTeleportProjectile.Rotation.X, needTeleportProjectile.Rotation.Y, needTeleportProjectile.Rotation.Z) * Matrix.CreateTranslation(needTeleportProjectile.Position);
+                        Matrix projectileToPortal1 = projectileMatrix * portal1Trans.Invert();
+                        Matrix projectileMatrix2 = projectileToPortal1 * portal2Trans;
+                        projectileMatrix2.Decompose(out _, out _, out Vector3 position);
+                        needTeleportProjectile.Position = position;
+                        needTeleportProjectile.Rotation = projectileMatrix2.ToYawPitchRoll();
+                        needTeleportProjectile.Velocity = Vector3.Transform(needTeleportProjectile.Velocity, (portal1Trans.Invert() * portal2Trans).OrientationMatrix);
+                        needTeleportProjectile.AngularVelocity = Vector3.Transform(needTeleportProjectile.AngularVelocity, (portal1Trans.Invert() * portal2Trans).OrientationMatrix);
+                    }
+                    m_needTeleportProjectiles[needTeleportProjectile] = projectilePosition;
                 }
             }
         }
@@ -209,6 +247,25 @@ namespace Game {
             float factor3 = Vector3.Dot(normal, Vector3.Cross(d - projP, a - projP));
             float factor4 = Vector3.Dot(normal, Vector3.Cross(a - projP, b - projP));
             return MathUtils.Sign(factor1) == MathUtils.Sign(factor2) && MathUtils.Sign(factor3) == MathUtils.Sign(factor4) && MathUtils.Sign(factor2) == MathUtils.Sign(factor3);
+        }
+
+        public List<Projectile> FindProjectiles() {
+            List<Projectile> projectiles = new List<Projectile>();
+            CalcBoundaries(out Vector3 p1, out Vector3 p2, out Vector3 p3, out Vector3 p4, out Vector3 center);
+            Vector3 normal = Vector3.Cross(p2 - p1, p4 - p1);
+            foreach (var projectile in m_subsystemProjectiles.Projectiles) {
+                if (IsInPortalField(
+                        p1,
+                        p2,
+                        p3,
+                        p4,
+                        projectile.Position
+                    )
+                    && Vector3.Distance(projectile.Position, center) < normal.Length()) {
+                    projectiles.Add(projectile);
+                }
+            }
+            return projectiles;
         }
     }
 }
