@@ -23,12 +23,14 @@ namespace Game {
         readonly SubsystemDrawing m_subsystemDrawing;
         readonly SubsystemBodies m_subsystemBodies;
         readonly SubsystemProjectiles m_subsystemProjectiles;
+        readonly SubsystemPickables m_subsystemPickables;
 
         public ASMPortal LinkedPortal;
 
         //传送所需
         public Dictionary<ComponentBody, Vector3> m_needTeleportBodies = new Dictionary<ComponentBody, Vector3>();
         public Dictionary<Projectile, Vector3> m_needTeleportProjectiles = new Dictionary<Projectile, Vector3>();
+        public Dictionary<Pickable, Vector3> m_needTeleportPickables = new Dictionary<Pickable, Vector3>();
 
         public ASMPortal(ASMComplexPerspectiveCamera camera, GameWidget gameWidget, Matrix transformMatrix, int screenUVSubdivision, Project project, ComponentASMPortal controller, ComponentPlayer player) {
             m_camera = camera;
@@ -45,6 +47,7 @@ namespace Game {
             m_subsystemDrawing = project.FindSubsystem<SubsystemDrawing>(true);
             m_subsystemBodies = project.FindSubsystem<SubsystemBodies>(true);
             m_subsystemProjectiles = project.FindSubsystem<SubsystemProjectiles>(true);
+            m_subsystemPickables = project.FindSubsystem<SubsystemPickables>(true);
         }
 
         public void LinkPortal(ASMPortal portal) {
@@ -149,6 +152,7 @@ namespace Game {
             DynamicArray<ComponentBody> foundBodies = new DynamicArray<ComponentBody>();
             m_subsystemBodies.FindBodiesInArea((p1 - up).XZ, (p3 + up).XZ, foundBodies);
             List<Projectile> foundProjectiles = FindProjectiles();
+            List<Pickable> foundPickables = FindPickables();
 
             //实体
             foreach (var foundBody in foundBodies) {
@@ -212,6 +216,36 @@ namespace Game {
                     m_needTeleportProjectiles[needTeleportProjectile] = projectilePosition;
                 }
             }
+
+            //掉落物
+            foreach (var foundPickable in foundPickables) {
+                if (!m_needTeleportPickables.ContainsKey(foundPickable)) m_needTeleportPickables.Add(foundPickable, foundPickable.Position);//待传送的实体里不包含检测到的实体，则作为新实体加入
+            }
+            for (int i = 0; i < m_needTeleportPickables.Keys.Count; i++) {
+                Pickable needTeleportPickable = m_needTeleportPickables.Keys.ToList()[i];
+                if (!foundPickables.Contains(needTeleportPickable)) {
+                    m_needTeleportPickables.Remove(needTeleportPickable);
+                    continue;
+                }
+                //传送逻辑
+                Vector3 pickablePosition = needTeleportPickable.Position;
+                Vector3 oldPickablePosition = m_needTeleportPickables[needTeleportPickable];
+                if (oldPickablePosition != pickablePosition) {
+                    Vector3 offsetFromPortal = pickablePosition - portalCenter;
+                    Vector3 oldOffsetFromPortal = oldPickablePosition - portalCenter;
+                    int portalSide = Math.Sign(Vector3.Dot(offsetFromPortal, up));//当前帧实体所在传送门的哪一边
+                    int oldPortalSide = Math.Sign(Vector3.Dot(oldOffsetFromPortal, up));//上一帧在传送门的哪一边
+                    if (portalSide != oldPortalSide) {//玩家穿过了传送门, 执行传送逻辑
+                        Matrix pickableMatrix = Matrix.CreateTranslation(needTeleportPickable.Position);
+                        Matrix pickableToPortal1 = pickableMatrix * portal1Trans.Invert();
+                        Matrix pickableMatrix2 = pickableToPortal1 * portal2Trans;
+                        pickableMatrix2.Decompose(out _, out _, out Vector3 position);
+                        needTeleportPickable.Position = position;
+                        needTeleportPickable.Velocity = Vector3.Transform(needTeleportPickable.Velocity, (portal1Trans.Invert() * portal2Trans).OrientationMatrix);
+                    }
+                    m_needTeleportPickables[needTeleportPickable] = pickablePosition;
+                }
+            }
         }
 
         public void Dispose() {
@@ -266,6 +300,25 @@ namespace Game {
                 }
             }
             return projectiles;
+        }
+
+        public List<Pickable> FindPickables() {
+            List<Pickable> pickables = new List<Pickable>();
+            CalcBoundaries(out Vector3 p1, out Vector3 p2, out Vector3 p3, out Vector3 p4, out Vector3 center);
+            Vector3 normal = Vector3.Cross(p2 - p1, p4 - p1);
+            foreach (var pickable in m_subsystemPickables.Pickables) {
+                if (IsInPortalField(
+                        p1,
+                        p2,
+                        p3,
+                        p4,
+                        pickable.Position
+                    )
+                    && Vector3.Distance(pickable.Position, center) < normal.Length()) {
+                    pickables.Add(pickable);
+                }
+            }
+            return pickables;
         }
     }
 }
