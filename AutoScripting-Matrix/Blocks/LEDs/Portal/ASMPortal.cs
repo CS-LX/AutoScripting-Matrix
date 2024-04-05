@@ -139,7 +139,7 @@ namespace Game {
             m_camera.SetViewMatrix(viewMatrix1);
 
             //传送玩家所需
-            CalcBoundaries(out Vector3 p1, out Vector3 p2, out Vector3 p3, out Vector3 p4);//传送门屏幕的四个边界点
+            CalcBoundaries(out Vector3 p1, out Vector3 p2, out Vector3 p3, out Vector3 p4, out Vector3 portalCenter);//传送门屏幕的四个边界点以及一个中心点
             Vector3 right = (p2 - p1).Normalize();
             Vector3 forward = (p4 - p1).Normalize();
             Vector3 up = Vector3.Cross(right, forward).Normalize();//传送门屏幕的坐标系
@@ -149,11 +149,26 @@ namespace Game {
                 Vector3 bodyPosition = foundBody.Position + foundBody.BoundingBox.Size().Y / 2 * Vector3.UnitY;
                 if (!m_needTeleportBodies.ContainsKey(foundBody) && IsInPortalField(p1, p2, p3, p4, bodyPosition)) m_needTeleportBodies.Add(foundBody, bodyPosition);//待传送的实体里不包含检测到的实体，则作为新实体加入
             }
-            foreach (var needTeleportBody in m_needTeleportBodies.Keys) {
+            for (int i = 0; i < m_needTeleportBodies.Keys.Count; i++) {
+                ComponentBody needTeleportBody = m_needTeleportBodies.Keys.ToList()[i];
                 Vector3 bodyPosition = needTeleportBody.Position + needTeleportBody.BoundingBox.Size().Y / 2 * Vector3.UnitY;
-                if (!foundBodies.Contains(needTeleportBody) || !IsInPortalField(p1, p2, p3, p4, bodyPosition)) m_needTeleportBodies.Remove(needTeleportBody);//待传送的实体内包含多余的实体，则删除
+                if (!foundBodies.Contains(needTeleportBody) || !IsInPortalField(p1, p2, p3, p4, bodyPosition)) {
+                    m_needTeleportBodies.Remove(needTeleportBody); //待传送的实体内包含多余的实体，则删除
+                    continue;
+                }
+                //传送逻辑
+                Vector3 oldBodyPosition = m_needTeleportBodies[needTeleportBody];
+                if (oldBodyPosition != bodyPosition) {
+                    Vector3 offsetFromPortal = bodyPosition - portalCenter;
+                    Vector3 oldOffsetFromPortal = oldBodyPosition - portalCenter;
+                    int portalSide = Math.Sign(Vector3.Dot(offsetFromPortal, up));//当前帧实体所在传送门的哪一边
+                    int oldPortalSide = Math.Sign(Vector3.Dot(oldOffsetFromPortal, up));//上一帧在传送门的哪一边
+                    if (portalSide != oldPortalSide) {//玩家穿过了传送门, 执行传送逻辑
+                        needTeleportBody.Velocity = Vector3.Zero;
+                    }
+                    m_needTeleportBodies[needTeleportBody] = bodyPosition;
+                }
             }
-            Console.WriteLine(m_needTeleportBodies.Count);
         }
 
         public void Dispose() {
@@ -171,11 +186,12 @@ namespace Game {
             return frustum.Intersection(p1) || frustum.Intersection(p2) || frustum.Intersection(p3) || frustum.Intersection(p4);
         }
 
-        public void CalcBoundaries(out Vector3 p1, out Vector3 p2, out Vector3 p3, out Vector3 p4) {
+        public void CalcBoundaries(out Vector3 p1, out Vector3 p2, out Vector3 p3, out Vector3 p4, out Vector3 center) {
             p1 = Vector3.Transform(new Vector3(-0.5f, 0, -0.5f), m_transformMatrix);
             p2 = Vector3.Transform(new Vector3(0.5f, 0, -0.5f), m_transformMatrix);
             p3 = Vector3.Transform(new Vector3(0.5f, 0, 0.5f), m_transformMatrix);
             p4 = Vector3.Transform(new Vector3(-0.5f, 0, 0.5f), m_transformMatrix);
+            center = Vector3.Transform(new Vector3(0, 0, 0), m_transformMatrix);
         }
 
         public bool IsInPortalField(Vector3 a, Vector3 b, Vector3 c, Vector3 d, Vector3 p) {
