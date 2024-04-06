@@ -157,12 +157,29 @@ namespace Game {
             //实体
             foreach (var foundBody in foundBodies) {
                 Vector3 bodyPosition = foundBody.Position + foundBody.BoundingBox.Size().Y / 2 * Vector3.UnitY;
-                if (!m_needTeleportBodies.ContainsKey(foundBody) && IsInPortalField(p1, p2, p3, p4, bodyPosition)) m_needTeleportBodies.Add(foundBody, bodyPosition);//待传送的实体里不包含检测到的实体，则作为新实体加入
+                if (!m_needTeleportBodies.ContainsKey(foundBody)
+                    && IsInPortalField(
+                        p1,
+                        p2,
+                        p3,
+                        p4,
+                        0.5f,
+                        bodyPosition
+                    ))
+                    m_needTeleportBodies.Add(foundBody, bodyPosition); //待传送的实体里不包含检测到的实体，则作为新实体加入
             }
             for (int i = 0; i < m_needTeleportBodies.Keys.Count; i++) {
                 ComponentBody needTeleportBody = m_needTeleportBodies.Keys.ToList()[i];
                 Vector3 bodyPosition = needTeleportBody.Position + needTeleportBody.BoundingBox.Size().Y / 2 * Vector3.UnitY;
-                if (!foundBodies.Contains(needTeleportBody) || !IsInPortalField(p1, p2, p3, p4, bodyPosition)) {
+                if (!foundBodies.Contains(needTeleportBody)
+                    || !IsInPortalField(
+                        p1,
+                        p2,
+                        p3,
+                        p4,
+                        0.5f,
+                        bodyPosition
+                    )) {
                     m_needTeleportBodies.Remove(needTeleportBody); //待传送的实体内包含多余的实体，则删除
                     continue;
                 }
@@ -283,10 +300,11 @@ namespace Game {
             center = Vector3.Transform(new Vector3(0, 0, 0), m_transformMatrix);
         }
 
-        public bool IsInPortalField(Vector3 a, Vector3 b, Vector3 c, Vector3 d, Vector3 p) {
+        public bool IsInPortalField(Vector3 a, Vector3 b, Vector3 c, Vector3 d, float depth, Vector3 p) {
             Vector3 normal = Vector3.Cross(b - a, d - a);
             float distance = Vector3.Dot(p - a, normal) / normal.Length();
             if (float.IsNaN(distance)) return false;
+            if (MathUtils.Abs(distance) > depth) return false;//检测区域的深度
             Vector3 projP = p - normal * distance;
             float factor1 = Vector3.Dot(normal, Vector3.Cross(b - projP, c - projP));
             float factor2 = Vector3.Dot(normal, Vector3.Cross(c - projP, d - projP));
@@ -305,6 +323,7 @@ namespace Game {
                         p2,
                         p3,
                         p4,
+                        0.5f,
                         projectile.Position
                     )
                     && Vector3.Distance(projectile.Position, center) < normal.Length()) {
@@ -324,6 +343,7 @@ namespace Game {
                         p2,
                         p3,
                         p4,
+                        0.5f,
                         pickable.Position
                     )
                     && Vector3.Distance(pickable.Position, center) < normal.Length()) {
