@@ -40,6 +40,10 @@ namespace Game {
 
         public ASMPortal m_portal2;
 
+        public bool m_portal1Visible;
+
+        public bool m_portal2Visible;
+
         public Vector3 m_cam1Translation;
 
         public Vector3 m_cam2Translation;
@@ -100,7 +104,6 @@ namespace Game {
                         m_componentPlayer
                     );
                 }
-                m_portal1.SetTransformMatrix(portal1Trans);
 
                 if (m_portal2 == null) {
                     Matrix playerCamToPortal1 = playerView * portal1Trans.Invert(); //传送门1为参考系，玩家视角的变换矩阵
@@ -119,13 +122,17 @@ namespace Game {
                         m_componentPlayer
                     );
                 }
-                m_portal2.SetTransformMatrix(portal2Trans);
 
-                //链接俩传送门
+                UpdateControl();
+
                 m_portal1.LinkPortal(m_portal2);
-                m_portal2.LinkPortal(m_portal1);
-
+                m_portal1.m_teleportEnable = m_portal1Visible;
+                m_portal1.SetTransformMatrix(portal1Trans);
                 m_portal1.Update(dt);
+
+                m_portal2.LinkPortal(m_portal1);
+                m_portal2.m_teleportEnable = m_portal2Visible;
+                m_portal2.SetTransformMatrix(portal2Trans);
                 m_portal2.Update(dt);
 
                 if (m_subsystemTerrain.TerrainRenderer.m_chunksToDraw.Count > 0) {
@@ -141,9 +148,14 @@ namespace Game {
                 || m_portal2 == null
                 || m_portalElectricElement == null)
                 return;
-            m_portal1.DrawPortal(m_primitivesRenderer, camera);
-            m_portal2.DrawPortal(m_primitivesRenderer, camera);
+            if(m_portal1Visible) m_portal1.DrawPortal(m_primitivesRenderer, camera);
+            if(m_portal2Visible) m_portal2.DrawPortal(m_primitivesRenderer, camera);
             m_primitivesRenderer.Flush(camera.ViewProjectionMatrix);
+        }
+
+        public void UpdateControl() {
+            m_portal1Visible = m_portalElectricElement.GetControl1().M11 > 0;
+            m_portal2Visible = m_portalElectricElement.GetControl2().M11 > 0;
         }
 
         public ComponentPlayer FindInteractingPlayer() {

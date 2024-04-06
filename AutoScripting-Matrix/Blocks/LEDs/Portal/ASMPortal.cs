@@ -13,6 +13,7 @@ namespace Game {
         public ComponentASMPortal m_controller;
         public ComponentPlayer m_player;
         public int m_screenUVSubdivision;
+        public bool m_teleportEnable = true;
 
         public readonly Project Project;
 
@@ -144,6 +145,12 @@ namespace Game {
             m_camera.SetViewMatrix(viewMatrix1);
             m_camera.m_projectionMatrix = m_player.GameWidget.ActiveCamera.ProjectionMatrix;
 
+            if(m_teleportEnable) UpdateTeleport(dt);
+        }
+
+        public void UpdateTeleport(float dt) {
+            Matrix portal1Trans = TransformMatrixWithoutScale;
+            Matrix portal2Trans = LinkedPortal.TransformMatrixWithoutScale;
             //传送玩家所需
             CalcBoundaries(out Vector3 p1, out Vector3 p2, out Vector3 p3, out Vector3 p4, out Vector3 portalCenter);//传送门屏幕的四个边界点以及一个中心点
             Vector3 right = (p2 - p1).Normalize();
