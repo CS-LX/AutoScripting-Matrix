@@ -84,8 +84,7 @@ namespace Game {
 
         public void DrawPortal(PrimitivesRenderer3D primitivesRenderer3D, Camera camera) {
             if (LinkedPortal == null) return;
-            if (camera == m_camera
-                || camera == LinkedPortal.m_camera)
+            if (camera == m_camera)
                 return;
             //传送门1
             for (int i = 0; i < m_screenUVSubdivision; i++) {
