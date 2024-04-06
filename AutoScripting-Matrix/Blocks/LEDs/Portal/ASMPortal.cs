@@ -179,8 +179,12 @@ namespace Game {
                         needTeleportBody.Position = position;
                         needTeleportBody.Rotation = rotation;
                         needTeleportBody.Velocity = Vector3.Transform(needTeleportBody.Velocity, (portal1Trans.Invert() * portal2Trans).OrientationMatrix);
+                        m_needTeleportBodies.Remove(needTeleportBody);
+                        i--;
                     }
-                    m_needTeleportBodies[needTeleportBody] = bodyPosition;
+                    else {
+                        m_needTeleportBodies[needTeleportBody] = bodyPosition;
+                    }
                 }
             }
 
@@ -211,8 +215,12 @@ namespace Game {
                         needTeleportProjectile.Rotation = projectileMatrix2.ToYawPitchRoll();
                         needTeleportProjectile.Velocity = Vector3.Transform(needTeleportProjectile.Velocity, (portal1Trans.Invert() * portal2Trans).OrientationMatrix);
                         needTeleportProjectile.AngularVelocity = Vector3.Transform(needTeleportProjectile.AngularVelocity, (portal1Trans.Invert() * portal2Trans).OrientationMatrix);
+                        m_needTeleportProjectiles.Remove(needTeleportProjectile);
+                        i--;
                     }
-                    m_needTeleportProjectiles[needTeleportProjectile] = projectilePosition;
+                    else {
+                        m_needTeleportProjectiles[needTeleportProjectile] = projectilePosition;
+                    }
                 }
             }
 
@@ -241,8 +249,12 @@ namespace Game {
                         pickableMatrix2.Decompose(out _, out _, out Vector3 position);
                         needTeleportPickable.Position = position;
                         needTeleportPickable.Velocity = Vector3.Transform(needTeleportPickable.Velocity, (portal1Trans.Invert() * portal2Trans).OrientationMatrix);
+                        m_needTeleportPickables.Remove(needTeleportPickable);
+                        i--;
                     }
-                    m_needTeleportPickables[needTeleportPickable] = pickablePosition;
+                    else {
+                        m_needTeleportPickables[needTeleportPickable] = pickablePosition;
+                    }
                 }
             }
         }
