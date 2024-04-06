@@ -142,6 +142,7 @@ namespace Game {
             Matrix playerCamToPortal2 = playerView * portal2Trans.Invert();
             Matrix viewMatrix1 = playerCamToPortal2 * portal1Trans;
             m_camera.SetViewMatrix(viewMatrix1);
+            m_camera.m_projectionMatrix = m_player.GameWidget.ActiveCamera.ProjectionMatrix;
 
             //传送玩家所需
             CalcBoundaries(out Vector3 p1, out Vector3 p2, out Vector3 p3, out Vector3 p4, out Vector3 portalCenter);//传送门屏幕的四个边界点以及一个中心点
