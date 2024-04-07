@@ -40,10 +40,6 @@ namespace Game {
 
         public ASMPortal m_portal2;
 
-        public bool m_portal1Visible;
-
-        public bool m_portal2Visible;
-
         public Vector3 m_cam1Translation;
 
         public Vector3 m_cam2Translation;
@@ -126,12 +122,10 @@ namespace Game {
                 UpdateControl();
 
                 m_portal1.LinkPortal(m_portal2);
-                m_portal1.m_teleportEnable = m_portal1Visible;
                 m_portal1.SetTransformMatrix(portal1Trans);
                 m_portal1.Update(dt);
 
                 m_portal2.LinkPortal(m_portal1);
-                m_portal2.m_teleportEnable = m_portal2Visible;
                 m_portal2.SetTransformMatrix(portal2Trans);
                 m_portal2.Update(dt);
 
@@ -148,14 +142,53 @@ namespace Game {
                 || m_portal2 == null
                 || m_portalElectricElement == null)
                 return;
-            if(m_portal1Visible) m_portal1.DrawPortal(m_primitivesRenderer, camera);
-            if(m_portal2Visible) m_portal2.DrawPortal(m_primitivesRenderer, camera);
+            m_portal1.DrawPortal(m_primitivesRenderer, camera);
+            m_portal2.DrawPortal(m_primitivesRenderer, camera);
             m_primitivesRenderer.Flush(camera.ViewProjectionMatrix);
         }
 
         public void UpdateControl() {
-            m_portal1Visible = m_portalElectricElement.GetControl1().M11 > 0;
-            m_portal2Visible = m_portalElectricElement.GetControl2().M11 > 0;
+            int M11_1 = (int)MathUtils.Floor(m_portalElectricElement.GetControl1().M11);
+            int M11_2 = (int)MathUtils.Floor(m_portalElectricElement.GetControl2().M11);
+            switch (M11_1) {
+                case 0:
+                    m_portal1.m_visible = false;
+                    m_portal1.m_teleportEnable = false;
+                    break;
+                case 1:
+                    m_portal1.m_visible = true;
+                    m_portal1.m_teleportEnable = true;
+                    break;
+                case 2:
+                    m_portal1.m_visible = true;
+                    m_portal1.m_teleportEnable = false;
+                    break;
+                case 3:
+                    m_portal1.m_visible = false;
+                    m_portal1.m_teleportEnable = true;
+                    break;
+            }
+            switch (M11_2) {
+                case 0:
+                    m_portal2.m_visible = false;
+                    m_portal2.m_teleportEnable = false;
+                    break;
+                case 1:
+                    m_portal2.m_visible = true;
+                    m_portal2.m_teleportEnable = true;
+                    break;
+                case 2:
+                    m_portal2.m_visible = true;
+                    m_portal2.m_teleportEnable = false;
+                    break;
+                case 3:
+                    m_portal2.m_visible = false;
+                    m_portal2.m_teleportEnable = true;
+                    break;
+            }
+
+            m_portal1.m_autoAntiClipping = m_portalElectricElement.GetControl1().M12 > 0;
+            m_portal2.m_autoAntiClipping = m_portalElectricElement.GetControl2().M12 > 0;
         }
 
         public ComponentPlayer FindInteractingPlayer() {

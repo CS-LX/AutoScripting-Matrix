@@ -12,8 +12,11 @@ namespace Game {
         public Vector3 m_lastViewTranslation;
         public ComponentASMPortal m_controller;
         public ComponentPlayer m_player;
+
         public int m_screenUVSubdivision;
         public bool m_teleportEnable = true;
+        public bool m_visible = true;
+        public bool m_autoAntiClipping = true;//自动防止闪烁
         public float m_offsetY = 0;
 
         public readonly Project Project;
@@ -88,7 +91,7 @@ namespace Game {
             if (LinkedPortal == null) return;
             if (camera == m_camera)
                 return;
-            DrawScreen(primitivesRenderer3D, camera);
+            if(m_visible) DrawScreen(primitivesRenderer3D, camera);
             //传送逻辑
             if(m_teleportEnable) UpdateTeleport();
             UpdateOffsetY();
@@ -246,8 +249,9 @@ namespace Game {
         }
 
         public void UpdateOffsetY() {
-                         //计算玩家摄像机裁剪矩形到传送门屏幕的距离，根据距离偏移传送门防止视角露馅
+            //计算玩家摄像机裁剪矩形到传送门屏幕的距离，根据距离偏移传送门防止视角露馅
             m_offsetY = 0;
+            if(!m_autoAntiClipping) return;
             CalcBoundaries(out Vector3 p1, out Vector3 p2, out Vector3 p3, out Vector3 p4, out Vector3 portalCenter);
             if (IsInPortalField(
                     p1,
