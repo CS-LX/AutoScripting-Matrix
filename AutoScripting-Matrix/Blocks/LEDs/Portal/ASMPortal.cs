@@ -14,6 +14,7 @@ namespace Game {
         public ComponentPlayer m_player;
         public int m_screenUVSubdivision;
         public bool m_teleportEnable = true;
+        public float m_offsetY = 0;
 
         public readonly Project Project;
 
@@ -87,14 +88,16 @@ namespace Game {
             if (LinkedPortal == null) return;
             if (camera == m_camera)
                 return;
+            //传送逻辑
+            if(m_teleportEnable) UpdateTeleport();
             //传送门1
             for (int i = 0; i < m_screenUVSubdivision; i++) {
                 for (int j = 0; j < m_screenUVSubdivision; j++) {
                     float length = 1 / (float)m_screenUVSubdivision;
-                    Vector3 wp1 = Vector3.Transform(new Vector3(length * i - 0.5f, 0, length * j - 0.5f), m_transformMatrix);
-                    Vector3 wp2 = Vector3.Transform(new Vector3(length * (i + 1) - 0.5f, 0, length * j - 0.5f), m_transformMatrix);
-                    Vector3 wp3 = Vector3.Transform(new Vector3(length * (i + 1) - 0.5f, 0, length * (j + 1) - 0.5f), m_transformMatrix);
-                    Vector3 wp4 = Vector3.Transform(new Vector3(length * i - 0.5f, 0, length * (j + 1) - 0.5f), m_transformMatrix);
+                    Vector3 wp1 = Vector3.Transform(new Vector3(length * i - 0.5f, m_offsetY, length * j - 0.5f), m_transformMatrix);
+                    Vector3 wp2 = Vector3.Transform(new Vector3(length * (i + 1) - 0.5f, m_offsetY, length * j - 0.5f), m_transformMatrix);
+                    Vector3 wp3 = Vector3.Transform(new Vector3(length * (i + 1) - 0.5f, m_offsetY, length * (j + 1) - 0.5f), m_transformMatrix);
+                    Vector3 wp4 = Vector3.Transform(new Vector3(length * i - 0.5f, m_offsetY, length * (j + 1) - 0.5f), m_transformMatrix);
                     if (!IsInPlayerFrustum(camera, wp1, wp2, wp3, wp4)) continue;
                     Vector3 sp1 = camera.WorldToScreen(wp1, Matrix.Identity);
                     Vector3 sp2 = camera.WorldToScreen(wp2, Matrix.Identity);
@@ -130,6 +133,41 @@ namespace Game {
                         );
                 }
             }
+
+             //计算玩家摄像机裁剪矩形到传送门屏幕的距离，根据距离偏移传送门防止视角露馅
+            m_offsetY = 0;
+            CalcBoundaries(out Vector3 p1, out Vector3 p2, out Vector3 p3, out Vector3 p4, out Vector3 portalCenter);
+            if (IsInPortalField(
+                    p1,
+                    p2,
+                    p3,
+                    p4,
+                    0.5f,
+                    m_player.GameWidget.ActiveCamera.ViewMatrix.Invert().Translation
+                )) {
+                Vector3 portalNormal = Vector3.Cross(p2 - p1, p4 - p1).Normalize();//传送门屏幕法向量
+                BoundingFrustum playerCamFrustum = m_player.GameWidget.ActiveCamera.ViewFrustum;
+                Vector3[] frustumCorners = playerCamFrustum.FindCorners();
+                Vector3 playerCamTrans = m_player.GameWidget.ActiveCamera.ViewMatrix.Invert().Translation;
+                Vector3 playerCamBottom0 = frustumCorners[0];
+                Vector3 playerCamBottom1 = frustumCorners[1];
+                Vector3 playerCamBottom2 = frustumCorners[2];
+                Vector3 playerCamBottom3 = frustumCorners[3];
+                int camViewSide = (int)MathUtils.Sign(Vector3.Dot((playerCamTrans - portalCenter), portalNormal));
+                int camBottom1Side = (int)MathUtils.Sign(Vector3.Dot((playerCamBottom0 - portalCenter), portalNormal));
+                int camBottom2Side = (int)MathUtils.Sign(Vector3.Dot((playerCamBottom1 - portalCenter), portalNormal));
+                int camBottom3Side = (int)MathUtils.Sign(Vector3.Dot((playerCamBottom2 - portalCenter), portalNormal));
+                int camBottom4Side = (int)MathUtils.Sign(Vector3.Dot((playerCamBottom3 - portalCenter), portalNormal));
+                float camB1ToPortalL = CalcPointToPlaneDistance(p1, p2, p3, p4, playerCamBottom0) * camViewSide;
+                float camB2ToPortalL = CalcPointToPlaneDistance(p1, p2, p3, p4, playerCamBottom1) * camViewSide;
+                float camB3ToPortalL = CalcPointToPlaneDistance(p1, p2, p3, p4, playerCamBottom2) * camViewSide;
+                float camB4ToPortalL = CalcPointToPlaneDistance(p1, p2, p3, p4, playerCamBottom3) * camViewSide;
+                Vector3 camBCenter = (playerCamBottom0 + playerCamBottom1 + playerCamBottom2 + playerCamBottom3) / 4;
+                if (camBottom1Side != camViewSide || camBottom2Side != camViewSide || camBottom3Side != camViewSide || camBottom4Side != camViewSide) {//如果不等于，则表明摄像机近裁剪平面已经穿过传送门而摄像机根部未穿过
+                    m_offsetY = -camViewSide * (MathUtils.Min(camB1ToPortalL, camB2ToPortalL, camB3ToPortalL, camB4ToPortalL) - (playerCamTrans - camBCenter).Length());
+                }
+            }
+            Console.WriteLine(m_offsetY);
         }
 
         public void Update(float dt) {
@@ -144,11 +182,9 @@ namespace Game {
             Matrix viewMatrix1 = playerCamToPortal2 * portal1Trans;
             m_camera.SetViewMatrix(viewMatrix1);
             m_camera.m_projectionMatrix = m_player.GameWidget.ActiveCamera.ProjectionMatrix;
-
-            if(m_teleportEnable) UpdateTeleport(dt);
         }
 
-        public void UpdateTeleport(float dt) {
+        public void UpdateTeleport() {
             Matrix portal1Trans = TransformMatrixWithoutScale;
             Matrix portal2Trans = LinkedPortal.TransformMatrixWithoutScale;
             //传送玩家所需
@@ -305,6 +341,12 @@ namespace Game {
             p3 = Vector3.Transform(new Vector3(0.5f, 0, 0.5f), m_transformMatrix);
             p4 = Vector3.Transform(new Vector3(-0.5f, 0, 0.5f), m_transformMatrix);
             center = Vector3.Transform(new Vector3(0, 0, 0), m_transformMatrix);
+        }
+
+        public float CalcPointToPlaneDistance(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4, Vector3 p) {
+            Vector3 normal = Vector3.Cross(p2 - p1, p4 - p1);
+            float distance = Vector3.Dot(p - p1, normal) / normal.Length();
+            return distance;
         }
 
         public bool IsInPortalField(Vector3 a, Vector3 b, Vector3 c, Vector3 d, float depth, Vector3 p) {
