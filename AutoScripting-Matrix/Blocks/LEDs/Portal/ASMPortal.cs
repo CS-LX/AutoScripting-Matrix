@@ -270,18 +270,30 @@ namespace Game {
                 Vector3 playerCamBottom2 = frustumCorners[2];
                 Vector3 playerCamBottom3 = frustumCorners[3];
                 int camViewSide = (int)MathUtils.Sign(Vector3.Dot((playerCamTrans - portalCenter), portalNormal));
+                int playerSide = (int)MathUtils.Sign(Vector3.Dot((m_player.ComponentBody.Position - portalCenter), portalNormal));
                 int camBottom1Side = (int)MathUtils.Sign(Vector3.Dot((playerCamBottom0 - portalCenter), portalNormal));
                 int camBottom2Side = (int)MathUtils.Sign(Vector3.Dot((playerCamBottom1 - portalCenter), portalNormal));
                 int camBottom3Side = (int)MathUtils.Sign(Vector3.Dot((playerCamBottom2 - portalCenter), portalNormal));
                 int camBottom4Side = (int)MathUtils.Sign(Vector3.Dot((playerCamBottom3 - portalCenter), portalNormal));
-                float camB1ToPortalL = CalcPointToPlaneDistance(p1, p2, p3, p4, playerCamBottom0) * camViewSide;
-                float camB2ToPortalL = CalcPointToPlaneDistance(p1, p2, p3, p4, playerCamBottom1) * camViewSide;
-                float camB3ToPortalL = CalcPointToPlaneDistance(p1, p2, p3, p4, playerCamBottom2) * camViewSide;
-                float camB4ToPortalL = CalcPointToPlaneDistance(p1, p2, p3, p4, playerCamBottom3) * camViewSide;
                 Vector3 camBCenter = (playerCamBottom0 + playerCamBottom1 + playerCamBottom2 + playerCamBottom3) / 4;
                 float velocityToNormal = MathUtils.Abs(Vector3.Dot(m_player.ComponentBody.Velocity, portalNormal));//速度投影在法向量上的值
-                if (camBottom1Side != camViewSide || camBottom2Side != camViewSide || camBottom3Side != camViewSide || camBottom4Side != camViewSide) {//如果不等于，则表明摄像机近裁剪平面已经穿过传送门而摄像机根部未穿过
-                    m_offsetY = -camViewSide * (MathUtils.Min(camB1ToPortalL, camB2ToPortalL, camB3ToPortalL, camB4ToPortalL) - (playerCamTrans - camBCenter).Length());
+                if (m_player.ComponentBody.TargetCrouchFactor <= 0) {
+                    float camB1ToPortalL = CalcPointToPlaneDistance(p1, p2, p3, p4, playerCamBottom0) * camViewSide;
+                    float camB2ToPortalL = CalcPointToPlaneDistance(p1, p2, p3, p4, playerCamBottom1) * camViewSide;
+                    float camB3ToPortalL = CalcPointToPlaneDistance(p1, p2, p3, p4, playerCamBottom2) * camViewSide;
+                    float camB4ToPortalL = CalcPointToPlaneDistance(p1, p2, p3, p4, playerCamBottom3) * camViewSide;
+                    if (camBottom1Side != camViewSide || camBottom2Side != camViewSide || camBottom3Side != camViewSide || camBottom4Side != camViewSide) {//如果不等于，则表明摄像机近裁剪平面已经穿过传送门而摄像机根部未穿过
+                        m_offsetY = -camViewSide * (MathUtils.Min(camB1ToPortalL, camB2ToPortalL, camB3ToPortalL, camB4ToPortalL) - (playerCamTrans - camBCenter).Length());
+                    }
+                }
+                else {
+                    float camB1ToPortalL = CalcPointToPlaneDistance(p1, p2, p3, p4, playerCamBottom0) * playerSide;
+                    float camB2ToPortalL = CalcPointToPlaneDistance(p1, p2, p3, p4, playerCamBottom1) * playerSide;
+                    float camB3ToPortalL = CalcPointToPlaneDistance(p1, p2, p3, p4, playerCamBottom2) * playerSide;
+                    float camB4ToPortalL = CalcPointToPlaneDistance(p1, p2, p3, p4, playerCamBottom3) * playerSide;
+                    if (camBottom1Side != playerSide || camBottom2Side != playerSide || camBottom3Side != playerSide || camBottom4Side != playerSide) {//如果不等于，则表明摄像机近裁剪平面已经穿过传送门而摄像机根部未穿过
+                        m_offsetY = -playerSide * (MathUtils.Min(camB1ToPortalL, camB2ToPortalL, camB3ToPortalL, camB4ToPortalL) - (playerCamTrans - camBCenter).Length());
+                    }
                 }
             }
         }
