@@ -88,86 +88,10 @@ namespace Game {
             if (LinkedPortal == null) return;
             if (camera == m_camera)
                 return;
+            DrawScreen(primitivesRenderer3D, camera);
             //传送逻辑
             if(m_teleportEnable) UpdateTeleport();
-            //传送门1
-            for (int i = 0; i < m_screenUVSubdivision; i++) {
-                for (int j = 0; j < m_screenUVSubdivision; j++) {
-                    float length = 1 / (float)m_screenUVSubdivision;
-                    Vector3 wp1 = Vector3.Transform(new Vector3(length * i - 0.5f, m_offsetY, length * j - 0.5f), m_transformMatrix);
-                    Vector3 wp2 = Vector3.Transform(new Vector3(length * (i + 1) - 0.5f, m_offsetY, length * j - 0.5f), m_transformMatrix);
-                    Vector3 wp3 = Vector3.Transform(new Vector3(length * (i + 1) - 0.5f, m_offsetY, length * (j + 1) - 0.5f), m_transformMatrix);
-                    Vector3 wp4 = Vector3.Transform(new Vector3(length * i - 0.5f, m_offsetY, length * (j + 1) - 0.5f), m_transformMatrix);
-                    if (!IsInPlayerFrustum(camera, wp1, wp2, wp3, wp4)) continue;
-                    Vector3 sp1 = camera.WorldToScreen(wp1, Matrix.Identity);
-                    Vector3 sp2 = camera.WorldToScreen(wp2, Matrix.Identity);
-                    Vector3 sp3 = camera.WorldToScreen(wp3, Matrix.Identity);
-                    Vector3 sp4 = camera.WorldToScreen(wp4, Matrix.Identity);
-                    Vector2 sp11 = new Vector2(sp1.X, sp1.Y);
-                    Vector2 sp21 = new Vector2(sp2.X, sp2.Y);
-                    Vector2 sp31 = new Vector2(sp3.X, sp3.Y);
-                    Vector2 sp41 = new Vector2(sp4.X, sp4.Y);
-                    sp11 = new Vector2(sp11.X / camera.ViewportSize.X, sp11.Y / camera.ViewportSize.Y);
-                    sp21 = new Vector2(sp21.X / camera.ViewportSize.X, sp21.Y / camera.ViewportSize.Y);
-                    sp31 = new Vector2(sp31.X / camera.ViewportSize.X, sp31.Y / camera.ViewportSize.Y);
-                    sp41 = new Vector2(sp41.X / camera.ViewportSize.X, sp41.Y / camera.ViewportSize.Y);
-                    primitivesRenderer3D.TexturedBatch(
-                            LinkedPortal.m_camera.ViewTexture, //传送门1显示传送门2对应的摄像机的画面
-                            useAlphaTest: true,
-                            0,
-                            null,
-                            RasterizerState.CullNone,
-                            null,
-                            SamplerState.LinearWrap
-                        )
-                        .QueueQuad(
-                            wp1,
-                            wp2,
-                            wp3,
-                            wp4,
-                            sp11,
-                            sp21,
-                            sp31,
-                            sp41,
-                            Color.White
-                        );
-                }
-            }
-
-             //计算玩家摄像机裁剪矩形到传送门屏幕的距离，根据距离偏移传送门防止视角露馅
-            m_offsetY = 0;
-            CalcBoundaries(out Vector3 p1, out Vector3 p2, out Vector3 p3, out Vector3 p4, out Vector3 portalCenter);
-            if (IsInPortalField(
-                    p1,
-                    p2,
-                    p3,
-                    p4,
-                    0.5f,
-                    m_player.GameWidget.ActiveCamera.ViewMatrix.Invert().Translation
-                )) {
-                Vector3 portalNormal = Vector3.Cross(p2 - p1, p4 - p1).Normalize();//传送门屏幕法向量
-                BoundingFrustum playerCamFrustum = m_player.GameWidget.ActiveCamera.ViewFrustum;
-                Vector3[] frustumCorners = playerCamFrustum.FindCorners();
-                Vector3 playerCamTrans = m_player.GameWidget.ActiveCamera.ViewMatrix.Invert().Translation;
-                Vector3 playerCamBottom0 = frustumCorners[0];
-                Vector3 playerCamBottom1 = frustumCorners[1];
-                Vector3 playerCamBottom2 = frustumCorners[2];
-                Vector3 playerCamBottom3 = frustumCorners[3];
-                int camViewSide = (int)MathUtils.Sign(Vector3.Dot((playerCamTrans - portalCenter), portalNormal));
-                int camBottom1Side = (int)MathUtils.Sign(Vector3.Dot((playerCamBottom0 - portalCenter), portalNormal));
-                int camBottom2Side = (int)MathUtils.Sign(Vector3.Dot((playerCamBottom1 - portalCenter), portalNormal));
-                int camBottom3Side = (int)MathUtils.Sign(Vector3.Dot((playerCamBottom2 - portalCenter), portalNormal));
-                int camBottom4Side = (int)MathUtils.Sign(Vector3.Dot((playerCamBottom3 - portalCenter), portalNormal));
-                float camB1ToPortalL = CalcPointToPlaneDistance(p1, p2, p3, p4, playerCamBottom0) * camViewSide;
-                float camB2ToPortalL = CalcPointToPlaneDistance(p1, p2, p3, p4, playerCamBottom1) * camViewSide;
-                float camB3ToPortalL = CalcPointToPlaneDistance(p1, p2, p3, p4, playerCamBottom2) * camViewSide;
-                float camB4ToPortalL = CalcPointToPlaneDistance(p1, p2, p3, p4, playerCamBottom3) * camViewSide;
-                Vector3 camBCenter = (playerCamBottom0 + playerCamBottom1 + playerCamBottom2 + playerCamBottom3) / 4;
-                if (camBottom1Side != camViewSide || camBottom2Side != camViewSide || camBottom3Side != camViewSide || camBottom4Side != camViewSide) {//如果不等于，则表明摄像机近裁剪平面已经穿过传送门而摄像机根部未穿过
-                    m_offsetY = -camViewSide * (MathUtils.Min(camB1ToPortalL, camB2ToPortalL, camB3ToPortalL, camB4ToPortalL) - (playerCamTrans - camBCenter).Length());
-                }
-            }
-            Console.WriteLine(m_offsetY);
+            UpdateOffsetY();
         }
 
         public void Update(float dt) {
@@ -242,6 +166,7 @@ namespace Game {
                         needTeleportBody.Velocity = Vector3.Transform(needTeleportBody.Velocity, (portal1Trans.Invert() * portal2Trans).OrientationMatrix);
                         m_needTeleportBodies.Remove(needTeleportBody);
                         i--;
+                        LinkedPortal.UpdateOffsetY();
                     }
                     else {
                         m_needTeleportBodies[needTeleportBody] = bodyPosition;
@@ -316,6 +241,89 @@ namespace Game {
                     else {
                         m_needTeleportPickables[needTeleportPickable] = pickablePosition;
                     }
+                }
+            }
+        }
+
+        public void UpdateOffsetY() {
+                         //计算玩家摄像机裁剪矩形到传送门屏幕的距离，根据距离偏移传送门防止视角露馅
+            m_offsetY = 0;
+            CalcBoundaries(out Vector3 p1, out Vector3 p2, out Vector3 p3, out Vector3 p4, out Vector3 portalCenter);
+            if (IsInPortalField(
+                    p1,
+                    p2,
+                    p3,
+                    p4,
+                    0.5f,
+                    m_player.GameWidget.ActiveCamera.ViewMatrix.Invert().Translation
+                )) {
+                Vector3 portalNormal = Vector3.Cross(p2 - p1, p4 - p1).Normalize();//传送门屏幕法向量
+                BoundingFrustum playerCamFrustum = m_player.GameWidget.ActiveCamera.ViewFrustum;
+                Vector3[] frustumCorners = playerCamFrustum.FindCorners();
+                Vector3 playerCamTrans = m_player.GameWidget.ActiveCamera.ViewMatrix.Invert().Translation;
+                Vector3 playerCamBottom0 = frustumCorners[0];
+                Vector3 playerCamBottom1 = frustumCorners[1];
+                Vector3 playerCamBottom2 = frustumCorners[2];
+                Vector3 playerCamBottom3 = frustumCorners[3];
+                int camViewSide = (int)MathUtils.Sign(Vector3.Dot((playerCamTrans - portalCenter), portalNormal));
+                int camBottom1Side = (int)MathUtils.Sign(Vector3.Dot((playerCamBottom0 - portalCenter), portalNormal));
+                int camBottom2Side = (int)MathUtils.Sign(Vector3.Dot((playerCamBottom1 - portalCenter), portalNormal));
+                int camBottom3Side = (int)MathUtils.Sign(Vector3.Dot((playerCamBottom2 - portalCenter), portalNormal));
+                int camBottom4Side = (int)MathUtils.Sign(Vector3.Dot((playerCamBottom3 - portalCenter), portalNormal));
+                float camB1ToPortalL = CalcPointToPlaneDistance(p1, p2, p3, p4, playerCamBottom0) * camViewSide;
+                float camB2ToPortalL = CalcPointToPlaneDistance(p1, p2, p3, p4, playerCamBottom1) * camViewSide;
+                float camB3ToPortalL = CalcPointToPlaneDistance(p1, p2, p3, p4, playerCamBottom2) * camViewSide;
+                float camB4ToPortalL = CalcPointToPlaneDistance(p1, p2, p3, p4, playerCamBottom3) * camViewSide;
+                Vector3 camBCenter = (playerCamBottom0 + playerCamBottom1 + playerCamBottom2 + playerCamBottom3) / 4;
+                float velocityToNormal = MathUtils.Abs(Vector3.Dot(m_player.ComponentBody.Velocity, portalNormal));//速度投影在法向量上的值
+                if (camBottom1Side != camViewSide || camBottom2Side != camViewSide || camBottom3Side != camViewSide || camBottom4Side != camViewSide) {//如果不等于，则表明摄像机近裁剪平面已经穿过传送门而摄像机根部未穿过
+                    m_offsetY = -camViewSide * (MathUtils.Min(camB1ToPortalL, camB2ToPortalL, camB3ToPortalL, camB4ToPortalL) - (playerCamTrans - camBCenter).Length());
+                }
+            }
+        }
+
+        public void DrawScreen(PrimitivesRenderer3D primitivesRenderer3D, Camera camera) {
+                        //传送门1
+            for (int i = 0; i < m_screenUVSubdivision; i++) {
+                for (int j = 0; j < m_screenUVSubdivision; j++) {
+                    float length = 1 / (float)m_screenUVSubdivision;
+                    Vector3 wp1 = Vector3.Transform(new Vector3(length * i - 0.5f, m_offsetY, length * j - 0.5f), m_transformMatrix);
+                    Vector3 wp2 = Vector3.Transform(new Vector3(length * (i + 1) - 0.5f, m_offsetY, length * j - 0.5f), m_transformMatrix);
+                    Vector3 wp3 = Vector3.Transform(new Vector3(length * (i + 1) - 0.5f, m_offsetY, length * (j + 1) - 0.5f), m_transformMatrix);
+                    Vector3 wp4 = Vector3.Transform(new Vector3(length * i - 0.5f, m_offsetY, length * (j + 1) - 0.5f), m_transformMatrix);
+                    if (!IsInPlayerFrustum(camera, wp1, wp2, wp3, wp4)) continue;
+                    Vector3 sp1 = camera.WorldToScreen(wp1, Matrix.Identity);
+                    Vector3 sp2 = camera.WorldToScreen(wp2, Matrix.Identity);
+                    Vector3 sp3 = camera.WorldToScreen(wp3, Matrix.Identity);
+                    Vector3 sp4 = camera.WorldToScreen(wp4, Matrix.Identity);
+                    Vector2 sp11 = new Vector2(sp1.X, sp1.Y);
+                    Vector2 sp21 = new Vector2(sp2.X, sp2.Y);
+                    Vector2 sp31 = new Vector2(sp3.X, sp3.Y);
+                    Vector2 sp41 = new Vector2(sp4.X, sp4.Y);
+                    sp11 = new Vector2(sp11.X / camera.ViewportSize.X, sp11.Y / camera.ViewportSize.Y);
+                    sp21 = new Vector2(sp21.X / camera.ViewportSize.X, sp21.Y / camera.ViewportSize.Y);
+                    sp31 = new Vector2(sp31.X / camera.ViewportSize.X, sp31.Y / camera.ViewportSize.Y);
+                    sp41 = new Vector2(sp41.X / camera.ViewportSize.X, sp41.Y / camera.ViewportSize.Y);
+                    primitivesRenderer3D.TexturedBatch(
+                            LinkedPortal.m_camera.ViewTexture, //传送门1显示传送门2对应的摄像机的画面
+                            useAlphaTest: true,
+                            0,
+                            null,
+                            RasterizerState.CullNone,
+                            null,
+                            SamplerState.LinearWrap
+                        )
+                        .QueueQuad(
+                            wp1,
+                            wp2,
+                            wp3,
+                            wp4,
+                            sp11,
+                            sp21,
+                            sp31,
+                            sp41,
+                            Color.White
+                        );
                 }
             }
         }
