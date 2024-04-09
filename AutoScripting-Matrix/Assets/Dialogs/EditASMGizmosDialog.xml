@@ -1,0 +1,11 @@
+<CanvasWidget xmlns="runtime-namespace:Game" Size="250, 250" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+	<RectangleWidget Name="BackRect"  FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2" />
+	<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="10, 10">
+		<LabelWidget Text="调试辅助绘制控制器"  Color="255, 255, 255" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="0, 5"/>
+		<CanvasWidget Size="0, 40" />
+		<BevelledButtonWidget Name="UnignoreAllButton" Text="显示所有" Style="{Styles/ButtonStyle_160x60}" Margin="40, 0"/>
+		<BevelledButtonWidget Name="IgnoreAllButton" Text="隐藏所有" Style="{Styles/ButtonStyle_160x60}" Margin="40, 0"/>
+	</StackPanelWidget>
+
+</CanvasWidget>
