@@ -20,6 +20,7 @@ namespace Game {
         public SubsystemBlockEntities m_subsystemBlockEntities;
 
         public void Draw(Camera camera, int drawOrder) {
+            if(!(bool)ASMSettingsManager.Get("GizmosEnable")) return;
             foreach (var element in m_subsystemASMElectricity.m_electricElements) {
                 if (element.Key is IASMGizmos elementGizmos) {
                     elementGizmos.GizmosDraw(m_normalBatch);

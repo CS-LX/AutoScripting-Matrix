@@ -15,6 +15,7 @@ namespace Game {
         public static SerializableKeyValuePair[] SettingsItems = [
             new SerializableKeyValuePair("DisplayUpperLeft", false),
             new SerializableKeyValuePair("DisplayBackRect", true),
+            new SerializableKeyValuePair("GizmosEnable", false),
 
             new SerializableKeyValuePair("DisplayConnectorMatrix", false),
             new SerializableKeyValuePair("DisplayConnectorMatrix.DisplayIn", false),
@@ -34,11 +35,11 @@ namespace Game {
                         foreach (var pair in SettingsItems) {
                             if(Settings.ContainsKey(pair.Key)) continue;
                             Settings.Add(pair);
-                            Log.Warning($"[智械-矩阵:设置管理器] 检测到载入的设置未包含项\"{pair.Key}\"，已自动补充缺失的项。");
+                            Log.Warning($"[智械-矩阵:设置管理器] 检测到载入的设置未包含项\"{pair.Key}\"，已自动补充缺失的项");
                         }
                     }
                     catch (Exception e) {
-                        Log.Warning($"[智械-矩阵:设置管理器] 设置文件非法。");
+                        Log.Warning($"[智械-矩阵:设置管理器] 设置文件非法");
                         CreateDefaultSettings();
                     }
 
@@ -69,7 +70,7 @@ namespace Game {
                             serializer.Serialize(writer, Settings);
                         }
                     }
-                    Log.Information($"[智械-矩阵:设置管理器] 保存设置。");
+                    Log.Information($"[智械-矩阵:设置管理器] 保存设置");
                 }
             );
         }

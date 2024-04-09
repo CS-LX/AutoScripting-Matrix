@@ -5,6 +5,7 @@ namespace Game {
     public class ASMSettingsScreen  : Screen {
         public ButtonWidget m_displayUpperLeft;
         public ButtonWidget m_displayBackRect;
+        public ButtonWidget m_gizmosEnable;
 
         public ButtonWidget m_displayConnectorMatrix;
         public ButtonWidget m_displayConnectorMatrix_DisplayIn;
@@ -17,6 +18,7 @@ namespace Game {
             LoadContents(this, node);
             m_displayUpperLeft = Children.Find<BevelledButtonWidget>("DisplayUpperLeft");
             m_displayBackRect = Children.Find<BevelledButtonWidget>("DisplayBackRect");
+            m_gizmosEnable = Children.Find<BevelledButtonWidget>("GizmosEnable");
             m_displayConnectorMatrix = Children.Find<BevelledButtonWidget>("DisplayConnectorMatrix");
             m_displayConnectorMatrix_DisplayIn = Children.Find<BevelledButtonWidget>("DisplayConnectorMatrix.DisplayIn");
             m_displayConnectorMatrix_Thickness = Children.Find<SliderWidget>("DisplayConnectorMatrix.Thickness");
@@ -30,6 +32,7 @@ namespace Game {
             BoolDescriptor("DisplayUpperLeft", m_displayUpperLeft);
             //元件端口显示输出
             BoolDescriptor("DisplayConnectorMatrix", m_displayConnectorMatrix);
+            BoolDescriptor("GizmosEnable", m_gizmosEnable, "启用", "禁用");
             BoolDescriptor("DisplayConnectorMatrix.DisplayIn", m_displayConnectorMatrix_DisplayIn);
             FloatDescriptor("DisplayConnectorMatrix.Thickness", m_displayConnectorMatrix_Thickness);
             //显示背景矩形
@@ -44,9 +47,9 @@ namespace Game {
             }
         }
 
-        private void BoolDescriptor(string settingName, ButtonWidget button) {
+        private void BoolDescriptor(string settingName, ButtonWidget button, string trueText = "是", string falseText = "否") {
             bool flag = (bool)ASMSettingsManager.Get(settingName);
-            button.Text = flag ? "是" : "否";
+            button.Text = flag ? trueText : falseText;
             if(button.IsClicked) ASMSettingsManager.Set(settingName, !flag);
         }
 
