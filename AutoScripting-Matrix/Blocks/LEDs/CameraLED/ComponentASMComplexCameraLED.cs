@@ -4,7 +4,7 @@ using GameEntitySystem;
 using TemplatesDatabase;
 
 namespace Game {
-    public class ComponentASMComplexCameraLED : Component, IDrawable, IUpdateable {
+    public class ComponentASMComplexCameraLED : Component, IDrawable, IUpdateable, IASMGizmos {
         public int[] DrawOrders => [202, 1101];
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
@@ -273,6 +273,16 @@ namespace Game {
         public bool IsInPlayerFrustum(Camera camera, Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4) {
             BoundingFrustum frustum = camera.ViewFrustum;
             return frustum.Intersection(p1) || frustum.Intersection(p2) || frustum.Intersection(p3) || frustum.Intersection(p4);
+        }
+
+        public void GizmosDraw(FlatBatch3D flatBatch) {
+        }
+
+        public void TopMostGizmosDraw(FlatBatch3D flatBatch) {
+            flatBatch.QueueLine(m_position + Vector3.One * 0.5f, m_camera.ViewPosition, Color.SkyBlue, Color.Violet);
+            flatBatch.QueueBoundingBox(new BoundingBox(m_camera.ViewPosition - Vector3.One * 0.2f, m_camera.ViewPosition + Vector3.One * 0.2f), Color.Yellow);
+            flatBatch.QueueCoordinate(m_camera.ViewMatrix.Invert(), 0.4f);
+            flatBatch.QueueBoundingFrustum(m_camera.ViewFrustum, Color.Orange);
         }
     }
 }

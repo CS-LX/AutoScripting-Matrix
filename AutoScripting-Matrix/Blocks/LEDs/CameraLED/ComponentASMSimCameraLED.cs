@@ -4,7 +4,7 @@ using GameEntitySystem;
 using TemplatesDatabase;
 
 namespace Game {
-    public class ComponentASMSimCameraLED : Component, IDrawable, IUpdateable {
+    public class ComponentASMSimCameraLED : Component, IDrawable, IUpdateable, IASMGizmos {
         public int[] DrawOrders => [202, 1101];
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
@@ -209,6 +209,15 @@ namespace Game {
             m_gameWidget.m_cameras = [m_camera];
 
             m_subsystemTerrain.TerrainUpdater.SetUpdateLocation(m_gameWidget.PlayerData.PlayerIndex, m_simCameraElectricElement.GetInputMatrix().Translation.XZ, MathUtils.Min(m_subsystemTerrain.m_subsystemsky.VisibilityRange, 64f), 64f);
+        }
+
+        public void GizmosDraw(FlatBatch3D flatBatch) {
+        }
+
+        public void TopMostGizmosDraw(FlatBatch3D flatBatch) {
+            flatBatch.QueueLine(m_position + Vector3.One * 0.5f, m_camera.ViewPosition, Color.SkyBlue, Color.Violet);
+            flatBatch.QueueBoundingBox(new BoundingBox(m_camera.ViewPosition - Vector3.One * 0.2f, m_camera.ViewPosition + Vector3.One * 0.2f), Color.Yellow);
+            flatBatch.QueueCoordinate(m_camera.ViewMatrix.Invert(), 0.4f);
         }
     }
 }
