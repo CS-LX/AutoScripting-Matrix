@@ -18,11 +18,11 @@ namespace Game {
                     if (m_subsystemASMElectricity.m_electricElementsByCellFace[cellFace] is IASMGizmos gizmos) {
                         if (m_subsystemGizmos.IsIgnore(gizmos)) {
                             m_subsystemGizmos.UnignoreGizmos(gizmos);
-                            componentMiner.ComponentPlayer.ComponentGui.DisplaySmallMessage($"已显示位于{cellFace}的调试辅助绘制", Color.White, false, false);
+                            componentMiner.ComponentPlayer.ComponentGui.DisplaySmallMessage($"已显示位于{cellFace}的Gizmos", Color.White, false, false);
                         }
                         else {
                             m_subsystemGizmos.IgnoreGizmos(gizmos);
-                            componentMiner.ComponentPlayer.ComponentGui.DisplaySmallMessage($"已隐藏位于{cellFace}的调试辅助绘制", Color.White, false, false);
+                            componentMiner.ComponentPlayer.ComponentGui.DisplaySmallMessage($"已隐藏位于{cellFace}的Gizmos", Color.White, false, false);
                         }
                         return true;
                     }
@@ -31,11 +31,11 @@ namespace Game {
                 if (component is IASMGizmos componentGizmos) {
                     if (m_subsystemGizmos.IsIgnore(componentGizmos)) {
                         m_subsystemGizmos.UnignoreGizmos(componentGizmos);
-                        componentMiner.ComponentPlayer.ComponentGui.DisplaySmallMessage($"已显示位于{cellFace}的调试辅助绘制", Color.White, false, false);
+                        componentMiner.ComponentPlayer.ComponentGui.DisplaySmallMessage($"已显示位于{cellFace}的Gizmos", Color.White, false, false);
                     }
                     else {
                         m_subsystemGizmos.IgnoreGizmos(componentGizmos);
-                        componentMiner.ComponentPlayer.ComponentGui.DisplaySmallMessage($"已隐藏位于{cellFace}的调试辅助绘制", Color.White, false, false);
+                        componentMiner.ComponentPlayer.ComponentGui.DisplaySmallMessage($"已隐藏位于{cellFace}的Gizmos", Color.White, false, false);
                     }
                     return true;
                 }

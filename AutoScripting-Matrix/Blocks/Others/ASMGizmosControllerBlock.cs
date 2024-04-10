@@ -5,7 +5,7 @@ namespace Game {
     public class ASMGizmosControllerBlock : GenerateASMWireVerticesBlock {
         public const int Index = 623;
 
-        public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => "调试辅助绘制控制器";
+        public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => "Gizmos控制器";
 
         public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z) { }
 
