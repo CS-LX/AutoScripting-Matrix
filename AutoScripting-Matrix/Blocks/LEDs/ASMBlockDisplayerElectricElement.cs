@@ -1,7 +1,8 @@
 using Engine;
+using Engine.Graphics;
 
 namespace Game {
-    public class ASMBlockDisplayerElectricElement : ASMRotateableElectricElement {
+    public class ASMBlockDisplayerElectricElement : ASMRotateableElectricElement, IASMGizmo {
         public SubsystemASMGlow m_subsystemGlow;
 
         public Matrix m_leftInput = Matrix.Zero;
@@ -9,6 +10,8 @@ namespace Game {
         public Matrix m_rightInput = Matrix.Zero;
 
         public ASMGlowBlock m_glowBlock;
+
+        public Matrix m_transform;
 
         public ASMBlockDisplayerElectricElement(SubsystemASMElectricity subsystemElectricity, CellFace cellFace, int value) : base(subsystemElectricity, cellFace) {
             m_subsystemGlow = subsystemElectricity.Project.FindSubsystem<SubsystemASMGlow>(true);
@@ -51,13 +54,20 @@ namespace Game {
                 bool useRelativeCoordinates = m_leftInput.M13 > 0 ? true : false;
 
                 //变换
-                Matrix transform = useRelativeCoordinates ? m_rightInput * baseMatrix : m_rightInput;
+                m_transform = useRelativeCoordinates ? m_rightInput * baseMatrix : m_rightInput;
 
                 m_glowBlock.index = index;
-                m_glowBlock.transform = transform;
+                m_glowBlock.transform = m_transform;
                 m_glowBlock.environmentallySusceptible = affectable;
             }
             return false;
+        }
+
+        public void GizmosDraw(FlatBatch3D flatBatch) {
+        }
+
+        public void TopMostGizmosDraw(FlatBatch3D flatBatch) {
+            flatBatch.QueueCoordinate(m_transform, 0.5f);
         }
     }
 }
