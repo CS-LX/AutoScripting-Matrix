@@ -67,6 +67,7 @@ namespace Game {
         }
 
         public void TopMostGizmosDraw(FlatBatch3D flatBatch) {
+            flatBatch.QueueLine(new Vector3(CellFaces[0].Point) + Vector3.One * 0.5f, m_transform.Translation, Color.Pink, Color.Violet);
             flatBatch.QueueCoordinate(m_transform, 0.5f);
         }
     }

@@ -88,11 +88,6 @@ namespace Game {
                 string ignoredGizmos = valuesDictionary.GetValue<string>("IgnoredGizmos");
                 string[] pointsText = ignoredGizmos.Split('|', StringSplitOptions.RemoveEmptyEntries);
                 m_ignoredPoints = pointsText.Select(ASMStaticMethods.ParseToPoint).ToArray();
-                KeyValuePair<ASMElectricElement, Point3>[] elements = FindElectricElementByPoints(m_ignoredPoints);
-                var gizmos2 = elements.Where(pair => pair.Key is IASMGizmo).Select(pair => new KeyValuePair<IASMGizmo,Point3>(pair.Key as IASMGizmo, pair.Value)).ToArray();
-                foreach (var gizmo2 in gizmos2) {
-                    m_ignoredGizmos.Add(gizmo2.Key, gizmo2.Value);
-                }
             }
             catch (Exception e) {
                 Log.Warning($"Gizmos管理器: 加载已忽略的Gizmos出错，原因: {e}");
@@ -114,7 +109,19 @@ namespace Game {
             return components.ToArray();
         }
 
-        private KeyValuePair<ASMElectricElement, Point3>[] FindElectricElementByPoints(Point3[] points) => m_subsystemASMElectricity.m_electricElementsByCellFace.Where((pair) => points.Contains(pair.Key.Point)).Select(pair => new KeyValuePair<ASMElectricElement,Point3>(pair.Value, pair.Key.Point)).ToArray();
+        //private KeyValuePair<ASMElectricElement, Point3>[] FindElectricElementByPoints(Point3[] points) => m_subsystemASMElectricity.m_electricElementsByCellFace.Where((pair) => points.Contains(pair.Key.Point)).Select(pair => new KeyValuePair<ASMElectricElement,Point3>(pair.Value, pair.Key.Point)).ToArray();
+
+        private KeyValuePair<ASMElectricElement, Point3>[] FindElectricElementByPoints(Point3[] points) {
+            List<KeyValuePair<ASMElectricElement, Point3>> results = new List<KeyValuePair<ASMElectricElement, Point3>>();
+            foreach (var electricElementByCell in m_subsystemASMElectricity.m_electricElementsByCellFace) {
+                if (points.Contains(electricElementByCell.Key.Point)) {
+                    results.Add(new KeyValuePair<ASMElectricElement, Point3>(electricElementByCell.Value, electricElementByCell.Key.Point));
+                }
+            }
+            return results.ToArray();
+        }
+
+
 
         public override void Save(ValuesDictionary valuesDictionary) {
             base.Save(valuesDictionary);
@@ -132,12 +139,18 @@ namespace Game {
                 && m_ignoredPoints.Length > 0
                 && m_ignoredPoints.Length != m_ignoredGizmos.Count) {
                 try {
+                    KeyValuePair<ASMElectricElement, Point3>[] elements = FindElectricElementByPoints(m_ignoredPoints);
+                    var gizmos2 = elements.Where(pair => pair.Key is IASMGizmo).Select(pair => new KeyValuePair<IASMGizmo,Point3>(pair.Key as IASMGizmo, pair.Value)).ToArray();
+                    foreach (var gizmo2 in gizmos2) {
+                        m_ignoredGizmos.Add(gizmo2.Key, gizmo2.Value);
+                    }
+
                     KeyValuePair<Component, Point3>[] components = FindComponentByPoints(m_ignoredPoints);
                     var gizmos1 = components.Where(pair => pair.Key is IASMGizmo).Select(pair => new KeyValuePair<IASMGizmo, Point3>(pair.Key as IASMGizmo, pair.Value)).ToArray();
                     foreach (var gizmo1 in gizmos1) {
                         m_ignoredGizmos.Add(gizmo1.Key, gizmo1.Value);
                     }
-                    m_ignoredPoints = null;
+                    if(m_ignoredPoints.Length == m_ignoredGizmos.Count) m_ignoredPoints = null;
                 }
                 catch (Exception e) {
                     Log.Warning($"Gizmos管理器: 加载已忽略的Gizmos出错，原因: {e}");
