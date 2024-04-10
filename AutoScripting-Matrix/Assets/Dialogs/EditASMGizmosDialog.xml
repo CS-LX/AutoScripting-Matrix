@@ -1,4 +1,4 @@
-<CanvasWidget xmlns="runtime-namespace:Game" Size="250, 250" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
+<CanvasWidget xmlns="runtime-namespace:Game" Size="250, 330" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
 
 	<RectangleWidget Name="BackRect"  FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2" />
 	<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="10, 10">
@@ -6,6 +6,8 @@
 		<CanvasWidget Size="0, 40" />
 		<BevelledButtonWidget Name="UnignoreAllButton" Text="显示所有" Style="{Styles/ButtonStyle_160x60}" Margin="40, 0"/>
 		<BevelledButtonWidget Name="IgnoreAllButton" Text="隐藏所有" Style="{Styles/ButtonStyle_160x60}" Margin="40, 0"/>
+		<CanvasWidget Size="0, 20" />
+		<BevelledButtonWidget Name="CloseButton" Text="关闭" Style="{Styles/ButtonStyle_160x60}" Margin="40, 0"/>
 	</StackPanelWidget>
 
 </CanvasWidget>
