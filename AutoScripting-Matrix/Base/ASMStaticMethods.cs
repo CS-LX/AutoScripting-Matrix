@@ -563,5 +563,12 @@ namespace Game {
             m.Decompose(out Vector3 scale, out Quaternion rotation, out Vector3 translation);
             return Matrix.CreateFromQuaternion(rotation) * Matrix.CreateTranslation(translation);
         }
+
+        public static Point3 ParseToPoint(string s) {
+            int x = (int)float.Parse(s.Split(',')[0]);
+            int y = (int)float.Parse(s.Split(',')[1]);
+            int z = (int)float.Parse(s.Split(',')[2]);
+            return new Point3(x, y, z);
+        }
     }
 }

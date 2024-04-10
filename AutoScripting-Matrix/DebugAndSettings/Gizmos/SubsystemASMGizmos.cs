@@ -1,11 +1,14 @@
 
 
+using System.Globalization;
+using System.Text;
+using Engine;
 using Engine.Graphics;
 using GameEntitySystem;
 using TemplatesDatabase;
 
 namespace Game {
-    public class SubsystemASMGizmos : Subsystem, IDrawable {
+    public class SubsystemASMGizmos : Subsystem, IDrawable, IUpdateable {
 
         public int[] DrawOrders => [2000];
 
@@ -19,19 +22,21 @@ namespace Game {
 
         public SubsystemBlockEntities m_subsystemBlockEntities;
 
-        public List<IASMGizmos> m_ignoredGizmos = new List<IASMGizmos>();
+        public Dictionary<IASMGizmo, Point3> m_ignoredGizmos = new Dictionary<IASMGizmo, Point3>();
+
+        Point3[] m_ignoredPoints;
 
         public void Draw(Camera camera, int drawOrder) {
             if(!(bool)ASMSettingsManager.Get("GizmosEnable")) return;
             foreach (var element in m_subsystemASMElectricity.m_electricElements) {
-                if (element.Key is IASMGizmos elementGizmos && !m_ignoredGizmos.Contains(elementGizmos)) {
+                if (element.Key is IASMGizmo elementGizmos && !m_ignoredGizmos.Keys.Contains(elementGizmos)) {
                     elementGizmos.GizmosDraw(m_normalBatch);
                     elementGizmos.TopMostGizmosDraw(m_topMostBatch);
                 }
             }
             foreach (var entity in GameManager.Project.Entities) {
                 foreach (var component in entity.Components) {
-                    if (component is IASMGizmos componentGizmos && !m_ignoredGizmos.Contains(componentGizmos)) {
+                    if (component is IASMGizmo componentGizmos && !m_ignoredGizmos.Keys.Contains(componentGizmos)) {
                         componentGizmos.GizmosDraw(m_normalBatch);
                         componentGizmos.TopMostGizmosDraw(m_topMostBatch);
                     }
@@ -40,26 +45,29 @@ namespace Game {
             m_primitivesRenderer.Flush(camera.ViewProjectionMatrix);
         }
 
-        public void IgnoreGizmos(IASMGizmos gizmos) {
-            if(!m_ignoredGizmos.Contains(gizmos)) m_ignoredGizmos.Add(gizmos);
+        public void IgnoreGizmos(IASMGizmo gizmos, Point3 position) {
+            if(!m_ignoredGizmos.Keys.Contains(gizmos)) m_ignoredGizmos.Add(gizmos, position);
         }
 
-        public void UnignoreGizmos(IASMGizmos gizmos) {
-            if (m_ignoredGizmos.Contains(gizmos)) m_ignoredGizmos.Remove(gizmos);
+        public void UnignoreGizmos(IASMGizmo gizmos) {
+            if (m_ignoredGizmos.Keys.Contains(gizmos)) m_ignoredGizmos.Remove(gizmos);
         }
 
-        public bool IsIgnore(IASMGizmos gizmos) => m_ignoredGizmos.Contains(gizmos);
+        public bool IsIgnore(IASMGizmo gizmos) => m_ignoredGizmos.Keys.Contains(gizmos);
+
+        public bool IsIgnore(Point3 position) => m_ignoredGizmos.Values.Contains(position);
 
         public void IgnoreAll() {
-            foreach (var element in m_subsystemASMElectricity.m_electricElements) {
-                if (element.Key is IASMGizmos elementGizmos && !m_ignoredGizmos.Contains(elementGizmos)) {
-                    m_ignoredGizmos.Add(elementGizmos);
+            foreach (var element in m_subsystemASMElectricity.m_electricElementsByCellFace) {
+                if (element.Value is IASMGizmo elementGizmos && !m_ignoredGizmos.Keys.Contains(elementGizmos)) {
+                    m_ignoredGizmos.Add(elementGizmos, new Point3(element.Key.X, element.Key.Y, element.Key.Z));
                 }
             }
             foreach (var entity in GameManager.Project.Entities) {
                 foreach (var component in entity.Components) {
-                    if (component is IASMGizmos componentGizmos && !m_ignoredGizmos.Contains(componentGizmos)) {
-                        m_ignoredGizmos.Add(componentGizmos);
+                    ComponentBlockEntity componentBlockEntity = entity.FindComponent<ComponentBlockEntity>();
+                    if (component is IASMGizmo componentGizmos && !m_ignoredGizmos.Keys.Contains(componentGizmos) && componentBlockEntity != null) {
+                        m_ignoredGizmos.Add(componentGizmos, componentBlockEntity.Coordinates);
                     }
                 }
             }
@@ -75,6 +83,68 @@ namespace Game {
             m_topMostBatch = m_primitivesRenderer.FlatBatch(0, DepthStencilState.None);
             m_subsystemASMElectricity = Project.FindSubsystem<SubsystemASMElectricity>(true);
             m_subsystemBlockEntities = Project.FindSubsystem<SubsystemBlockEntities>(true);
+
+            try {
+                string ignoredGizmos = valuesDictionary.GetValue<string>("IgnoredGizmos");
+                string[] pointsText = ignoredGizmos.Split('|', StringSplitOptions.RemoveEmptyEntries);
+                m_ignoredPoints = pointsText.Select(ASMStaticMethods.ParseToPoint).ToArray();
+                KeyValuePair<ASMElectricElement, Point3>[] elements = FindElectricElementByPoints(m_ignoredPoints);
+                var gizmos2 = elements.Where(pair => pair.Key is IASMGizmo).Select(pair => new KeyValuePair<IASMGizmo,Point3>(pair.Key as IASMGizmo, pair.Value)).ToArray();
+                foreach (var gizmo2 in gizmos2) {
+                    m_ignoredGizmos.Add(gizmo2.Key, gizmo2.Value);
+                }
+            }
+            catch (Exception e) {
+                Log.Warning($"Gizmos管理器: 加载已忽略的Gizmos出错，原因: {e}");
+            }
+
         }
+
+        private KeyValuePair<Component, Point3>[] FindComponentByPoints(Point3[] points) {
+            List<KeyValuePair<Component, Point3>> components = new List<KeyValuePair<Component, Point3>>();
+            foreach (var entity in GameManager.Project.Entities) {
+                foreach (var component in entity.Components) {
+                    ComponentBlockEntity componentBlockEntity = component.Entity.FindComponent<ComponentBlockEntity>();
+                    if (componentBlockEntity != null
+                        && points.Contains(componentBlockEntity.Coordinates)
+                        && component is not ComponentBlockEntity)
+                        components.Add(new KeyValuePair<Component, Point3>(component, componentBlockEntity.Coordinates));
+                }
+            }
+            return components.ToArray();
+        }
+
+        private KeyValuePair<ASMElectricElement, Point3>[] FindElectricElementByPoints(Point3[] points) => m_subsystemASMElectricity.m_electricElementsByCellFace.Where((pair) => points.Contains(pair.Key.Point)).Select(pair => new KeyValuePair<ASMElectricElement,Point3>(pair.Value, pair.Key.Point)).ToArray();
+
+        public override void Save(ValuesDictionary valuesDictionary) {
+            base.Save(valuesDictionary);
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach (KeyValuePair<IASMGizmo, Point3> gizmo in m_ignoredGizmos) {
+                stringBuilder.Append(gizmo.Value.ToString());
+                stringBuilder.Append('|');
+            }
+            valuesDictionary.SetValue("IgnoredGizmos", stringBuilder.ToString());
+        }
+
+        public void Update(float dt) {
+            //因为load方法执行时Components还没有加载，所以component获取放在update里面
+            if (m_ignoredPoints != null
+                && m_ignoredPoints.Length > 0
+                && m_ignoredPoints.Length != m_ignoredGizmos.Count) {
+                try {
+                    KeyValuePair<Component, Point3>[] components = FindComponentByPoints(m_ignoredPoints);
+                    var gizmos1 = components.Where(pair => pair.Key is IASMGizmo).Select(pair => new KeyValuePair<IASMGizmo, Point3>(pair.Key as IASMGizmo, pair.Value)).ToArray();
+                    foreach (var gizmo1 in gizmos1) {
+                        m_ignoredGizmos.Add(gizmo1.Key, gizmo1.Value);
+                    }
+                    m_ignoredPoints = null;
+                }
+                catch (Exception e) {
+                    Log.Warning($"Gizmos管理器: 加载已忽略的Gizmos出错，原因: {e}");
+                }
+            }
+        }
+
+        public UpdateOrder UpdateOrder => UpdateOrder.Default;
     }
 }

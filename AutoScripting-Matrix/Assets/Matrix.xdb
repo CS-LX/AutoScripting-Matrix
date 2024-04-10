@@ -24,6 +24,7 @@
 			<Parameter Name="Class" Guid="16594046-1006-4c80-bb75-280852883cac" Value="Game.SubsystemASMCamerasGameWidgets" Type="string"/>
 		</MemberSubsystemTemplate>
 		<MemberSubsystemTemplate Name="ASMGizmos" Guid="16594046-1007-4160-a198-bebd4a7f9cb2" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
+			<Parameter Name="IgnoredGizmos" Description="" Guid="16594046-1007-97b3-0ae7-e3ccf1117af1" Value="" Type="string"/>
 			<Parameter Name="Class" Guid="16594046-1007-4c80-bb75-280852883cac" Value="Game.SubsystemASMGizmos" Type="string"/>
 		</MemberSubsystemTemplate>
 		<MemberSubsystemTemplate Name="ASMGlow" Guid="16594046-1002-41e4-b9df-dcba507c4b21" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">

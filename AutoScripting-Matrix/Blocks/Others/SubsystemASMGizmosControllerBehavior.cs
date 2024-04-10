@@ -15,26 +15,26 @@ namespace Game {
             if (obj is TerrainRaycastResult) {
                 CellFace cellFace = ((TerrainRaycastResult)obj).CellFace;
                 if (m_subsystemASMElectricity.m_electricElementsByCellFace.ContainsKey(cellFace)) {
-                    if (m_subsystemASMElectricity.m_electricElementsByCellFace[cellFace] is IASMGizmos gizmos) {
+                    if (m_subsystemASMElectricity.m_electricElementsByCellFace[cellFace] is IASMGizmo gizmos) {
                         if (m_subsystemGizmos.IsIgnore(gizmos)) {
                             m_subsystemGizmos.UnignoreGizmos(gizmos);
                             componentMiner.ComponentPlayer.ComponentGui.DisplaySmallMessage($"已显示位于{cellFace}的Gizmos", Color.White, false, false);
                         }
                         else {
-                            m_subsystemGizmos.IgnoreGizmos(gizmos);
+                            m_subsystemGizmos.IgnoreGizmos(gizmos, cellFace.Point);
                             componentMiner.ComponentPlayer.ComponentGui.DisplaySmallMessage($"已隐藏位于{cellFace}的Gizmos", Color.White, false, false);
                         }
                         return true;
                     }
                 }
                 Component component = FindComponent(cellFace.Point);
-                if (component is IASMGizmos componentGizmos) {
+                if (component is IASMGizmo componentGizmos) {
                     if (m_subsystemGizmos.IsIgnore(componentGizmos)) {
                         m_subsystemGizmos.UnignoreGizmos(componentGizmos);
                         componentMiner.ComponentPlayer.ComponentGui.DisplaySmallMessage($"已显示位于{cellFace}的Gizmos", Color.White, false, false);
                     }
                     else {
-                        m_subsystemGizmos.IgnoreGizmos(componentGizmos);
+                        m_subsystemGizmos.IgnoreGizmos(componentGizmos, cellFace.Point);
                         componentMiner.ComponentPlayer.ComponentGui.DisplaySmallMessage($"已隐藏位于{cellFace}的Gizmos", Color.White, false, false);
                     }
                     return true;

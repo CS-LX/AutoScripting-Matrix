@@ -4,7 +4,7 @@ using GameEntitySystem;
 using TemplatesDatabase;
 
 namespace Game {
-    public class ComponentASMSimCameraLED : Component, IDrawable, IUpdateable, IASMGizmos {
+    public class ComponentASMSimCameraLED : Component, IDrawable, IUpdateable, IASMGizmo {
         public int[] DrawOrders => [202, 1101];
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
