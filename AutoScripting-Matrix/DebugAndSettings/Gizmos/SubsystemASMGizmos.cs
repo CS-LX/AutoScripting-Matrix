@@ -58,15 +58,16 @@ namespace Game {
         public bool IsIgnore(Point3 position) => m_ignoredGizmos.Values.Contains(position);
 
         public void IgnoreAll() {
+            if(!CanOperate()) return;
             foreach (var element in m_subsystemASMElectricity.m_electricElementsByCellFace) {
-                if (element.Value is IASMGizmo elementGizmos && !m_ignoredGizmos.Keys.Contains(elementGizmos)) {
+                if (element.Value is IASMGizmo elementGizmos && !m_ignoredGizmos.ContainsKey(elementGizmos)) {
                     m_ignoredGizmos.Add(elementGizmos, new Point3(element.Key.X, element.Key.Y, element.Key.Z));
                 }
             }
             foreach (var entity in GameManager.Project.Entities) {
                 foreach (var component in entity.Components) {
                     ComponentBlockEntity componentBlockEntity = entity.FindComponent<ComponentBlockEntity>();
-                    if (component is IASMGizmo componentGizmos && !m_ignoredGizmos.Keys.Contains(componentGizmos) && componentBlockEntity != null) {
+                    if (component is IASMGizmo componentGizmos && !m_ignoredGizmos.ContainsKey(componentGizmos) && componentBlockEntity != null) {
                         m_ignoredGizmos.Add(componentGizmos, componentBlockEntity.Coordinates);
                     }
                 }
@@ -74,8 +75,11 @@ namespace Game {
         }
 
         public void UnignoreAll() {
+            if(!CanOperate()) return;
             m_ignoredGizmos.Clear();
         }
+
+        public bool CanOperate() => m_ignoredPoints == null;
 
         public override void Load(ValuesDictionary valuesDictionary) {
             base.Load(valuesDictionary);
@@ -142,13 +146,13 @@ namespace Game {
                     KeyValuePair<ASMElectricElement, Point3>[] elements = FindElectricElementByPoints(m_ignoredPoints);
                     var gizmos2 = elements.Where(pair => pair.Key is IASMGizmo).Select(pair => new KeyValuePair<IASMGizmo,Point3>(pair.Key as IASMGizmo, pair.Value)).ToArray();
                     foreach (var gizmo2 in gizmos2) {
-                        m_ignoredGizmos.Add(gizmo2.Key, gizmo2.Value);
+                        if(!m_ignoredGizmos.ContainsKey(gizmo2.Key)) m_ignoredGizmos.Add(gizmo2.Key, gizmo2.Value);
                     }
 
                     KeyValuePair<Component, Point3>[] components = FindComponentByPoints(m_ignoredPoints);
                     var gizmos1 = components.Where(pair => pair.Key is IASMGizmo).Select(pair => new KeyValuePair<IASMGizmo, Point3>(pair.Key as IASMGizmo, pair.Value)).ToArray();
                     foreach (var gizmo1 in gizmos1) {
-                        m_ignoredGizmos.Add(gizmo1.Key, gizmo1.Value);
+                        if(!m_ignoredGizmos.ContainsKey(gizmo1.Key)) m_ignoredGizmos.Add(gizmo1.Key, gizmo1.Value);
                     }
                     if(m_ignoredPoints.Length == m_ignoredGizmos.Count) m_ignoredPoints = null;
                 }

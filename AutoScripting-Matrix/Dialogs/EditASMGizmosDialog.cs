@@ -20,6 +20,8 @@ namespace Game {
         }
 
         public override void Update() {
+            m_ignoreAllButtonWidget.IsEnabled = m_subsystemAsmGizmos.CanOperate();
+            m_unignoreButtonWidget.IsEnabled = m_subsystemAsmGizmos.CanOperate();
             if (m_ignoreAllButtonWidget.IsClicked) {
                 m_subsystemAsmGizmos.IgnoreAll();
                 Dismiss();
