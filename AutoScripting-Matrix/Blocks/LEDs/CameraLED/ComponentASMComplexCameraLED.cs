@@ -279,6 +279,7 @@ namespace Game {
         }
 
         public void TopMostGizmosDraw(FlatBatch3D flatBatch) {
+            if(m_camera == null) return;
             flatBatch.QueueLine(m_position + Vector3.One * 0.5f, m_camera.ViewPosition, Color.Pink, Color.Violet);
             flatBatch.QueueBoundingBox(new BoundingBox(m_camera.ViewPosition - Vector3.One * 0.2f, m_camera.ViewPosition + Vector3.One * 0.2f), Color.Yellow);
             flatBatch.QueueCoordinate(m_camera.ViewMatrix.Invert(), 0.4f);
