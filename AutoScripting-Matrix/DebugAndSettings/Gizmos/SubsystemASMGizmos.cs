@@ -160,6 +160,9 @@ namespace Game {
                     Log.Warning($"Gizmos管理器: 加载已忽略的Gizmos出错，原因: {e}");
                 }
             }
+            else if(m_ignoredPoints != null && m_ignoredPoints.Length == 0) {
+                m_ignoredPoints = null;
+            }
         }
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
