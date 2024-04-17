@@ -62,7 +62,8 @@ namespace Game {
         public void SetTransformMatrix(Matrix transformMatrix) => m_transformMatrix = transformMatrix;
 
         public void DrawView(PrimitivesRenderer3D primitivesRenderer3D) {
-            if (!m_visible) return;
+            if (LinkedPortal == null) return;
+            if (!LinkedPortal.m_visible) return;
             m_camera.PrepareForDrawing();
             Vector3 translation = m_camera.ViewMatrix.Translation;
             if ((m_lastViewTranslation.XZ - translation.XZ).Length() > 16) {
