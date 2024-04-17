@@ -119,6 +119,8 @@ namespace Game {
                     );
                 }
 
+
+
                 UpdateControl();
 
                 m_portal1.LinkPortal(m_portal2);
@@ -156,11 +158,11 @@ namespace Game {
                     m_portal1.m_teleportEnable = false;
                     break;
                 case 1:
-                    m_portal1.m_visible = true;
+                    m_portal1.m_visible = m_portalElectricElement.GetPortal1Transform() != Matrix.Zero;
                     m_portal1.m_teleportEnable = true;
                     break;
                 case 2:
-                    m_portal1.m_visible = true;
+                    m_portal1.m_visible = m_portalElectricElement.GetPortal1Transform() != Matrix.Zero;
                     m_portal1.m_teleportEnable = false;
                     break;
                 case 3:
@@ -174,11 +176,11 @@ namespace Game {
                     m_portal2.m_teleportEnable = false;
                     break;
                 case 1:
-                    m_portal2.m_visible = true;
+                    m_portal2.m_visible = m_portalElectricElement.GetPortal2Transform() != Matrix.Zero;
                     m_portal2.m_teleportEnable = true;
                     break;
                 case 2:
-                    m_portal2.m_visible = true;
+                    m_portal2.m_visible = m_portalElectricElement.GetPortal2Transform() != Matrix.Zero;
                     m_portal2.m_teleportEnable = false;
                     break;
                 case 3:

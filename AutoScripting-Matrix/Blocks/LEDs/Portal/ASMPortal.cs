@@ -62,6 +62,7 @@ namespace Game {
         public void SetTransformMatrix(Matrix transformMatrix) => m_transformMatrix = transformMatrix;
 
         public void DrawView(PrimitivesRenderer3D primitivesRenderer3D) {
+            if (!m_visible) return;
             m_camera.PrepareForDrawing();
             Vector3 translation = m_camera.ViewMatrix.Translation;
             if ((m_lastViewTranslation.XZ - translation.XZ).Length() > 16) {
@@ -94,7 +95,7 @@ namespace Game {
             if(m_visible) DrawScreen(primitivesRenderer3D, camera);
             //传送逻辑
             if(m_teleportEnable) UpdateTeleport();
-            UpdateOffsetY();
+            if(m_visible) UpdateOffsetY();
         }
 
         public void Update(float dt) {
