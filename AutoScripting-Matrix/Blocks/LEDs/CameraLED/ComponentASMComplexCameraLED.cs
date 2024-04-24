@@ -46,6 +46,8 @@ namespace Game {
 
         public int m_screenUVSubdivision;//屏幕uv细分，小于等于0，则不用屏幕纹理。大于0，则用屏幕纹理
 
+        bool m_enableDraw => m_complexCameraElectricElement?.GetInputMatrix() != Matrix.Zero && m_complexCameraElectricElement?.GetProjectionMatrix() != Matrix.Zero;
+
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap) {
             base.Load(valuesDictionary, idToEntityMap);
             m_subsystemAsmElectricity = Project.FindSubsystem<SubsystemASMElectricity>(true);
@@ -79,7 +81,7 @@ namespace Game {
                 || m_complexCameraElectricElement == null)
                 return;
             if (!CheckVisible()) return;
-            DrawScreen(camera, drawOrder);
+            if (m_enableDraw) DrawScreen(camera, drawOrder);
         }
 
         public void DrawView() {
@@ -220,7 +222,7 @@ namespace Game {
                 Matrix projectionMatrix = m_complexCameraElectricElement.GetProjectionMatrix();
                 m_camera.m_projectionMatrix = projectionMatrix;
                 if (m_subsystemTerrain.TerrainRenderer.m_chunksToDraw.Count > 0) {
-                    DrawView();
+                    if (m_enableDraw) DrawView();
                 }
 
                 //控制部分
