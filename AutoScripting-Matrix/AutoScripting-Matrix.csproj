@@ -462,6 +462,9 @@
 	    <HintPath>references\EntitySystem.dll</HintPath>
 	    <Private>False</Private>
 	  </Reference>
+	  <Reference Include="SixLabors.ImageSharp">
+	    <HintPath>references\SixLabors.ImageSharp.dll</HintPath>
+	  </Reference>
 	  <Reference Include="Survivalcraft">
 	    <HintPath>references\Survivalcraft.dll</HintPath>
 	    <Private>False</Private>
