@@ -118,7 +118,7 @@ namespace Game {
                         //绘制背面
                         //获取端口
                         if ((bool)ASMSettingsManager.Get("DisplayConnectorMatrix.DisplayIn")) {
-                            int backFace = ASMUtils.GetOppositeFace(blockFace);
+                            int backFace = CellFace.OppositeFace(blockFace);
                             ASMElectricConnectorType? backConnectorType = mountedBlock.GetConnectorType(
                                 m_subsystemTerrain,
                                 blockValue,
