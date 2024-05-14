@@ -434,16 +434,10 @@
 	  <None Update="Assets\Screens\ASMSettingsScreen.xml">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Assets\Textures\Gui\ASMatrix.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
 	  <None Update="Assets\Widgets\ASMTopBarContents.xml">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="icon.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Assets\Textures\Gui\ASMatrix_Night.png">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Assets\Textures\ASMPortal.png">
@@ -453,6 +447,12 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Assets\Textures\ASMPlayerCameraSetter.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Assets\Textures\Gui\ASMatrix.webp">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Assets\Textures\Gui\ASMatrix_Night.webp">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>
