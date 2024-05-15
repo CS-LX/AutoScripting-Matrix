@@ -1,6 +1,6 @@
 namespace Game {
     public class SubsystemASMSettingsSetterBehavior : SubsystemBlockBehavior {
-        public override int[] HandledBlocks => [ASMGeBlock.Index];
+        public override int[] HandledBlocks => [ASMSettingsSetterBlock.Index];
 
         public override bool OnEditBlock(int x, int y, int z, int value, ComponentPlayer componentPlayer){
             ScreensManager.SwitchScreen("ASMSettings");

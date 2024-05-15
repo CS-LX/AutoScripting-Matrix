@@ -33,6 +33,7 @@ namespace Game
 			ASMPortalBlock.Index,
 			ASMGizmosControllerBlock.Index,
             ASMPlayerCameraSetter.Index,
+            ASMSettingsSetterBlock.Index,
 		};
 
 		public override void OnBlockGenerated(int value, int x, int y, int z, bool isLoaded)
