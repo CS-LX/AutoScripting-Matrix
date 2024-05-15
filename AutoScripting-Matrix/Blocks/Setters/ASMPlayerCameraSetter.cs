@@ -49,33 +49,7 @@ namespace Game {
             BlockPlacementData result;
             int playerIndex = componentMiner.ComponentPlayer.PlayerData.PlayerIndex;
             if (ASMPlayerCameraSetterManager.m_cameras[playerIndex].Item3 == null) {
-                int rotation = 0;
-                if (raycastResult.CellFace.Face >= 4) {
-                    Vector3 forward = Matrix.CreateFromQuaternion(componentMiner.ComponentCreature.ComponentCreatureModel.EyeRotation).Forward;
-                    float num = Vector3.Dot(forward, Vector3.UnitZ);
-                    float num2 = Vector3.Dot(forward, Vector3.UnitX);
-                    float num3 = Vector3.Dot(forward, -Vector3.UnitZ);
-                    float num4 = Vector3.Dot(forward, -Vector3.UnitX);
-                    if (num == MathUtils.Max(num, num2, num3, num4)) {
-                        rotation = 2;
-                    }
-                    else if (num2 == MathUtils.Max(num, num2, num3, num4)) {
-                        rotation = 1;
-                    }
-                    else if (num3 == MathUtils.Max(num, num2, num3, num4)) {
-                        rotation = 0;
-                    }
-                    else if (num4 == MathUtils.Max(num, num2, num3, num4)) {
-                        rotation = 3;
-                    }
-                }
-                int num5 = Terrain.ExtractData(value);
-                num5 &= -29;
-                num5 |= raycastResult.CellFace.Face << 2;
-                result = default;
-                result.Value = Terrain.MakeBlockValue(BlockIndex, 0, SetRotation(num5, rotation));
-                result.CellFace = raycastResult.CellFace;
-                return result;
+                return GeneratePlacementData(subsystemTerrain, componentMiner, value, raycastResult);
             }
             componentMiner.ComponentPlayer?.ComponentGui.DisplaySmallMessage($"玩家{playerIndex}已经有对应的玩家摄像机设置器，位于({ASMPlayerCameraSetterManager.m_cameras[playerIndex].Item2})", Color.White, blinking: true, playNotificationSound: false);
             result = default;

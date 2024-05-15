@@ -99,41 +99,37 @@ namespace Game {
 			GenerateASMWireVertices(generator, value, x, y, z, GetFace(value), m_centerBoxSize, Vector2.Zero, geometry.SubsetOpaque);
 		}
 
-		public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult)
-		{
-			int rotation = 0;
-			if (raycastResult.CellFace.Face >= 4)
-			{
-				Vector3 forward = Matrix.CreateFromQuaternion(componentMiner.ComponentCreature.ComponentCreatureModel.EyeRotation).Forward;
-				float num = Vector3.Dot(forward, Vector3.UnitZ);
-				float num2 = Vector3.Dot(forward, Vector3.UnitX);
-				float num3 = Vector3.Dot(forward, -Vector3.UnitZ);
-				float num4 = Vector3.Dot(forward, -Vector3.UnitX);
-				if (num == MathUtils.Max(num, num2, num3, num4))
-				{
-					rotation = 2;
-				}
-				else if (num2 == MathUtils.Max(num, num2, num3, num4))
-				{
-					rotation = 1;
-				}
-				else if (num3 == MathUtils.Max(num, num2, num3, num4))
-				{
-					rotation = 0;
-				}
-				else if (num4 == MathUtils.Max(num, num2, num3, num4))
-				{
-					rotation = 3;
-				}
-			}
-			int num5 = Terrain.ExtractData(value);
-			num5 &= -29;
-			num5 |= raycastResult.CellFace.Face << 2;
-			BlockPlacementData result = default;
-			result.Value = Terrain.MakeBlockValue(BlockIndex, 0, SetRotation(num5, rotation));
-			result.CellFace = raycastResult.CellFace;
-			return result;
-		}
+        public BlockPlacementData GeneratePlacementData(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
+            int rotation = 0;
+            if (raycastResult.CellFace.Face >= 4) {
+                Vector3 forward = Matrix.CreateFromQuaternion(componentMiner.ComponentCreature.ComponentCreatureModel.EyeRotation).Forward;
+                float num = Vector3.Dot(forward, Vector3.UnitZ);
+                float num2 = Vector3.Dot(forward, Vector3.UnitX);
+                float num3 = Vector3.Dot(forward, -Vector3.UnitZ);
+                float num4 = Vector3.Dot(forward, -Vector3.UnitX);
+                if (num == MathUtils.Max(num, num2, num3, num4)) {
+                    rotation = 2;
+                }
+                else if (num2 == MathUtils.Max(num, num2, num3, num4)) {
+                    rotation = 1;
+                }
+                else if (num3 == MathUtils.Max(num, num2, num3, num4)) {
+                    rotation = 0;
+                }
+                else if (num4 == MathUtils.Max(num, num2, num3, num4)) {
+                    rotation = 3;
+                }
+            }
+            int num5 = Terrain.ExtractData(value);
+            num5 &= -29;
+            num5 |= raycastResult.CellFace.Face << 2;
+            BlockPlacementData result = default;
+            result.Value = Terrain.MakeBlockValue(BlockIndex, 0, SetRotation(num5, rotation));
+            result.CellFace = raycastResult.CellFace;
+            return result;
+        }
+
+        public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) => GeneratePlacementData(subsystemTerrain, componentMiner, value, raycastResult);
 
 		public override BoundingBox[] GetCustomCollisionBoxes(SubsystemTerrain terrain, int value)
 		{
