@@ -1,0 +1,21 @@
+<CanvasWidget xmlns="runtime-namespace:Game">
+
+	<CanvasWidget Size="600, 240" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
+		<RectangleWidget Name="BackRect" FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2" />
+		<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="10, 10">
+			<LabelWidget Name="TextBoxDialog.Title"  Color="255, 255, 255" HorizontalAlignment="Center" Margin="0, 5"/>
+			<CanvasWidget Size="0, Infinity" />
+			<CanvasWidget Margin="10, 0">
+				<RectangleWidget Size="Infinity, 40" FillColor="0, 0, 0, 64" OutlineColor="64, 64, 64, 64"/>
+				<TextBoxWidget Name="TextBoxDialog.TextBox"  Color="255, 255, 255" Margin="4, 0" VerticalAlignment="Center" HorizontalAlignment="Stretch" />
+			</CanvasWidget>
+			<CanvasWidget Size="0, Infinity" />
+			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
+				<BevelledButtonWidget Name="TextBoxDialog.OkButton" Text="[TextBoxDialog:1]" Style="{Styles/ButtonStyle_160x60}" />
+				<CanvasWidget Size="40, 0" />
+				<BevelledButtonWidget Name="TextBoxDialog.CancelButton" Text="[TextBoxDialog:2]" Style="{Styles/ButtonStyle_160x60}" />
+			</StackPanelWidget>
+		</StackPanelWidget>
+	</CanvasWidget>
+
+</CanvasWidget>

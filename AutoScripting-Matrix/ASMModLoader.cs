@@ -26,13 +26,14 @@ namespace Game {
         public override void OnCameraChange(ComponentPlayer m_componentPlayer, ComponentGui componentGui) {
             GameWidget gameWidget = m_componentPlayer.GameWidget;
             int playerIndex = m_componentPlayer.PlayerData.PlayerIndex;
-            ASMComplexPerspectiveCamera camera = ASMPlayerCameraSetterManager.m_cameras[playerIndex];
+            ASMComplexPerspectiveCamera camera = ASMPlayerCameraSetterManager.m_cameras[playerIndex].Item3;
+            string name = ASMPlayerCameraSetterManager.m_cameras[playerIndex].Item1;
 
             if (gameWidget.ActiveCamera is FppCamera) {
                 if (!ASMPlayerCameraSetterManager.m_isCameraActive[playerIndex]) {
                     if (camera == null) return;
                     gameWidget.ActiveCamera = camera;
-                    componentGui.DisplaySmallMessage("矩阵摄像机", Color.White, blinking: false, playNotificationSound: false);
+                    componentGui.DisplaySmallMessage(name, Color.White, blinking: false, playNotificationSound: false);
                     ASMPlayerCameraSetterManager.m_isCameraActive[playerIndex] = true;
                 }
                 else {

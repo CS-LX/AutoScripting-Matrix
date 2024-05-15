@@ -455,6 +455,9 @@
 	  <None Update="Assets\Textures\Gui\ASMatrix_Night.webp">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Assets\Dialogs\ASMTextBoxDialog.xml">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 	<ItemGroup>
 	  <Reference Include="Engine">
