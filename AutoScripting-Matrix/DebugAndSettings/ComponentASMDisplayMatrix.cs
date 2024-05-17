@@ -22,11 +22,11 @@ namespace Game {
 
         public ASMatrixDisplayData m_singleDisplay;
 
-        public float Thickness => 0.006f * float.Parse(ASMSettingsManager.Get("DisplayConnectorMatrix.Thickness").ToString());
+        public float Thickness => 0.006f * ASMSettingsManager.Get<float>("DisplayConnectorMatrix.Thickness");
 
         public void Draw(Camera camera, int drawOrder) {
             HideDisplayMatrix();
-            if ((bool)ASMSettingsManager.Get("DisplayConnectorMatrix")
+            if (ASMSettingsManager.Get<bool>("DisplayConnectorMatrix")
                 && camera.GameWidget.PlayerData == m_componentPlayer.PlayerData
                 && drawOrder == DrawOrders[0]
                 && !camera.UsesMovementControls
@@ -117,7 +117,7 @@ namespace Game {
                         }
                         //绘制背面
                         //获取端口
-                        if ((bool)ASMSettingsManager.Get("DisplayConnectorMatrix.DisplayIn")) {
+                        if (ASMSettingsManager.Get<bool>("DisplayConnectorMatrix.DisplayIn")) {
                             int backFace = CellFace.OppositeFace(blockFace);
                             ASMElectricConnectorType? backConnectorType = mountedBlock.GetConnectorType(
                                 m_subsystemTerrain,

@@ -52,7 +52,7 @@ namespace Game {
                 m_collideBody.Velocity = Vector3.Transform(m_prepressVelocity_Body, velocityTransform);
                 SubsystemElectricity.SubsystemAudio.PlaySound(
                     "Audio/Throw",
-                    (float)ASMSettingsManager.Get("TPPlateVolume"),
+                    ASMSettingsManager.Get<float>("TPPlateVolume"),
                     0f,
                     position,
                     2.5f,
@@ -69,7 +69,7 @@ namespace Game {
                 m_worldItem.Velocity = Vector3.Transform(m_prepressVelocity_Item, velocityTransform);
                 SubsystemElectricity.SubsystemAudio.PlaySound(
                     "Audio/Throw",
-                    (float)ASMSettingsManager.Get("TPPlateVolume"),
+                    ASMSettingsManager.Get<float>("TPPlateVolume"),
                     0f,
                     position,
                     2.5f,

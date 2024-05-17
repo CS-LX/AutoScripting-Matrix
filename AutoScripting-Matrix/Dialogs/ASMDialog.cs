@@ -7,7 +7,7 @@ namespace Game {
             LoadContents(this, node);
             RectangleWidget backRect = Children.Find<RectangleWidget>("BackRect");
             if (backRect != null) {
-                backRect.IsVisible = (bool)ASMSettingsManager.Get("DisplayBackRect");
+                backRect.IsVisible = ASMSettingsManager.Get<bool>("DisplayBackRect");
             }
         }
     }

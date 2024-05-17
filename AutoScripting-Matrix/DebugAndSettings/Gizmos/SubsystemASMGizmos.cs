@@ -27,7 +27,7 @@ namespace Game {
         Point3[] m_ignoredPoints;
 
         public void Draw(Camera camera, int drawOrder) {
-            if(!(bool)ASMSettingsManager.Get("GizmosEnable")) return;
+            if(!ASMSettingsManager.Get<bool>("GizmosEnable")) return;
             foreach (var element in m_subsystemASMElectricity.m_electricElements) {
                 if (element.Key is IASMGizmo elementGizmos && !m_ignoredGizmos.Keys.Contains(elementGizmos)) {
                     elementGizmos.GizmosDraw(m_normalBatch);

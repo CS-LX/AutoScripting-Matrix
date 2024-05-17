@@ -22,9 +22,9 @@ namespace Game {
             m_displayConnectorMatrix = Children.Find<BevelledButtonWidget>("DisplayConnectorMatrix");
             m_displayConnectorMatrix_DisplayIn = Children.Find<BevelledButtonWidget>("DisplayConnectorMatrix.DisplayIn");
             m_displayConnectorMatrix_Thickness = Children.Find<SliderWidget>("DisplayConnectorMatrix.Thickness");
-            m_displayConnectorMatrix_Thickness.Value = float.Parse(ASMSettingsManager.Get("DisplayConnectorMatrix.Thickness").ToString());
+            m_displayConnectorMatrix_Thickness.Value = ASMSettingsManager.Get<float>("DisplayConnectorMatrix.Thickness");
             m_tpPlateVolume = Children.Find<SliderWidget>("TPPlateVolume");
-            m_tpPlateVolume.Value = float.Parse(ASMSettingsManager.Get("TPPlateVolume").ToString());
+            m_tpPlateVolume.Value = ASMSettingsManager.Get<float>("TPPlateVolume");
         }
 
         public override void Update() {
@@ -48,7 +48,7 @@ namespace Game {
         }
 
         private void BoolDescriptor(string settingName, ButtonWidget button, string trueText = "是", string falseText = "否") {
-            bool flag = (bool)ASMSettingsManager.Get(settingName);
+            bool flag = ASMSettingsManager.Get<bool>(settingName);
             button.Text = flag ? trueText : falseText;
             if(button.IsClicked) ASMSettingsManager.Set(settingName, !flag);
         }
