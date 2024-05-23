@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Xml.Linq;
 using Engine;
+using NCalc;
 
 namespace Game {
     public class EditASMatrixDialog : ASMDialog {
@@ -50,17 +51,24 @@ namespace Game {
 			}
 		}
 
-		public bool InputToMatrix(out Matrix m) {
+		public bool InputToMatrix(out Matrix m, out int errorIndex, out Exception error) {
 			bool success = true;
 			Matrix result = Matrix.Zero;
+            errorIndex = -1;
+            error = null;
 			for (int i = 0; i < 16; i++) {
-				if (float.TryParse(inputValues[i].Text, out float elementValue)) {
-					ASMStaticMethods.SetElement(ref result, i, elementValue);
-				}
-				else {
-					m = Matrix.Zero;
-					return false;
-				}
+                try {
+                    Expression exp = new(inputValues[i].Text);
+                    Func<float> calculator = exp.ToLambda<float>();
+                    float res = calculator();
+                    ASMStaticMethods.SetElement(ref result, i, res);
+                }
+                catch (Exception e) {
+                    error = e;
+                    errorIndex = i;
+                    m = Matrix.Zero;
+                    return false;
+                }
 			}
 			m = result;
 			return success;
@@ -69,7 +77,8 @@ namespace Game {
 		public void Dismiss(bool canInvoke)
 		{
 			if (canInvoke) {
-				if (InputToMatrix(out Matrix newData)) {
+                bool illegal = !InputToMatrix(out Matrix newData, out int errorIndex, out Exception error);
+				if (!illegal) {
 					if (newData != dataMatrix) {
 						dataMatrix = newData;
 						callBack.Invoke(dataMatrix);
@@ -77,7 +86,7 @@ namespace Game {
 					DialogsManager.HideDialog(this);
 				}
 				else {
-					DialogsManager.ShowDialog(this, new MessageDialog("错误", "矩阵元素值必须为浮点数", null, "确定", null));
+					DialogsManager.ShowDialog(this, new MessageDialog("错误", $"输入框{errorIndex}表达式错误: \r\n{error.Message}", null, "确定", null));
 				}
 			}
 			else {
