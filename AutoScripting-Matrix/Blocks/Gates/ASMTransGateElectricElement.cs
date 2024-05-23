@@ -68,6 +68,8 @@ namespace Game {
                     break;
                 case 17: m_voltage = new Matrix { M11 = input.Determinant() };
                     break;
+                case 18: m_voltage = new Matrix { M11 = ASMStaticMethods.Pythagorean(input) };
+                    break;
             }
 
             return m_voltage != voltage;

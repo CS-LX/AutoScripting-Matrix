@@ -437,6 +437,19 @@ namespace Game {
             return m;
         }
 
+        /// <summary>
+        /// 平方开放
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
+        public static float Pythagorean(Matrix x) {
+            float res = 0;
+            for (int i = 0; i < 16; i++) {
+                res += x.GetElement(i) * x.GetElement(i);
+            }
+            return MathF.Sqrt(res);
+        }
+
         public static Matrix CreateScaleTranslation(float sx, float sy, float tx, float ty) {
             return new Matrix(
                 sx,

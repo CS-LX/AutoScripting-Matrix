@@ -27,6 +27,7 @@ namespace Game
             new CalcGateInfo("矩阵反余弦", "依据点对点计算，将输入矩阵内所有元素求反余弦值。（使用弧度制）", "ASMAcos", true),
             new CalcGateInfo("矩阵反正切", "依据点对点计算，将输入矩阵内所有元素求反正切值。（使用弧度制）", "ASMAtan", true),
             new CalcGateInfo("矩阵求行列式", "求输入矩阵的行列式，输出浮点数。", "ASMDeterminantor"),
+            new CalcGateInfo("矩阵平方开方器", "", "ASMPythagorean"),
         ];
 
         public Texture2D[] textures;
