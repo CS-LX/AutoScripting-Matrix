@@ -34,7 +34,7 @@ namespace Game {
         public int m_face;
 
         //绘制所需
-        public PrimitivesRenderer3D m_primitivesRenderer = new PrimitivesRenderer3D();
+        public ASMPortalPrimitivesRenderere3D m_primitivesRenderer = new ASMPortalPrimitivesRenderere3D();
 
         public ASMPortal m_portal1;
 
@@ -44,7 +44,7 @@ namespace Game {
 
         public Vector3 m_cam2Translation;
 
-        public int m_screenUVSubdivision = 24;
+        public int m_screenUVSubdivision = 1;
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap) {
             base.Load(valuesDictionary, idToEntityMap);

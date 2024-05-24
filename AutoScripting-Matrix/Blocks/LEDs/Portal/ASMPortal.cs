@@ -61,7 +61,7 @@ namespace Game {
 
         public void SetTransformMatrix(Matrix transformMatrix) => m_transformMatrix = transformMatrix;
 
-        public void DrawView(PrimitivesRenderer3D primitivesRenderer3D) {
+        public void DrawView(ASMPortalPrimitivesRenderere3D primitivesRenderer3D) {
             if (LinkedPortal == null) return;
             if (!LinkedPortal.m_visible) return;
             m_camera.PrepareForDrawing();
@@ -89,7 +89,7 @@ namespace Game {
             }
         }
 
-        public void DrawPortal(PrimitivesRenderer3D primitivesRenderer3D, Camera camera) {
+        public void DrawPortal(ASMPortalPrimitivesRenderere3D primitivesRenderer3D, Camera camera) {
             if (LinkedPortal == null) return;
             if (camera == m_camera)
                 return;
@@ -300,28 +300,12 @@ namespace Game {
             }
         }
 
-        public void DrawScreen(PrimitivesRenderer3D primitivesRenderer3D, Camera camera) {
-                        //传送门1
-            for (int i = 0; i < m_screenUVSubdivision; i++) {
-                for (int j = 0; j < m_screenUVSubdivision; j++) {
-                    float length = 1 / (float)m_screenUVSubdivision;
-                    Vector3 wp1 = Vector3.Transform(new Vector3(length * i - 0.5f, m_offsetY, length * j - 0.5f), m_transformMatrix);
-                    Vector3 wp2 = Vector3.Transform(new Vector3(length * (i + 1) - 0.5f, m_offsetY, length * j - 0.5f), m_transformMatrix);
-                    Vector3 wp3 = Vector3.Transform(new Vector3(length * (i + 1) - 0.5f, m_offsetY, length * (j + 1) - 0.5f), m_transformMatrix);
-                    Vector3 wp4 = Vector3.Transform(new Vector3(length * i - 0.5f, m_offsetY, length * (j + 1) - 0.5f), m_transformMatrix);
-                    if (!IsInPlayerFrustum(camera, wp1, wp2, wp3, wp4)) continue;
-                    Vector3 sp1 = camera.WorldToScreen(wp1, Matrix.Identity);
-                    Vector3 sp2 = camera.WorldToScreen(wp2, Matrix.Identity);
-                    Vector3 sp3 = camera.WorldToScreen(wp3, Matrix.Identity);
-                    Vector3 sp4 = camera.WorldToScreen(wp4, Matrix.Identity);
-                    Vector2 sp11 = new Vector2(sp1.X, sp1.Y);
-                    Vector2 sp21 = new Vector2(sp2.X, sp2.Y);
-                    Vector2 sp31 = new Vector2(sp3.X, sp3.Y);
-                    Vector2 sp41 = new Vector2(sp4.X, sp4.Y);
-                    sp11 = new Vector2(sp11.X / camera.ViewportSize.X, sp11.Y / camera.ViewportSize.Y);
-                    sp21 = new Vector2(sp21.X / camera.ViewportSize.X, sp21.Y / camera.ViewportSize.Y);
-                    sp31 = new Vector2(sp31.X / camera.ViewportSize.X, sp31.Y / camera.ViewportSize.Y);
-                    sp41 = new Vector2(sp41.X / camera.ViewportSize.X, sp41.Y / camera.ViewportSize.Y);
+        public void DrawScreen(ASMPortalPrimitivesRenderere3D primitivesRenderer3D, Camera camera) {
+            Vector3 wp1 = Vector3.Transform(new Vector3(0 - 0.5f, m_offsetY, 0 - 0.5f), m_transformMatrix);
+            Vector3 wp2 = Vector3.Transform(new Vector3(1 - 0.5f, m_offsetY, 0 - 0.5f), m_transformMatrix);
+            Vector3 wp3 = Vector3.Transform(new Vector3(1 - 0.5f, m_offsetY, 1 - 0.5f), m_transformMatrix);
+            Vector3 wp4 = Vector3.Transform(new Vector3(0 - 0.5f, m_offsetY, 1 - 0.5f), m_transformMatrix);
+
                     primitivesRenderer3D.TexturedBatch(
                             LinkedPortal.m_camera.ViewTexture, //传送门1显示传送门2对应的摄像机的画面
                             useAlphaTest: true,
@@ -336,14 +320,12 @@ namespace Game {
                             wp2,
                             wp3,
                             wp4,
-                            sp11,
-                            sp21,
-                            sp31,
-                            sp41,
+                            Vector2.Zero,
+                            Vector2.UnitX,
+                            Vector2.One,
+                            Vector2.UnitY,
                             Color.White
                         );
-                }
-            }
         }
 
         public void Dispose() {
