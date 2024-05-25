@@ -1,3 +1,4 @@
+using Engine;
 using Engine.Graphics;
 using Engine.Media;
 
@@ -28,6 +29,5 @@ namespace Game {
             samplerState = samplerState ?? SamplerState.LinearClamp;
             return FindFontBatch(font, layer, depthStencilState, rasterizerState, blendState, samplerState);
         }
-
     }
 }

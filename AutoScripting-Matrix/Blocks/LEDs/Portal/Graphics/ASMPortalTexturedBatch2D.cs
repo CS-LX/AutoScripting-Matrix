@@ -5,30 +5,6 @@ namespace Game {
     public class ASMPortalTexturedBatch3D : TexturedBatch3D {
         public new static ASMPortalShader Shader = new();
 
-        public void Flush() {
-            Display.Clear(Color.Black);
-            Display.DepthStencilState = DepthStencilState;
-            Display.RasterizerState = RasterizerState;
-            Display.BlendState = BlendState;
-            Shader.TextureSize = new Vector2(Texture.Width, Texture.Height);
-            Shader.Texture = Texture;
-            Shader.SamplerState = SamplerState;
-            Matrix matrix = PrimitivesRenderer2D.ViewportMatrix();
-            Shader.Transforms.World[0] = matrix;
-            Display.DrawUserIndexed(
-                PrimitiveType.TriangleList,
-                Shader,
-                VertexPositionColorTexture.VertexDeclaration,
-                TriangleVertices.Array,
-                0,
-                TriangleVertices.Count,
-                TriangleIndices.Array,
-                0,
-                TriangleIndices.Count
-            );
-            Clear();
-        }
-
         public override void Flush(Matrix matrix, bool clearAfterFlush = true) {
             Display.DepthStencilState = base.DepthStencilState;
             Display.RasterizerState = base.RasterizerState;
@@ -41,6 +17,12 @@ namespace Game {
             Shader.SamplerState = samplerState;
             Shader.Transforms.World[0] = matrix;
             FlushWithCurrentStateAndShader(Shader, clearAfterFlush);
+        }
+
+        public void SetPortalFrame(float thickness, float width, float height) {
+            Shader.m_frameThickness.SetValue(thickness);
+            Shader.m_frameWidth.SetValue(width);
+            Shader.m_frameHeight.SetValue(height);
         }
     }
 }

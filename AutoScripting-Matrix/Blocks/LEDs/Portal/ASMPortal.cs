@@ -306,26 +306,29 @@ namespace Game {
             Vector3 wp3 = Vector3.Transform(new Vector3(1 - 0.5f, m_offsetY, 1 - 0.5f), m_transformMatrix);
             Vector3 wp4 = Vector3.Transform(new Vector3(0 - 0.5f, m_offsetY, 1 - 0.5f), m_transformMatrix);
 
-                    primitivesRenderer3D.TexturedBatch(
-                            LinkedPortal.m_camera.ViewTexture, //传送门1显示传送门2对应的摄像机的画面
-                            useAlphaTest: true,
-                            0,
-                            null,
-                            RasterizerState.CullNone,
-                            null,
-                            SamplerState.LinearWrap
-                        )
-                        .QueueQuad(
-                            wp1,
-                            wp2,
-                            wp3,
-                            wp4,
-                            Vector2.Zero,
-                            Vector2.UnitX,
-                            Vector2.One,
-                            Vector2.UnitY,
-                            Color.White
-                        );
+            ASMPortalTexturedBatch3D texturedBatch3D = primitivesRenderer3D.TexturedBatch(
+                LinkedPortal.m_camera.ViewTexture, //传送门1显示传送门2对应的摄像机的画面
+                useAlphaTest: true,
+                0,
+                null,
+                RasterizerState.CullNone,
+                null,
+                SamplerState.LinearWrap
+            );
+
+            texturedBatch3D.SetPortalFrame(1, (wp1 - wp2).Length(), (wp1 - wp4).Length());
+
+            texturedBatch3D.QueueQuad(
+                wp1,
+                wp2,
+                wp3,
+                wp4,
+                Vector2.Zero,
+                Vector2.UnitX,
+                Vector2.One,
+                Vector2.UnitY,
+                Color.White
+            );
         }
 
         public void Dispose() {

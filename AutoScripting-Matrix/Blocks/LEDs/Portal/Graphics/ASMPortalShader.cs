@@ -10,6 +10,10 @@ namespace Game {
         public ShaderParameter m_textureParameter;
         public ShaderParameter m_samplerStateParameter;
 
+        public ShaderParameter m_frameThickness;
+        public ShaderParameter m_frameWidth;
+        public ShaderParameter m_frameHeight;
+
         public readonly ShaderTransforms Transforms;
 
         public bool Horizontal {
@@ -35,6 +39,9 @@ namespace Game {
             m_textureParameter = GetParameter("u_texture", true);
             m_samplerStateParameter = GetParameter("u_samplerState", true);
             Transforms = new ShaderTransforms(1);
+            m_frameThickness = GetParameter("u_frameThickness");
+            m_frameWidth = GetParameter("u_frameWidth");
+            m_frameHeight = GetParameter("u_frameHeight");
         }
 
         public override void PrepareForDrawingOverride() {
