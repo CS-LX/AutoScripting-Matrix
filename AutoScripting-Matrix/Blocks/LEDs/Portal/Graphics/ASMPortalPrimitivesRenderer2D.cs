@@ -2,7 +2,7 @@ using Engine.Graphics;
 using Engine.Media;
 
 namespace Game {
-    public class ASMPortalPrimitivesRenderere3D : ASMBasePrimitivesRenderer<FlatBatch3D, ASMPortalTexturedBatch3D, FontBatch3D> {
+    public class ASMPortalPrimitivesRenderere3D : BasePrimitivesRenderer<FlatBatch3D, ASMPortalTexturedBatch3D, FontBatch3D> {
         public FlatBatch3D FlatBatch(int layer = 0, DepthStencilState depthStencilState = null, RasterizerState rasterizerState = null, BlendState blendState = null)
         {
             depthStencilState = depthStencilState ?? DepthStencilState.Default;
