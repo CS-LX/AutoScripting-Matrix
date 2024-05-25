@@ -13,6 +13,7 @@ namespace Game {
         public ShaderParameter m_frameThickness;
         public ShaderParameter m_frameWidth;
         public ShaderParameter m_frameHeight;
+        public ShaderParameter m_frameColor;
 
         public readonly ShaderTransforms Transforms;
 
@@ -42,6 +43,7 @@ namespace Game {
             m_frameThickness = GetParameter("u_frameThickness");
             m_frameWidth = GetParameter("u_frameWidth");
             m_frameHeight = GetParameter("u_frameHeight");
+            m_frameColor = GetParameter("u_frameColor");
         }
 
         public override void PrepareForDrawingOverride() {

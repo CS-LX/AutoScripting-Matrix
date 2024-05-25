@@ -18,6 +18,8 @@ namespace Game {
         public bool m_visible = true;
         public bool m_autoAntiClipping = true;//自动防止闪烁
         public float m_offsetY = 0;
+        public float m_frameThickness = 0;
+        public Color m_frameColor;
 
         public readonly Project Project;
 
@@ -316,7 +318,7 @@ namespace Game {
                 SamplerState.LinearWrap
             );
 
-            texturedBatch3D.SetPortalFrame(1, (wp1 - wp2).Length(), (wp1 - wp4).Length());
+            texturedBatch3D.SetPortalFrame(m_frameThickness, (wp1 - wp2).Length(), (wp1 - wp4).Length(), m_frameColor);
 
             texturedBatch3D.QueueQuad(
                 wp1,

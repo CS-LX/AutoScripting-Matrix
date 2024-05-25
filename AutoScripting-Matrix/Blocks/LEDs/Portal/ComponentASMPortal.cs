@@ -191,6 +191,12 @@ namespace Game {
 
             m_portal1.m_autoAntiClipping = m_portalElectricElement.GetControl1().M12 > 0;
             m_portal2.m_autoAntiClipping = m_portalElectricElement.GetControl2().M12 > 0;
+
+            m_portal1.m_frameThickness = m_portalElectricElement.GetControl1().M13;
+            m_portal2.m_frameThickness = m_portalElectricElement.GetControl2().M13;
+
+            m_portal1.m_frameColor = new Color(m_portalElectricElement.GetControl1().M21, m_portalElectricElement.GetControl1().M22, m_portalElectricElement.GetControl1().M23);
+            m_portal2.m_frameColor = new Color(m_portalElectricElement.GetControl2().M21, m_portalElectricElement.GetControl2().M22, m_portalElectricElement.GetControl2().M23);
         }
 
         public ComponentPlayer FindInteractingPlayer() {

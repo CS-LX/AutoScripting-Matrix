@@ -19,10 +19,11 @@ namespace Game {
             FlushWithCurrentStateAndShader(Shader, clearAfterFlush);
         }
 
-        public void SetPortalFrame(float thickness, float width, float height) {
+        public void SetPortalFrame(float thickness, float width, float height, Color color) {
             Shader.m_frameThickness.SetValue(thickness);
             Shader.m_frameWidth.SetValue(width);
             Shader.m_frameHeight.SetValue(height);
+            Shader.m_frameColor.SetValue(new Vector3(color));
         }
     }
 }
