@@ -11,15 +11,32 @@ varying vec2 v_texcoord;
 varying mat4 v_worldViewProjectionMatrix;
 varying vec3 v_position;
 
+uniform float u_frameThickness;
+uniform float u_frameWidth;
+uniform float u_frameHeight;
+
 void main()
 {
     vec4 clipSpacePos = v_worldViewProjectionMatrix * vec4(v_position.xyz, 1.0);
 
     vec3 ndc = clipSpacePos.xyz / clipSpacePos.w;
     vec2 ScreenCoord = ndc.xy * 0.5 + 0.5;
-    ScreenCoord = vec2(ScreenCoord.x, 1 - ScreenCoord.y);
+    ScreenCoord = vec2(ScreenCoord.x, 1.0 - ScreenCoord.y);
 
-    gl_FragColor = texture2D(u_texture, ScreenCoord);
+    //frame
+    float frameThicknessU = u_frameThickness / u_frameWidth;
+    float frameThicknessV = u_frameThickness / u_frameHeight;
+
+    vec4 textureColor = texture2D(u_texture, ScreenCoord);
+
+    float borderFactorU = smoothstep(0.0, frameThicknessU, v_texcoord.x) * smoothstep(1.0, 1.0 - frameThicknessU, v_texcoord.x);
+    float borderFactorV = smoothstep(0.0, frameThicknessV, v_texcoord.y) * smoothstep(1.0, 1.0 - frameThicknessV, v_texcoord.y);
+    float borderFactor = min(borderFactorU, borderFactorV);
+
+    vec4 borderColor = vec4(1.0, 0.5, 0.0, 1.0) * (1.0 - borderFactor);
+    vec4 finalColor = mix(borderColor, textureColor, borderFactor);
+
+    gl_FragColor = finalColor;
 }
 
 #endif
