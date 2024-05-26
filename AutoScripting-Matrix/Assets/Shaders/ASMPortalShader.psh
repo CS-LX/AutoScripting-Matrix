@@ -1,20 +1,22 @@
+#version 300 es
 #ifdef GLSL
 
 // <Sampler Name='u_samplerState' Texture='u_texture' />
 
-#ifdef GL_ES
-precision mediump float;
-#endif
+precision highp float;
+precision highp sampler2D;
 
 uniform sampler2D u_texture;
-varying vec2 v_texcoord;
-varying mat4 v_worldViewProjectionMatrix;
-varying vec3 v_position;
+in vec2 v_texcoord;
+in mat4 v_worldViewProjectionMatrix;
+in vec3 v_position;
 
 uniform float u_frameThickness;
 uniform float u_frameWidth;
 uniform float u_frameHeight;
 uniform vec3 u_frameColor;
+
+out vec4 fragColor;
 
 void main()
 {
@@ -28,16 +30,16 @@ void main()
     float frameThicknessU = u_frameThickness / u_frameWidth;
     float frameThicknessV = u_frameThickness / u_frameHeight;
 
-    vec4 textureColor = texture2D(u_texture, ScreenCoord);
+    vec4 textureColor = texture(u_texture, ScreenCoord);
 
     float borderFactorU = smoothstep(0.0, frameThicknessU, v_texcoord.x) * smoothstep(1.0, 1.0 - frameThicknessU, v_texcoord.x);
     float borderFactorV = smoothstep(0.0, frameThicknessV, v_texcoord.y) * smoothstep(1.0, 1.0 - frameThicknessV, v_texcoord.y);
     float borderFactor = min(borderFactorU, borderFactorV);
 
     vec4 borderColor = vec4(u_frameColor, 1.0) * (1.0 - borderFactor);
-    vec4 finalColor = u_frameThickness == 0 ? textureColor : mix(borderColor, textureColor, borderFactor);
+    vec4 finalColor = u_frameThickness == 0.0 ? textureColor : mix(borderColor, textureColor, borderFactor);
 
-    gl_FragColor = finalColor;
+    fragColor = finalColor;
 }
 
 #endif
