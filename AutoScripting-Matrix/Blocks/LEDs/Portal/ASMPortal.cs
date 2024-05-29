@@ -96,6 +96,7 @@ namespace Game {
             if (camera == m_camera)
                 return;
             if(m_visible) DrawScreen(primitivesRenderer3D, camera);
+            //if (m_visible) SetClipPlane();//设置近裁剪平面
             //传送逻辑
             if(m_teleportEnable) UpdateTeleport();
             if(m_visible) UpdateOffsetY();
@@ -413,6 +414,31 @@ namespace Game {
                 }
             }
             return pickables;
+        }
+
+        private void SetClipPlane() {
+            Matrix clipPlane = m_transformMatrix;
+            Matrix cameraTransform = m_camera.ViewMatrix.Invert();
+            Matrix worldToCameraMatrix = cameraTransform.Invert();
+            int dot = Math.Sign(Vector3.Dot(clipPlane.Forward, m_transformMatrix.Translation - cameraTransform.Translation));
+
+            Vector3 camSpacePos = worldToCameraMatrix.MultiplyPoint(clipPlane.Translation);
+            Vector3 camSpaceNormal = worldToCameraMatrix.MultiplyVector(clipPlane.Forward) * dot;
+            float camSpaceDst = -Vector3.Dot(camSpacePos, camSpaceNormal);
+            Vector4 clipPlaneCameraSpace = new(camSpaceNormal, camSpaceDst);
+
+            m_camera.m_projectionMatrix = CalculateObliqueMatrix(m_player.GameWidget.ActiveCamera.ProjectionMatrix, clipPlaneCameraSpace);
+        }
+
+        private Matrix CalculateObliqueMatrix(Matrix projection, Vector4 clipPlane) {
+            Vector4 q = Vector4.Transform(new Vector4(Math.Sign(clipPlane.X), Math.Sign(clipPlane.Y), 1.0f, 1.0f), projection.Invert());
+            Vector4 c = clipPlane * (2.0f / (Vector4.Dot(clipPlane, q)));
+            // 替换第三行
+            projection.M13 = c.X - projection.M14;
+            projection.M23 = c.Y - projection.M24;
+            projection.M33 = c.Z - projection.M34;
+            projection.M43 = c.W - projection.M44;
+            return projection;
         }
     }
 }

@@ -583,5 +583,13 @@ namespace Game {
             int z = (int)float.Parse(s.Split(',')[2]);
             return new Point3(x, y, z);
         }
+
+        public static Vector3 MultiplyPoint(this Matrix m, Vector3 v) => Vector3.Transform(v, m);
+
+        public static Vector3 MultiplyVector(this Matrix m, Vector3 v) {
+            Matrix n = m;
+            n.Translation = new(0, 0, 0);
+            return Vector3.Transform(v, n);
+        }
     }
 }
