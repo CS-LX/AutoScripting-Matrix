@@ -63,7 +63,7 @@ namespace Game {
 
         public void SetTransformMatrix(Matrix transformMatrix) => m_transformMatrix = transformMatrix;
 
-        public void DrawView(ASMPortalPrimitivesRenderere3D primitivesRenderer3D) {
+        public void DrawView(ASMPortalTexturedBatch3D batch3D) {
             if (LinkedPortal == null) return;
             if (!LinkedPortal.m_visible) return;
             m_camera.PrepareForDrawing();
@@ -91,11 +91,11 @@ namespace Game {
             }
         }
 
-        public void DrawPortal(ASMPortalPrimitivesRenderere3D primitivesRenderer3D, Camera camera) {
+        public void DrawPortal(ASMPortalTexturedBatch3D batch3D, Camera camera) {
             if (LinkedPortal == null) return;
             if (camera == m_camera)
                 return;
-            if(m_visible) DrawScreen(primitivesRenderer3D, camera);
+            if(m_visible) DrawScreen(batch3D, camera);
             //if (m_visible) SetClipPlane();//设置近裁剪平面
             //传送逻辑
             if(m_teleportEnable) UpdateTeleport();
@@ -303,25 +303,15 @@ namespace Game {
             }
         }
 
-        public void DrawScreen(ASMPortalPrimitivesRenderere3D primitivesRenderer3D, Camera camera) {
+        public void DrawScreen(ASMPortalTexturedBatch3D batch3D, Camera camera) {
             Vector3 wp1 = Vector3.Transform(new Vector3(0 - 0.5f, m_offsetY, 0 - 0.5f), m_transformMatrix);
             Vector3 wp2 = Vector3.Transform(new Vector3(1 - 0.5f, m_offsetY, 0 - 0.5f), m_transformMatrix);
             Vector3 wp3 = Vector3.Transform(new Vector3(1 - 0.5f, m_offsetY, 1 - 0.5f), m_transformMatrix);
             Vector3 wp4 = Vector3.Transform(new Vector3(0 - 0.5f, m_offsetY, 1 - 0.5f), m_transformMatrix);
 
-            ASMPortalTexturedBatch3D texturedBatch3D = primitivesRenderer3D.TexturedBatch(
-                LinkedPortal.m_camera.ViewTexture, //传送门1显示传送门2对应的摄像机的画面
-                useAlphaTest: true,
-                0,
-                null,
-                RasterizerState.CullNone,
-                null,
-                SamplerState.LinearWrap
-            );
-
-            texturedBatch3D.SetPortalFrame(m_frameThickness, (wp1 - wp2).Length(), (wp1 - wp4).Length(), m_frameColor);
-
-            texturedBatch3D.QueueQuad(
+            batch3D.SetPortalFrame(m_frameThickness, (wp1 - wp2).Length(), (wp1 - wp4).Length(), m_frameColor);
+            batch3D.Texture = LinkedPortal.m_camera.ViewTexture;
+            batch3D.QueueQuad(
                 wp1,
                 wp2,
                 wp3,

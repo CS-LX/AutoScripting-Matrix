@@ -34,7 +34,9 @@ namespace Game {
         public int m_face;
 
         //绘制所需
-        public ASMPortalPrimitivesRenderere3D m_primitivesRenderer = new ASMPortalPrimitivesRenderere3D();
+        public ASMPortalTexturedBatch3D m_batch1;
+
+        public ASMPortalTexturedBatch3D m_batch2;
 
         public ASMPortal m_portal1;
 
@@ -55,6 +57,23 @@ namespace Game {
             m_subsystemSky = Project.FindSubsystem<SubsystemSky>(true);
             m_subsystemCameraGameWidgets = base.Project.FindSubsystem<SubsystemASMCamerasGameWidgets>(true);
             m_componentEntity = Entity.FindComponent<ComponentBlockEntity>(true);
+
+            m_batch1 = new ASMPortalTexturedBatch3D() {
+                UseAlphaTest = true,
+                Layer = 0,
+                DepthStencilState = DepthStencilState.Default,
+                BlendState = BlendState.AlphaBlend,
+                RasterizerState = RasterizerState.CullNone,
+                SamplerState = SamplerState.LinearWrap
+            };
+            m_batch2 = new ASMPortalTexturedBatch3D() {
+                UseAlphaTest = true,
+                Layer = 0,
+                DepthStencilState = DepthStencilState.Default,
+                BlendState = BlendState.AlphaBlend,
+                RasterizerState = RasterizerState.CullNone,
+                SamplerState = SamplerState.LinearWrap
+            };
         }
 
         public override void OnEntityRemoved() {
@@ -132,8 +151,8 @@ namespace Game {
                 m_portal2.Update(dt);
 
                 if (m_subsystemTerrain.TerrainRenderer.m_chunksToDraw.Count > 0) {
-                    m_portal1.DrawView(m_primitivesRenderer);
-                    m_portal2.DrawView(m_primitivesRenderer);
+                    m_portal1.DrawView(m_batch1);
+                    m_portal2.DrawView(m_batch2);
                 }
             }
         }
@@ -144,9 +163,10 @@ namespace Game {
                 || m_portal2 == null
                 || m_portalElectricElement == null)
                 return;
-            m_portal1.DrawPortal(m_primitivesRenderer, camera);
-            m_portal2.DrawPortal(m_primitivesRenderer, camera);
-            m_primitivesRenderer.Flush(camera.ViewProjectionMatrix);
+            m_portal1.DrawPortal(m_batch1, camera);
+            m_portal2.DrawPortal(m_batch2, camera);
+            m_batch1.Flush(camera.ViewProjectionMatrix);
+            m_batch2.Flush(camera.ViewProjectionMatrix);
         }
 
         public void UpdateControl() {
