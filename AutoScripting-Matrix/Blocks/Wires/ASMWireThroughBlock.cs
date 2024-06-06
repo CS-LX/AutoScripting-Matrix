@@ -2,7 +2,7 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class ASMWireThroughBlock : GenerateASMWireVerticesBlock, IASMElectricWireElementBlock, IASMElectricElementBlock {
+    public class ASMWireThroughBlock : ASMElectricBaseBlock, IASMElectricWireElementBlock, IASMElectricElementBlock {
         public const int Index = 614;
 
         public Texture2D m_texture;
@@ -80,7 +80,7 @@ namespace Game {
 
         public override string GetCategory(int value) => SubsystemASMManager.CategoryName;
 
-        public override string GetDescription(int value) => Infos[GetType(Terrain.ExtractData(value))].Description;
+        public override string MainDescription(int value) => Infos[GetType(Terrain.ExtractData(value))].Description;
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => Infos[GetType(Terrain.ExtractData(value))].Name;
 

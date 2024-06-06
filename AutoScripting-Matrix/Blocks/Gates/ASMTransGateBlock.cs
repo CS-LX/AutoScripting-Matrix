@@ -26,7 +26,7 @@ namespace Game
             new CalcGateInfo("矩阵反正弦", "依据点对点计算，将输入矩阵内所有元素求反正弦值。（使用弧度制）", "ASMAsin", true),
             new CalcGateInfo("矩阵反余弦", "依据点对点计算，将输入矩阵内所有元素求反余弦值。（使用弧度制）", "ASMAcos", true),
             new CalcGateInfo("矩阵反正切", "依据点对点计算，将输入矩阵内所有元素求反正切值。（使用弧度制）", "ASMAtan", true),
-            new CalcGateInfo("矩阵求行列式", "求输入矩阵的行列式，输出浮点数。", "ASMDeterminantor"),
+            new CalcGateInfo("矩阵求行列式", "求输入矩阵的行列式，输出浮点数。", "ASMDeterminantor", extraDesc: "一个三行四列的行列式怎么算？"),
             new CalcGateInfo("矩阵平方开方器", "将矩阵内所有元素的平方和再进行开方，最终输出。（即勾股定理，只不过有16个项）", "ASMPythagorean"),
         ];
 
@@ -60,7 +60,9 @@ namespace Game
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => Infos[GetType(Terrain.ExtractData(value))].DisplayName + (Infos[GetType(Terrain.ExtractData(value))].IsPointToPoint ? "(点对点)" : string.Empty);
 
-        public override string GetDescription(int value) => Infos[GetType(Terrain.ExtractData(value))].Description;
+        public override string MainDescription(int value) => Infos[GetType(Terrain.ExtractData(value))].Description;
+
+        public override string ExtraDescription(int value) => Infos[GetType(Terrain.ExtractData(value))].ExtraDescription;
 
         public override IEnumerable<int> GetCreativeValues() {
             for (int i = 0; i < Infos.Length; i++) {

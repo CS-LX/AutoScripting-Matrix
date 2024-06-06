@@ -57,7 +57,7 @@ namespace Game
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => Infos[GetType(Terrain.ExtractData(value))].DisplayName;
 
-        public override string GetDescription(int value) => Infos[GetType(Terrain.ExtractData(value))].Description;
+        public override string MainDescription(int value) => Infos[GetType(Terrain.ExtractData(value))].Description;
 
         public override float GetIconViewScale(int value, DrawBlockEnvironmentData environmentData) => Infos[GetType(Terrain.ExtractData(value))].IsLarger ? 1 : 1.2f;
 

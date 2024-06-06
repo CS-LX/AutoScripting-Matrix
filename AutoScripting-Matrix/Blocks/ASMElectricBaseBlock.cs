@@ -2,7 +2,7 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public abstract class GenerateASMWireVerticesBlock : Block
+    public abstract class ASMElectricBaseBlock : Block
     {
         public readonly DynamicArray<ASMElectricConnectionPath> m_ASMtmpConnectionPaths = [];
 
@@ -165,9 +165,31 @@ namespace Game {
 
 		public override string GetCategory(int value) => SubsystemASMManager.CategoryName;
 
-		public override BlockDebrisParticleSystem CreateDebrisParticleSystem(SubsystemTerrain subsystemTerrain, Vector3 position, int value, float strength)
-		{
-			return new ASMBlockDebrisParticleSystem(subsystemTerrain, position, strength, DestructionDebrisScale, Color.White, 0, ContentManager.Get<Texture2D>("Textures/ASMGeBlock"), 1);
-		}
+        public override BlockDebrisParticleSystem CreateDebrisParticleSystem(SubsystemTerrain subsystemTerrain, Vector3 position, int value, float strength) {
+            return new ASMBlockDebrisParticleSystem(
+                subsystemTerrain,
+                position,
+                strength,
+                DestructionDebrisScale,
+                Color.White,
+                0,
+                ContentManager.Get<Texture2D>("Textures/ASMGeBlock"),
+                1
+            );
+        }
+
+        public override string GetDescription(int value) {
+            string desc = MainDescription(value);
+            string extraDesc = ExtraDescription(value);
+            if (extraDesc.Length > 0) {
+                desc += "\r\n\r\n";
+                desc += $"「 {extraDesc}」";
+            }
+            return desc;
+        }
+
+        public virtual string MainDescription(int value) => string.Empty;
+
+        public virtual string ExtraDescription(int value) => string.Empty;
     }
 }

@@ -49,7 +49,9 @@ namespace Game
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => Infos[GetType(Terrain.ExtractData(value))].DisplayName;
 
-        public override string GetDescription(int value) => Infos[GetType(Terrain.ExtractData(value))].Description;
+        public override string MainDescription(int value) => Infos[GetType(Terrain.ExtractData(value))].Description;
+
+        public override string ExtraDescription(int value) => Infos[GetType(Terrain.ExtractData(value))].ExtraDescription;
 
         public override IEnumerable<int> GetCreativeValues() {
             for (int i = 0; i < Infos.Length; i++) {

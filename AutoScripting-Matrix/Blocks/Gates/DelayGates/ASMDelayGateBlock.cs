@@ -37,7 +37,7 @@ namespace Game {
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => Infos[GetType(Terrain.ExtractData(value))].Name;
 
-        public override string GetDescription(int value) => Infos[GetType(Terrain.ExtractData(value))].Description;
+        public override string MainDescription(int value) => Infos[GetType(Terrain.ExtractData(value))].Description;
 
         public override bool IsNonDuplicable_(int value) => GetType(Terrain.ExtractData(value)) == 1;
 

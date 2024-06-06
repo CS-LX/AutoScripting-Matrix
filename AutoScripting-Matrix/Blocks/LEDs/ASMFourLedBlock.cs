@@ -59,7 +59,7 @@ namespace Game {
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => "矩阵LED";
 
-        public override string GetDescription(int value) => "以点阵的形式显示输入的矩阵。点的大小为矩阵对应元素的绝对值，最大为1，最小为0。";
+        public override string MainDescription(int value) => "以点阵的形式显示输入的矩阵。点的大小为矩阵对应元素的绝对值，最大为1，最小为0。";
 
         public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
             int data = SetMountingFace(Terrain.ExtractData(value), raycastResult.CellFace.Face);

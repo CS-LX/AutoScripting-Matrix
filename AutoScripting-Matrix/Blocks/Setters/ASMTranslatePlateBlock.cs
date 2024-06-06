@@ -20,7 +20,7 @@ namespace Game
 
 		public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => "实体变换板";
 
-		public override string GetDescription(int value) => "将触碰到的实体变换按照左端输入矩阵进行映射并返回给实体，而实体的速度按照右端输入矩阵进行映射并返回给实体。掉落物同理。";
+		public override string MainDescription(int value) => "将触碰到的实体变换按照左端输入矩阵进行映射并返回给实体，而实体的速度按照右端输入矩阵进行映射并返回给实体。掉落物同理。";
 
 		public override bool IsFaceTransparent(SubsystemTerrain subsystemTerrain, int face, int value)
 		{

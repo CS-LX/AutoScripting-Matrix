@@ -2,7 +2,7 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class ASMGizmosControllerBlock : GenerateASMWireVerticesBlock {
+    public class ASMGizmosControllerBlock : ASMElectricBaseBlock {
         public const int Index = 623;
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => "Gizmos控制器";

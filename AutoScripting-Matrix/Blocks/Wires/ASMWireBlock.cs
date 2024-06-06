@@ -6,7 +6,7 @@ using Engine.Media;
 
 namespace Game
 {
-    public class ASMWireBlock : GenerateASMWireVerticesBlock, IASMElectricWireElementBlock, IASMElectricElementBlock, IPaintableBlock
+    public class ASMWireBlock : ASMElectricBaseBlock, IASMElectricWireElementBlock, IASMElectricElementBlock, IPaintableBlock
     {
 		public const int Index = 600;
 
@@ -193,7 +193,7 @@ namespace Game
 			return SubsystemPalette.GetName(subsystemTerrain, paintColor, "矩阵导线");
 		}
 
-		public override string GetDescription(int value) => "传输矩阵数据，导线交汇处计算为加法。不同颜色导线不会互相连接。";
+		public override string MainDescription(int value) => "传输矩阵数据，导线交汇处计算为加法。不同颜色导线不会互相连接。";
 
 		public int? GetPaintColor(int value)
 		{

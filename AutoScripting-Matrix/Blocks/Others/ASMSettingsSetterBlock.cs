@@ -2,7 +2,7 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class ASMSettingsSetterBlock : GenerateASMWireVerticesBlock {
+    public class ASMSettingsSetterBlock : ASMElectricBaseBlock {
         public const int Index = 625;
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => "矩阵设置";

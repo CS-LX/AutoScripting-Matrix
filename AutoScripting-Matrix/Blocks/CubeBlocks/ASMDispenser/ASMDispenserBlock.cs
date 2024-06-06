@@ -2,7 +2,7 @@ using Engine;
 using Engine.Graphics;
 
 namespace Game {
-    public class ASMDispenserBlock : GenerateASMWireVerticesBlock, IASMElectricElementBlock {
+    public class ASMDispenserBlock : ASMElectricBaseBlock, IASMElectricElementBlock {
         public const int Index = 621;
 
         public override int GetFaceTextureSlot(int face, int value) {
@@ -39,7 +39,7 @@ namespace Game {
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => "矩阵发射器";
 
-        public override string GetDescription(int value) => "与原版发射器有一定区别。\r\n当输入矩阵变化（新值不为零矩阵）时，会尝试将内容物以一定速度发射出。\r\n发射速度为发射器发射孔朝向的单位向量经过输入矩阵的变换后得到。";
+        public override string MainDescription(int value) => "与原版发射器有一定区别。\r\n当输入矩阵变化（新值不为零矩阵）时，会尝试将内容物以一定速度发射出。\r\n发射速度为发射器发射孔朝向的单位向量经过输入矩阵的变换后得到。";
 
         public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult) {
             Vector3 forward = Matrix.CreateFromQuaternion(componentMiner.ComponentCreature.ComponentCreatureModel.EyeRotation).Forward;

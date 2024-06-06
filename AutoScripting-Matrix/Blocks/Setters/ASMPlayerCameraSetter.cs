@@ -17,7 +17,7 @@ namespace Game {
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => "玩家摄像机设置器";
 
-        public override string GetDescription(int value) => "";
+        public override string MainDescription(int value) => "";
 
         public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
             BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneBlockMesh, m_texture, color, 2f * size, ref matrix, environmentData);

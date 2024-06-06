@@ -19,7 +19,7 @@ namespace Game
 
 		public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => "实体转移板";
 
-		public override string GetDescription(int value) => "将触碰到的实体的位置设置为输入矩阵的位移，旋转设置为输入矩阵的旋转。\r\n当时钟端没有接线时，此元件每时每刻设置实体变换；而当时钟端接线后，当时钟端输入矩阵M11上升沿（由0开始上升）时，设置1次实体变换。";
+		public override string MainDescription(int value) => "将触碰到的实体的位置设置为输入矩阵的位移，旋转设置为输入矩阵的旋转。\r\n当时钟端没有接线时，此元件每时每刻设置实体变换；而当时钟端接线后，当时钟端输入矩阵M11上升沿（由0开始上升）时，设置1次实体变换。";
 
 		public override bool IsFaceTransparent(SubsystemTerrain subsystemTerrain, int face, int value)
 		{

@@ -17,7 +17,7 @@ namespace Game {
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => "矩阵继电器";
 
-        public override string GetDescription(int value) => "当左或右面输入矩阵M11大于0时，输出后端输入的矩阵，否则输出0矩阵。";
+        public override string MainDescription(int value) => "当左或右面输入矩阵M11大于0时，输出后端输入的矩阵，否则输出0矩阵。";
 
         public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
             BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneBlockMesh, texture, color, 2f * size, ref matrix, environmentData);

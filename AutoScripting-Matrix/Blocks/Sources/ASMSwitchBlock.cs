@@ -40,7 +40,7 @@ namespace Game {
 
 		public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => "矩阵开关";
 
-		public override string GetDescription(int value) => "拉杆朝下为关，输出零矩阵；拉杆朝上为开，输出玩家拟定好的矩阵。初始放置时默认数据为单位阵，破坏后不会丢失数据。";
+		public override string MainDescription(int value) => "拉杆朝下为关，输出零矩阵；拉杆朝上为开，输出玩家拟定好的矩阵。初始放置时默认数据为单位阵，破坏后不会丢失数据。";
 
 		public static bool GetLeverState(int value)
 		{

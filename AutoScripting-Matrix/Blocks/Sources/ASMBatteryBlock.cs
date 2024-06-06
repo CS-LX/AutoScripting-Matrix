@@ -3,7 +3,7 @@ using Engine.Graphics;
 using System.Collections.Generic;
 
 namespace Game {
-    public class ASMBatteryBlock : GenerateASMWireVerticesBlock, IASMElectricElementBlock {
+    public class ASMBatteryBlock : ASMElectricBaseBlock, IASMElectricElementBlock {
         public const int Index = 601;
 
         public Texture2D texture;
@@ -57,6 +57,8 @@ namespace Game {
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => "矩阵源";
 
-        public override string GetDescription(int value) => "输出玩家拟定好的矩阵，初始放置时默认数据为单位阵，破坏后不会丢失数据。";
+        public override string MainDescription(int value) => "输出玩家拟定好的矩阵，初始放置时默认数据为单位阵，破坏后不会丢失数据。";
+
+        public override string ExtraDescription(int value) => "本mod的标志性方块~";
     }
 }

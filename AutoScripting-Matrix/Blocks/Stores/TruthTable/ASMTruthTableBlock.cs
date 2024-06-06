@@ -17,7 +17,7 @@ namespace Game {
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value) => "矩阵真值表(点对点)";
 
-        public override string GetDescription(int value) => "玩家可在此真值表中输入16个表达式，这些表达式的值分别对应着输出矩阵M11~M44的值。不同元素表达式之间无法传递数据，也无法互相操作（点对点特性）。\r\n详见https://github.com/CS-LX/AutoScripting-Matrix";
+        public override string MainDescription(int value) => "玩家可在此真值表中输入16个表达式，这些表达式的值分别对应着输出矩阵M11~M44的值。不同元素表达式之间无法传递数据，也无法互相操作（点对点特性）。\r\n详见https://github.com/CS-LX/AutoScripting-Matrix";
 
         public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData) {
             BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneBlockMesh, m_texture, color, 2f * size, ref matrix, environmentData);

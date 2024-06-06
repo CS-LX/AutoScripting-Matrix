@@ -1,5 +1,5 @@
 namespace Game {
-    public abstract class ASMMountedElectricElementBlock : GenerateASMWireVerticesBlock, IASMElectricElementBlock {
+    public abstract class ASMMountedElectricElementBlock : ASMElectricBaseBlock, IASMElectricElementBlock {
         public abstract int GetFace(int value);
 
         public abstract ASMElectricElement CreateElectricElement(SubsystemASMElectricity subsystemASMElectricity, int value, int x, int y, int z);
