@@ -26,7 +26,7 @@ namespace Game {
             asmTruthTableData = asmTruthTableData != null ? (ASMPlayerCameraSetterData)asmTruthTableData.Copy() : new ASMPlayerCameraSetterData();
             DialogsManager.ShowDialog(componentPlayer.GuiWidget, new ASMTextBoxDialog("编辑相机名称", asmTruthTableData.Name, int.MaxValue,
                  m => {
-                    asmTruthTableData.Name = m.Length > 0 ? m : ASMPlayerCameraSetterData.DefaultName;
+                    asmTruthTableData.Name = m != null && m.Length > 0 ? m : ASMPlayerCameraSetterData.DefaultName;
                     int data = StoreItemDataAtUniqueId(asmTruthTableData);
                     int newBlockValue = Terrain.ReplaceData(value, data);
                     inventory.RemoveSlotItems(slotIndex, count);
@@ -40,7 +40,7 @@ namespace Game {
             ASMPlayerCameraSetterData asmTruthTableData = GetBlockData(new Point3(x, y, z)) ?? new ASMPlayerCameraSetterData();
             DialogsManager.ShowDialog(componentPlayer.GuiWidget, new ASMTextBoxDialog("编辑相机名称", asmTruthTableData.Name, int.MaxValue,
                 m => {
-                    asmTruthTableData.Name = m.Length > 0 ? m : ASMPlayerCameraSetterData.DefaultName;
+                    asmTruthTableData.Name = m != null && m.Length > 0 ? m : ASMPlayerCameraSetterData.DefaultName;
                     SetBlockData(new Point3(x, y, z), asmTruthTableData);
                     SubsystemASMElectricity subsystemElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemASMElectricity>(throwOnError: true);
                     ASMElectricElement electricElement = subsystemElectricity.GetElectricElement(x, y, z, GetFace(value));
