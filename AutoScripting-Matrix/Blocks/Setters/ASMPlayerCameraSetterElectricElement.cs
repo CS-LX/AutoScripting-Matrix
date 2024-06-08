@@ -2,9 +2,15 @@ using Engine;
 
 namespace Game {
     public class ASMPlayerCameraSetterElectricElement : ASMRotateableElectricElement {
-        public int m_playerIndex = 3;
+        private int m_playerIndex = 3;
+        public int PlayerIndex => m_playerIndex;
         public SubsystemASMPlayerCameraSetterBehavior m_subsystemAsmPlayerCameraSetterBehavior;
         public ASMComplexPerspectiveCamera m_camera;
+
+        private Matrix m_viewMatrix = Matrix.Zero;
+        public Matrix ViewMatrix => m_viewMatrix;
+        private Matrix m_projectionMatrix = Matrix.Zero;
+        public Matrix ProjectionMatrix => m_projectionMatrix;
 
         public ASMPlayerCameraSetterElectricElement(SubsystemASMElectricity subsystemElectricity, CellFace cellFace) : base(subsystemElectricity, cellFace) {
             m_subsystemAsmPlayerCameraSetterBehavior = SubsystemElectricity.Project.FindSubsystem<SubsystemASMPlayerCameraSetterBehavior>(true);
@@ -33,8 +39,8 @@ namespace Game {
         }
 
         public override bool Simulate() {
-            Matrix view = Matrix.Zero;
-            Matrix projection = Matrix.Zero;
+            m_viewMatrix = Matrix.Zero;
+            m_projectionMatrix = Matrix.Zero;
 
             foreach (ASMElectricConnection connection in Connections) {
                 if (connection.ConnectorType != ASMElectricConnectorType.Output
@@ -42,17 +48,14 @@ namespace Game {
                     ASMElectricConnectorDirection? connectorDirection = SubsystemASMElectricity.GetConnectorDirection(CellFaces[0].Face, Rotation, connection.ConnectorFace);
                     if (connectorDirection.HasValue) {
                         if (connectorDirection == ASMElectricConnectorDirection.Left) {
-                            view = connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+                            m_viewMatrix = connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
                         }
                         else if (connectorDirection == ASMElectricConnectorDirection.Right) {
-                            projection = connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
+                            m_projectionMatrix = connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
                         }
                     }
                 }
             }
-
-            ASMPlayerCameraSetterManager.m_cameras[m_playerIndex].Item3.SetViewMatrix(view);
-            ASMPlayerCameraSetterManager.m_cameras[m_playerIndex].Item3.m_projectionMatrix = projection;
 
             string currentName = m_subsystemAsmPlayerCameraSetterBehavior.GetBlockData(CellFaces[0].Point)?.Name ?? ASMPlayerCameraSetterData.DefaultName;
             ASMPlayerCameraSetterManager.m_cameras[m_playerIndex].Item1 = currentName;
