@@ -467,6 +467,9 @@
 	  <None Update="Assets\Shaders\ASMPortalShader.vsh">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Assets\Textures\ASMHumanizedSource.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 	<ItemGroup>
 	  <Reference Include="Engine">
