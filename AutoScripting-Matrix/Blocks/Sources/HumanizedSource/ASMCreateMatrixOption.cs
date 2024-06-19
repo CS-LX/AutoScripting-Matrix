@@ -1,7 +1,7 @@
 using TemplatesDatabase;
 
 namespace Game {
-    public struct ASMCreateMatrixOption {
+    public struct ASMCreateMatrixOption : IASMItemData<ASMCreateMatrixOption> {
         public enum Type {
             Translate,
             AxisAngle,
