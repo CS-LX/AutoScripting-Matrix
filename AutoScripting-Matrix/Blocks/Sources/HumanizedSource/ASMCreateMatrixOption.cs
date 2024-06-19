@@ -1,3 +1,4 @@
+using Engine;
 using TemplatesDatabase;
 
 namespace Game {
@@ -30,6 +31,11 @@ namespace Game {
             m_parametersCount = parametersCount;
         }
 
+        public ASMCreateMatrixOption(float[] parameters) {
+            m_parameters = parameters;
+            m_parametersCount = parameters.Length;
+        }
+
         public void SetParameters(float[] parameters) {
             for (int i = 0; i < m_parametersCount; i++) m_parameters[i] = parameters[i];
         }
@@ -54,5 +60,7 @@ namespace Game {
             m_parametersCount = paramCount;
             return this;
         }
+
+        public ASMCreateMatrixOption Copy(ASMCreateMatrixOption value) => value;
     }
 }
