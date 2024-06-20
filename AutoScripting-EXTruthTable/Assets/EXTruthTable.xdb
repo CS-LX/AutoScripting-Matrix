@@ -1,0 +1,7 @@
+<Mod>
+	<ProjectTemplate Name="Project" Guid="85023bf8-1c90-4dd1-9442-e6c13691d078">
+		<MemberSubsystemTemplate Name="EXTruthTableBlockBehavior" Guid="16594046-0000-0101-a47d-a5784972c271" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
+			<Parameter Name="Class" Guid="16594046-0000-0101-1530-d281cff58ed2" Value="AutoScripting_EXTruthTable.SubsystemEXTruthTableBlockBehavior" Type="string"/>
+		</MemberSubsystemTemplate>
+	</ProjectTemplate>
+</Mod>

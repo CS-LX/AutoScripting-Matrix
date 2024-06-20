@@ -72,5 +72,25 @@ namespace Game {
                 default: return Matrix.Zero;
             }
         }
+
+        static int GetParamsCount(ASMCreateMatrixOption.Type type) {
+            switch (type) {
+                case ASMCreateMatrixOption.Type.Orthographic: return 4;
+                case ASMCreateMatrixOption.Type.Perspective: return 4;
+                case ASMCreateMatrixOption.Type.Quaternion: return 4;
+                case ASMCreateMatrixOption.Type.Scale: return 3;
+                case ASMCreateMatrixOption.Type.Translate: return 3;
+                case ASMCreateMatrixOption.Type.AxisAngle: return 4;
+                case ASMCreateMatrixOption.Type.LookAt: return 9;
+                case ASMCreateMatrixOption.Type.RotationX: return 1;
+                case ASMCreateMatrixOption.Type.RotationY: return 1;
+                case ASMCreateMatrixOption.Type.RotationZ: return 1;
+                case ASMCreateMatrixOption.Type.OrthographicOffCenter: return 6;
+                case ASMCreateMatrixOption.Type.PerspectiveOffCenter: return 6;
+                case ASMCreateMatrixOption.Type.YawPitchRoll: return 3;
+                case ASMCreateMatrixOption.Type.PerspectiveFieldOfView: return 4;
+                default: return 0;
+            }
+        }
     }
 }

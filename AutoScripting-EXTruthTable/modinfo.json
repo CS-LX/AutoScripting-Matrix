@@ -1,0 +1,11 @@
+{
+  "Name": "AutoScripting [智械]表达式真值表",
+  "Version": "1.0",
+  "ApiVersion": "1.60",
+  "Description": "一个新的以表达式为运算法则的真值表",
+  "ScVersion": "2.3.0.0",
+  "Link": "https://github.com/CS-LX/AutoScripting-Matrix",
+  "Author": "LX..(HIM-LX)",
+  "PackageName": "lx.AutoScriptingEXTruthTable",
+  "Dependencies": []
+}

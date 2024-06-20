@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoScripting-Matrix", "AutoScripting-Matrix\AutoScripting-Matrix.csproj", "{E22ADF96-63A7-4D83-B60C-EA2FF2BB56FB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoScripting-EXTruthTable", "AutoScripting-EXTruthTable\AutoScripting-EXTruthTable.csproj", "{4B7675C2-F491-4449-8F4C-521D91E7DD83}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{E22ADF96-63A7-4D83-B60C-EA2FF2BB56FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E22ADF96-63A7-4D83-B60C-EA2FF2BB56FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E22ADF96-63A7-4D83-B60C-EA2FF2BB56FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B7675C2-F491-4449-8F4C-521D91E7DD83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B7675C2-F491-4449-8F4C-521D91E7DD83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B7675C2-F491-4449-8F4C-521D91E7DD83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B7675C2-F491-4449-8F4C-521D91E7DD83}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

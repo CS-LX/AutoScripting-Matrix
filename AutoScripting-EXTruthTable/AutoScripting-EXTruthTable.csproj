@@ -1,0 +1,82 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<RootNamespace>AAutoScripting_EXTruthTable</RootNamespace>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	<ItemGroup>
+	  <Reference Include="Engine">
+	    <HintPath>references\Engine.dll</HintPath>
+	    <Private>False</Private>
+	  </Reference>
+	  <Reference Include="EntitySystem">
+	    <HintPath>references\EntitySystem.dll</HintPath>
+	    <Private>False</Private>
+	  </Reference>
+	  <Reference Include="Esprima">
+	    <HintPath>references\Esprima.dll</HintPath>
+	    <Private>False</Private>
+	  </Reference>
+	  <Reference Include="Jint">
+	    <HintPath>references\Jint.dll</HintPath>
+	    <Private>False</Private>
+	  </Reference>
+	  <Reference Include="NAudio.Core">
+	    <HintPath>references\NAudio.Core.dll</HintPath>
+	    <Private>False</Private>
+	  </Reference>
+	  <Reference Include="NAudio.Flac">
+	    <HintPath>references\NAudio.Flac.dll</HintPath>
+	    <Private>False</Private>
+	  </Reference>
+	  <Reference Include="NLayer">
+	    <HintPath>references\NLayer.dll</HintPath>
+	    <Private>False</Private>
+	  </Reference>
+	  <Reference Include="NLayer.NAudioSupport">
+	    <HintPath>references\NLayer.NAudioSupport.dll</HintPath>
+	    <Private>False</Private>
+	  </Reference>
+	  <Reference Include="NVorbis">
+	    <HintPath>references\NVorbis.dll</HintPath>
+	    <Private>False</Private>
+	  </Reference>
+	  <Reference Include="OpenTK">
+	    <HintPath>references\OpenTK.dll</HintPath>
+	    <Private>False</Private>
+	  </Reference>
+	  <Reference Include="SixLabors.ImageSharp">
+	    <HintPath>references\SixLabors.ImageSharp.dll</HintPath>
+	    <Private>False</Private>
+	  </Reference>
+	  <Reference Include="Survivalcraft">
+	    <HintPath>references\Survivalcraft.dll</HintPath>
+	    <Private>False</Private>
+	  </Reference>
+	  <Reference Include="TextCopy">
+	    <HintPath>references\TextCopy.dll</HintPath>
+	    <Private>False</Private>
+	  </Reference>
+	</ItemGroup>
+	<ItemGroup>
+	  <None Update="Assets\Textures\ASEXTruthTable.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Assets\Models\ASEXTruthTable.dae">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Assets\EXTruthTable.csv">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Assets\EXTruthTable.xdb">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="icon.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="modinfo.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+</Project>
