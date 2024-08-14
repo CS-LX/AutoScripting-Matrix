@@ -13,7 +13,7 @@ namespace Game {
         }
 
         public override void GuiDraw(ComponentGui componentGui, Camera camera, int drawOrder) {
-            base.GuiUpdate(componentGui);
+            base.GuiDraw(componentGui, camera, drawOrder);
             ASMPerformanceManager.Draw(componentGui, camera);
         }
 
